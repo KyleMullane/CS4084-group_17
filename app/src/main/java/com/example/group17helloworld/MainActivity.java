@@ -38,15 +38,15 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity", "Testing to see if printing to the terminal works for debugging purposes!");
         database = new DBHandler(context);
         User jason = new User("jmcgettrick","1234");
+
         try
-       {
+        {
             database.addUser(jason);
         }
         catch (Exception e)
         {
-            Log.e("MainActivity","Error: user already exists!");
+            Log.e("MainActivity","Username or password already taken!");
         }
-
 
 
         ArrayList<User> users = new ArrayList<User>();

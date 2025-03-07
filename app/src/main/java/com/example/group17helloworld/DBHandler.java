@@ -34,15 +34,33 @@ public class DBHandler extends SQLiteOpenHelper
         db.execSQL(query);
     }
 
-    public void addUser(User user)
+    public void addUser(User user) throws Exception
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(USERNAME_COLUMN, user.getUsername());
         values.put(PASSWORD_COLUMN, user.getPassword());
         long num = db.insert(USER_TABLE, null, values);
+        if (num == -1)
+        {
+            throw new Exception();
+        }
         Log.d("DBHandler", "Num is = "+num);
         db.close();
+    }
+
+    public boolean isLoginValid(User user)
+    {
+        boolean exists = false;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + USER_TABLE + " WHERE " + USERNAME_COLUMN + " = ? AND " + PASSWORD_COLUMN + " = ?", new String[]{user.getUsername(), user.getPassword()});
+
+        if (cursor.moveToFirst())
+        {
+            exists = true;
+        }
+        cursor.close();
+        return exists;
     }
 
     // Get the whole list of names.
