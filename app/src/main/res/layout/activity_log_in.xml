@@ -5,9 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-
+    tools:context=".LogInActivity">
 
     <LinearLayout
         android:orientation="vertical"
@@ -17,20 +15,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome to TravelPlanner! Click below to sign up or log in " />
+            android:text="Hello from Log in!" />
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:name="com.example.group17helloworld.LogInSignUpFragment" />
         <Button
-            android:id="@+id/signupbutton"
+            android:id="@+id/loginSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:onClick="signUp"
-            android:text="Sign Up"/>
-        <Button
-            android:id="@+id/loginbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:onClick="logIn"
+            android:onClick="submitLogIn"
             android:text="Log In"/>
     </LinearLayout>
 

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+import android.util.Log;
 import java.util.ArrayList;
 
 public class DBHandler extends SQLiteOpenHelper
@@ -15,7 +15,7 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String PASSWORD_COLUMN = "password";
     private static final String DB_NAME = "travelappdb";
     // This may be used for migration in the future.
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 5;
 
 
 
@@ -40,7 +40,8 @@ public class DBHandler extends SQLiteOpenHelper
         ContentValues values = new ContentValues();
         values.put(USERNAME_COLUMN, user.getUsername());
         values.put(PASSWORD_COLUMN, user.getPassword());
-        db.insert(USER_TABLE, null, values);
+        long num = db.insert(USER_TABLE, null, values);
+        Log.d("DBHandler", "Num is = "+num);
         db.close();
     }
 
@@ -69,13 +70,21 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
     }
 
+    public void deleteUserTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DROP TABLE IF EXISTS " + USER_TABLE;
+        db.execSQL(query);
+        db.close();
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db,int num1,int num2)
     {
         String query = "CREATE TABLE " + USER_TABLE +
                 " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                USERNAME_COLUMN + " TEXT,"
-                + PASSWORD_COLUMN + " TEXT)";
+                USERNAME_COLUMN + " TEXT NOT NULL UNIQUE,"
+                + PASSWORD_COLUMN + " TEXT NOT NULL UNIQUE)";
         db.execSQL(query);
     }
 }
