@@ -15,7 +15,7 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String PASSWORD_COLUMN = "password";
     private static final String DB_NAME = "travelappdb";
     // This may be used for migration in the future.
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
 
 
@@ -27,10 +27,10 @@ public class DBHandler extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        String query = "CREATE TABLE USER_TABLE ("
-                + "ID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "USERNAME_COLUMN TEXT NOT NULL UNIQUE, "
-                + "PASSWORD_COLUMN TEXT NOT NULL UNIQUE)";
+        String query = "CREATE TABLE " + USER_TABLE +
+                " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                USERNAME_COLUMN + " TEXT,"
+                + PASSWORD_COLUMN + " TEXT)";
         db.execSQL(query);
     }
 
@@ -65,14 +65,18 @@ public class DBHandler extends SQLiteOpenHelper
     public void deleteAllUsers()
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM USER_TABLE");
+        db.execSQL("DELETE FROM " + USER_TABLE);
         db.close();
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase database,int num1,int num2)
+    public void onUpgrade(SQLiteDatabase db,int num1,int num2)
     {
-
+        String query = "CREATE TABLE " + USER_TABLE +
+                " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                USERNAME_COLUMN + " TEXT,"
+                + PASSWORD_COLUMN + " TEXT)";
+        db.execSQL(query);
     }
 }
 

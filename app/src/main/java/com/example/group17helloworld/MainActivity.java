@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.content.Context;
 import android.widget.*;
+import com.example.group17helloworld.DBHandler;
 
 import java.util.ArrayList;
 
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<User> users = new ArrayList<User>();
         users = database.getUsers();
-        Log.d("MainActivity", "Names in user database are: "+users);
+        Log.d("MainActivity", "Names in user database are: "+users.get(0).getUsername());
 
     }
 }
