@@ -2,10 +2,7 @@ package com.example.group17helloworld;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,31 +10,22 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class LogInActivity extends AppCompatActivity {
-    public static final String KEY_VALUE = "LoginInfo";
+public class HomePageActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_home_page);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Toast toast = Toast.makeText(getApplicationContext(), "LogInActivity onCreate Called", Toast.LENGTH_LONG);
-        toast.show();
 
-    }
-
-    public void submitLogIn(View view)
-    {
-        EditText usernameInput = findViewById(R.id.usernameLogIn);
-        EditText passwordInput = findViewById(R.id.passwordLogIn);
-        String username = usernameInput.getText().toString();
-        Intent intent = new Intent(this, HomePageActivity.class);
-        intent.putExtra(KEY_VALUE, username);
-        startActivity(intent);
+        Intent intent = getIntent();
+        String username = intent.getStringExtra(LogInActivity.KEY_VALUE);
+        TextView target = findViewById(R.id.greetingView);
+        target.setText("Hello, " + name + "!");
     }
 }
-
