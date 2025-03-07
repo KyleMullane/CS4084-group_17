@@ -1,9 +1,7 @@
 package com.example.group17helloworld;
 
-import java.util.ArrayList;
-
 public class TravelManager implements TravelManagerInterface{
-    public User user;
+    /*public User user;
     public void login(String username, String password){
         //finish later
         User user = new User();
@@ -98,6 +96,6 @@ public class TravelManager implements TravelManagerInterface{
     void reviewTrip();
     void shareTripWithPublic(Trip trip); //might need a new entity set for shared trips so all trips to be displayed to public are in one place
     ArrayList<Trip> getSuggestedTripsLocation(String location);
-    ArrayList<Trip> getSuggestedTripsRatings(Integer rating);
+    ArrayList<Trip> getSuggestedTripsRatings(Integer rating);*/
 }
 
