@@ -26,6 +26,6 @@ public class HomePageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String username = intent.getStringExtra(LogInActivity.KEY_VALUE);
         TextView target = findViewById(R.id.greetingView);
-        target.setText("Hello, " + name + "!");
+        target.setText("Hello, " + username + "!");
     }
 }
