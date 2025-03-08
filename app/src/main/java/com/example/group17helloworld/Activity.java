@@ -1,7 +1,7 @@
 package com.example.group17helloworld;
 
 public class Activity {
-    public String name;
+    /*public String name;
     public Double price;
     public String description;
     public String date;
@@ -40,5 +40,5 @@ public class Activity {
     }
     public String getDate(){
         return date;
-    }
+    }*/
 }

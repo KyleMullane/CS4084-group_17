@@ -1,7 +1,7 @@
 package com.example.group17helloworld;
 
 public class Accommodation {
-        public String name;
+        /*public String name;
         public Double price;
         public String checkinDate;
         public String checkoutDate;
@@ -53,5 +53,5 @@ public class Accommodation {
         }
         public String getAddress(){
             return address;
-        }
+        }*/
     }

@@ -5,33 +5,28 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-
-
+    tools:context=".SignUpActivity">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
         <TextView
+            android:id="@+id/signUpPageText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome to TravelPlanner! Click below to sign up or log in " />
+            android:text="Sign Up Here!" />
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:name="com.example.group17helloworld.LogInSignUpFragment" />
         <Button
-            android:id="@+id/signupbutton"
+            android:id="@+id/signUpSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:onClick="signUp"
+            android:onClick="submitSignUp"
             android:text="Sign Up"/>
-        <Button
-            android:id="@+id/loginbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:onClick="logIn"
-            android:text="Log In"/>
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

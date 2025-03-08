@@ -1,9 +1,7 @@
 package com.example.group17helloworld;
 
-import java.util.ArrayList;
-
 public class Trip {
-    public String name;
+    /*public String name;
     //public enum type{upcoming, current, past;};
     public String type;
     public String date;
@@ -108,7 +106,7 @@ public class Trip {
     }
     public ArrayList<Object> getTripInfo(){
         return tripInfo;
-    }
+    }*/
 
 
     //add a save trip method??
