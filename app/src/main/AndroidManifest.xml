@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Group17HelloWorld"
         tools:targetApi="31">
         <activity
+            android:name=".SignUpActivity"
+            android:exported="false" />
+        <activity
             android:name=".HomePageActivity"
             android:exported="false" />
         <activity

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,25 +13,22 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class LogInActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
     private static DBHandler database;
     public static final String KEY_VALUE = "LoginInfo";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_sign_up);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Toast toast = Toast.makeText(getApplicationContext(), "LogInActivity onCreate Called", Toast.LENGTH_LONG);
-        toast.show();
-
     }
 
-    public void submitLogIn(View view)
+    public void submitSignUp(View view) throws Exception
     {
         Context context = getApplicationContext();
         database = new DBHandler(context);
@@ -44,16 +40,16 @@ public class LogInActivity extends AppCompatActivity {
         boolean doesUserExist = database.isLoginValid(user);
         if (doesUserExist)
         {
-            Intent intent = new Intent(this, HomePageActivity.class);
-            intent.putExtra(KEY_VALUE, username);
-            startActivity(intent);
+            TextView target = findViewById(R.id.signUpPageText);
+            target.setText("Username or password already exists! Try again.");
+
         }
         else
         {
-            TextView target = findViewById(R.id.loginPageText);
-            target.setText("Username or password incorrect. Try again.");
+            database.addUser(user);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
 
     }
 }
-
