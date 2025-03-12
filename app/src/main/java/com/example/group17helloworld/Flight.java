@@ -1,7 +1,7 @@
 package com.example.group17helloworld;
 
 public class Flight {
-    public Double price;
+   /* public Double price;
     public String departureLocation;
     public String destination;
     public String flightID;
@@ -49,5 +49,5 @@ public class Flight {
     }
     public String getDate(){
         return date;
-    }
+    }*/
 }
