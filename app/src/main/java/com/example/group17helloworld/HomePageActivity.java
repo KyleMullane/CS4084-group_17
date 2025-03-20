@@ -1,7 +1,9 @@
 package com.example.group17helloworld;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -10,8 +12,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class HomePageActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
+public class HomePageActivity extends AppCompatActivity {
+    DBHandler database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,5 +31,8 @@ public class HomePageActivity extends AppCompatActivity {
         String username = intent.getStringExtra(LogInActivity.KEY_VALUE);
         TextView target = findViewById(R.id.greetingView);
         target.setText("Hello, " + username + "!");
+        Context context = getApplicationContext();
+        database = DBHandler.getInstance(context);
+
     }
 }

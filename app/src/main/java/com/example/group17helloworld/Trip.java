@@ -1,112 +1,104 @@
 package com.example.group17helloworld;
 
 public class Trip {
-    /*public String name;
-    //public enum type{upcoming, current, past;};
-    public String type;
-    public String date;
-    public ArrayList<Accommodation> accommodations;
-    public ArrayList<Activity> activities;  //i'm wondering if these 3 are unecessary if we use the array list of these lists
-    public ArrayList<Flight> flights;
-    public Double cost;
-    public ArrayList<Object> tripInfo; //array list with each of the sub lists inside
+    public String departureLocation;
+    public String destinationLocation;
+    public String dateDeparture;
+    public String dateReturn;
+    public String username;
+    public String description;
+    public double overallCost;
+    public int tripID;
+
 
     public Trip(){
-        name = "";
-        type = "upcoming";
-        date = "";
-        accommodations = new ArrayList<Accommodation>();
-        activities = new ArrayList<Activity>();
-        flights = new ArrayList<Flight>();
-        cost = 0.0;
-        tripInfo = new ArrayList<>();
+        departureLocation = "";
+        destinationLocation = "";
+        dateDeparture = "";
+        dateReturn = "";
+        username = "";
+        description = "";
+        overallCost = 0.0;
+        tripID = 0;
+
     }
 
-    public Trip(String name, String type, String date, ArrayList<Accommodation> accommodations, ArrayList<Activity> activities, ArrayList<Flight> flights, Double cost){
-        this.name = name;
-        this.type = type;
-        this.date = date;
-        this.accommodations = accommodations;
-        this.activities = activities;
-        this.flights = flights;
-        this.cost = cost;
-        this.tripInfo = new ArrayList<Object>();
-        tripInfo.add(accommodations);
-        tripInfo.add(activities);
-        tripInfo.add(flights);
+    public Trip(String departureLocation, String destinationLocation, String dateDeparture, String dateReturn, String username, String description, double overallCost, int tripID){
+        this.departureLocation = departureLocation;
+        this.destinationLocation = destinationLocation;
+        this.dateDeparture = dateDeparture;
+        this.dateReturn = dateReturn;
+        this.username = username;
+        this.description = description;
+        this.overallCost = overallCost;
+        this.tripID = tripID;
     }
 
-    public void setName(String name){
-        this.name = name;
-    }
-    public String getName(){
-        return name;
-    }
-    public void setType(String type){
-        this.type = type;
-    }
-    public String getType(){
-        return type;
-    }
-    public void setDate(String date){
-        this.date = date;
-    }
-    public String getDate(){
-        return date;
-    }
-    public void addAccommodation(Accommodation accommodation){
-        accommodations.add(accommodation);
-    }
-    public ArrayList<Accommodation> getAccommodations(){
-        return accommodations;
-    }
-    public Accommodation getAccommodation(int index){
-        return accommodations.get(index); //check!!
-    }
-    public void addActivity(Activity activity){
-        activities.add(activity);
-    }
-    public ArrayList<Activity> getActivities(){
-        return activities;
-    }
-    public Activity getActivity(int index){
-        return activities.get(index);
-    }
-    public void addFlight(Flight flight){
-        flights.add(flight);
-    }
-    public ArrayList<Flight> getFlights(){
-        return flights;
-    }
-    public Flight getFlight(int index){
-        return flights.get(index);
-    }
-    public void setCost(Double cost){
-        this.cost = cost;
-    } //can set by getting cost from activity, accommodation, & flight objects??
-    public Double getCost(){
-        return cost;
-    }
-    public void calculateCost(){
-        Double total = 0.0;
-        for (Accommodation accommodation : accommodations){
-            total += accommodation.getPrice();
-        }
-        for (Activity activity : activities){
-            total += activity.getPrice();
-        }
-        for (Flight flight : flights){
-            total += flight.getPrice();
-        }
-        this.cost = total;
+    // Getters
+    public String getDepartureLocation() {
+        return departureLocation;
     }
 
-    public void addTripInfo(ArrayList<Object> info){
-        tripInfo.add(info);
+    public String getDestinationLocation() {
+        return destinationLocation;
     }
-    public ArrayList<Object> getTripInfo(){
-        return tripInfo;
-    }*/
+
+    public String getDateDeparture() {
+        return dateDeparture;
+    }
+
+    public String getDateReturn() {
+        return dateReturn;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public double getOverallCost() {
+        return overallCost;
+    }
+
+    public int getTripID() {
+        return tripID;
+    }
+
+    // Setters
+    public void setDepartureLocation(String departureLocation) {
+        this.departureLocation = departureLocation;
+    }
+
+    public void setDestinationLocation(String destinationLocation) {
+        this.destinationLocation = destinationLocation;
+    }
+
+    public void setDateDeparture(String dateDeparture) {
+        this.dateDeparture = dateDeparture;
+    }
+
+    public void setDateReturn(String dateReturn) {
+        this.dateReturn = dateReturn;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setOverallCost(double overallCost) {
+        this.overallCost = overallCost;
+    }
+
+    public void setTripID(int tripID) {
+        this.tripID = tripID;
+    }
 
 
     //add a save trip method??

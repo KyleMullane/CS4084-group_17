@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static DBHandler database;
+    DBHandler database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
 
         Context context = getApplicationContext();
+        database = DBHandler.getInstance(context);
         Log.d("MainActivity", "Testing to see if printing to the terminal works for debugging purposes!");
-        database = new DBHandler(context);
         User jason = new User("jmcgettrick","1234");
 
         try
