@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 public class HomePageActivity extends AppCompatActivity {
     DBHandler database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +34,18 @@ public class HomePageActivity extends AppCompatActivity {
         target.setText("Hello, " + username + "!");
         Context context = getApplicationContext();
         database = DBHandler.getInstance(context);
+        //String departureLocation, String destinationLocation, String dateDeparture, String dateReturn, String username, String description, double overallCost, int tripID
+        try {
+            database.addTrip(new Trip("Ireland", "Switzerland", "21/3/2025", "24/3/2025", "jmcgettrick", "Incredible experience!!", 500.50, 3));
+        } catch (Exception e) {
+            Log.d("HomePageActivity", "Catch block triggered in addTrip attempt");
+        }
+
+        ArrayList<Trip> trips = database.getTrips();
+        Trip testTrip = trips.get(0);
+        TextView tripText = findViewById(R.id.tripText);
+        tripText.setText("Test trip: Departure: "+testTrip.getDepartureLocation()+" Destination: "+testTrip.getDestinationLocation()+" Date Departure: "+testTrip.getDateDeparture()+" Date Return: "+testTrip.getDateReturn()+" Username: "+testTrip.getUsername()+" Description: "+testTrip.getDescription()+" Trip ID: "+testTrip.getTripID());
+
 
     }
 }
