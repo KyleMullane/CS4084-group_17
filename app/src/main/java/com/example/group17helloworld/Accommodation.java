@@ -1,27 +1,32 @@
 package com.example.group17helloworld;
 
 public class Accommodation {
-        /*public String name;
-        public Double price;
+        public String name;
+        public String address;
         public String checkinDate;
         public String checkoutDate;
-        public String address;
-        //public Integer id; maybe add in the class that saves it to database??
+        public Double price;
+        public Integer accommodationID;
+        public Integer tripID;
 
-        public Accommodation(){
+        public Accommodation(){ //just never use this constructor
             name = "";
-            price = 0.0;
+            address = "";
             checkinDate = "";
             checkoutDate = "";
-            address = "";
+            price = 0.0;
+            accommodationID = 0;
+            tripID = 0;
         }
 
-        public Accommodation(String name, Double price, String checkinDate, String checkoutdate, String address){
+        public Accommodation(Integer accommodationID, String name, String address, String checkinDate, String checkoutdate, Double price, Integer tripID){
+            this.accommodationID = accommodationID;
             this.name = name;
-            this.price = price;
+            this.address = address;
             this.checkinDate = checkinDate;
             this.checkoutDate = checkoutdate;
-            this.address = address;
+            this.price = price;
+            this.tripID = tripID;
         }
 
         public void setName(String name){
@@ -36,7 +41,7 @@ public class Accommodation {
         public Double getPrice(){
             return price;
         }
-        public void setCheckIn(String checkinDate){
+        public void setCheckInDate(String checkinDate){
             this.checkinDate = checkinDate;
         }
         public String getCheckinDate(){
@@ -53,5 +58,21 @@ public class Accommodation {
         }
         public String getAddress(){
             return address;
-        }*/
+        }
+
+        public void setTripID(Integer tripID){
+            this.tripID = tripID;
+        }
+
+        public Integer getTripID(){
+            return tripID;
+        }
+
+        public void setAccommodationID(Integer accommodationID){
+            this.accommodationID = accommodationID;
+        }
+
+        public Integer getAccommodationID(){
+            return accommodationID;
+        }
     }

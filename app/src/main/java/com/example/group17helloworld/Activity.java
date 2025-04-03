@@ -1,21 +1,31 @@
 package com.example.group17helloworld;
 
 public class Activity {
-    /*public String name;
-    public Double price;
-    public String description;
+    public Integer activityID;
+    public String name;
+    public String location;
     public String date;
+    public String time;
+    public Double price;
+    public Integer tripID;
+
     public Activity(){
+        activityID = 0;
         name = "";
-        price = 0.0;
-        description = "";
+        location = "";
         date = "";
+        time = "";
+        price = 0.0;
+        tripID = 0;
     }
-    public Activity(String name, Double price, String description, String date){
+    public Activity(Integer activityID, String name, String location, String date, String time, Double price, Integer tripID){
+        this.activityID = activityID;
         this.name = name;
-        this.price = price;
-        this.description = description;
+        this.location = location;
         this.date = date;
+        this.time = time;
+        this.price = price;
+        this.tripID = tripID;
     }
     public void setName(String name){
         this.name = name;
@@ -29,16 +39,35 @@ public class Activity {
     public Double getPrice(){
         return price;
     }
-    public void setDescription(String description){
-        this.description = description;
+    public void setActivityID(Integer activityID){
+        this.activityID = activityID;
     }
-    public String getDescription(){
-        return description;
+    public Integer getActivityID(){
+        return activityID;
+    }
+    public void setLocation(String location){
+        this.location = location;
+    }
+    public String getLocation(){
+        return location;
+    }
+    public void setTime(String time){
+        this.time = time;
+    }
+    public String getTime(){
+        return time;
+    }
+    public void setTripID(Integer tripID){
+        this.tripID = tripID;
+    }
+    public Integer getTripID(){
+        return tripID;
     }
     public void setDate(String date){
         this.date = date;
     }
     public String getDate(){
         return date;
-    }*/
+    }
+
 }
