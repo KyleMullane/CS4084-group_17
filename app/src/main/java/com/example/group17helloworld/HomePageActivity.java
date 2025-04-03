@@ -43,7 +43,8 @@ public class HomePageActivity extends AppCompatActivity {
 
         ArrayList<Trip> trips = database.getTrips();
         Trip testTrip = trips.get(0);
-        TextView tripText = findViewById(R.id.tripText);
+        TripTableFragment tripTableFragment = (TripTableFragment) getSupportFragmentManager().findFragmentById(R.id.TripTableFragment);
+        TextView tripText = findViewById(R.id.departure);
         tripText.setText("Test trip: Departure: "+testTrip.getDepartureLocation()+" Destination: "+testTrip.getDestinationLocation()+" Date Departure: "+testTrip.getDateDeparture()+" Date Return: "+testTrip.getDateReturn()+" Username: "+testTrip.getUsername()+" Description: "+testTrip.getDescription()+" Trip ID: "+testTrip.getTripID());
 
 
