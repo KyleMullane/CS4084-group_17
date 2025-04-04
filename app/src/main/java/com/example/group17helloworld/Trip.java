@@ -36,7 +36,7 @@ public class Trip {
         this.status = status;
     }
 
-    // Getters
+    // Getters ..
 
     public String getDeparture() { return departure; }
     public String getDestination() {
