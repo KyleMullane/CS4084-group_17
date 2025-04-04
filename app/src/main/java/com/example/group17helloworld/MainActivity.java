@@ -68,7 +68,16 @@ public class MainActivity extends AppCompatActivity {
             rowText.setPadding(8, 8, 8, 8);
             row.addView(rowText);
             tableLayout.addView(row);
+            Button viewDetailsButton = new Button(this);
+            viewDetailsButton.setText("View Details");
+            viewDetailsButton.setOnClickListener(v -> viewTripDetails(trips.get(i)));
         }
 
+    }
+    public void viewTripDetails(Trip trip)
+    {
+        Intent intent = new Intent(this, ViewTripDetails.class);
+        intent.putExtra("TripID", trip.getTripID());
+        startActivity(intent);
     }
 }
