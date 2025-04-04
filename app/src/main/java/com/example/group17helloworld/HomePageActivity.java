@@ -22,10 +22,5 @@ public class HomePageActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        Intent intent = getIntent();
-        String username = intent.getStringExtra(LogInActivity.KEY_VALUE);
-        TextView target = findViewById(R.id.greetingView);
-        target.setText("Hello, " + username + "!");
     }
 }
