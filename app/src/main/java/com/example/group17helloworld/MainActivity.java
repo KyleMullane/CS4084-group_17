@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<Trip> trips = database.getTrips();
         Trip testTrip = trips.get(0);
+        TripTableFragment tripTableFragment = (TripTableFragment) getSupportFragmentManager().findFragmentById(R.id.TripTableFragment);
         TextView tripText = findViewById(R.id.tripText);
         tripText.setText("Test trip: Departure: " + testTrip.getDeparture() + " Destination: " + testTrip.getDestination() + " Date Departure: " + testTrip.getDateDeparture() + " Date Return: " + testTrip.getDateReturn() + " Budget: " + testTrip.getBudget() + " Trip ID: " + testTrip.getTripID());
 
