@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 import android.view.View;
 import android.widget.*;
+import androidx.core.content.ContextCompat;
 
 import com.example.group17helloworld.DBHandler;
 
@@ -50,8 +51,24 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Trip> trips = database.getTrips();
         Trip testTrip = trips.get(0);
         Log.d("MainActivity", "Num trips in table is "+trips.size());
-        TextView tripText = findViewById(R.id.tripText);
-        tripText.setText("Leaving From: "+testTrip.getDeparture()+ "\nGoing to: "+testTrip.getDestination()+"\nDate: "+testTrip.getDateDeparture());
+        //TextView tripText = findViewById(R.id.tripText);
+        //tripText.setText("Leaving From: "+testTrip.getDeparture()+ "\nGoing to: "+testTrip.getDestination()+"\nDate: "+testTrip.getDateDeparture());
+
+        TableLayout tableLayout = findViewById(R.id.tripTable);
+
+        for (int i=0; i<trips.size(); i++)
+        {
+            TableRow row = new TableRow(this);
+            row.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT));
+            row.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
+            TextView rowText = new TextView(this);
+            rowText.setText("Leaving From: "+trips.get(i).getDeparture()+"\nGoing to: "+trips.get(i).getDestination()+"\nDate: "+trips.get(i).getDateDeparture());
+            rowText.setPadding(8, 8, 8, 8);
+            row.addView(rowText);
+            tableLayout.addView(row);
+        }
 
     }
 }
