@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.content.Context;
 import android.view.View;
 import android.widget.*;
@@ -33,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
         });
         Toast toast = Toast.makeText(getApplicationContext(), "onCreate Called", Toast.LENGTH_LONG);
         toast.show();
+        Fragment fragment = new TripTableFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_layout, fragment);
+        fragmentTransaction.commit();
 
         Context context = getApplicationContext();
         Log.d("MainActivity", "Testing to see if printing to the terminal works for debugging purposes!");
@@ -46,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Trip> trips = database.getTrips();
         Trip testTrip = trips.get(0);
         TripTableFragment tripTableFragment = (TripTableFragment) getSupportFragmentManager().findFragmentById(R.id.TripTableFragment);
-        TextView tripText = findViewById(R.id.tripText);
+        TextView tripText = tripTableFragment.getView().findViewById(R.id.tripText);
         tripText.setText("Test trip: Departure: " + testTrip.getDeparture() + " Destination: " + testTrip.getDestination() + " Date Departure: " + testTrip.getDateDeparture() + " Date Return: " + testTrip.getDateReturn() + " Budget: " + testTrip.getBudget() + " Trip ID: " + testTrip.getTripID());
 
     }

@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:text="Welcome to TravelPlanner! Here are your upcoming trips: " />
         <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:name="com.example.group17helloworld.TripTableFragment" />
