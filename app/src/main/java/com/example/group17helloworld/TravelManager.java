@@ -2,7 +2,7 @@ package com.example.group17helloworld;
 
 import java.util.ArrayList;
 
-public class TravelManager implements TravelManagerInterface{
+/*public class TravelManager implements TravelManagerInterface{
     public ArrayList<Trip> trips;
     public void createTrip(String destination, String departureDate, String returnDate, Double budget){
         Trip trip = new Trip();
@@ -137,5 +137,5 @@ public class TravelManager implements TravelManagerInterface{
         transport.setPrice(price);
     } //need to go into setters and DBHandler and make methods to change the database
 
-}
+}*/
 

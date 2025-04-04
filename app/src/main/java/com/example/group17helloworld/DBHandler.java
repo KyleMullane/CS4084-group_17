@@ -32,7 +32,6 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String DEPARTURE_DATE_COLUMN = "departure_date";
     public static final String RETURN_DATE_COLUMN = "return_date";
     public static final String BUDGET_COLUMN = "budget";
-    public static final String STATUS_COLUMN = "status";
     private static final String DB_NAME = "travelappdb";
 
     //Accommodation Table
@@ -129,7 +128,6 @@ public class DBHandler extends SQLiteOpenHelper
         values.put(DEPARTURE_DATE_COLUMN, trip.getDateDeparture());
         values.put(RETURN_DATE_COLUMN, trip.getDateReturn());
         values.put(BUDGET_COLUMN, trip.getBudget());
-        values.put(STATUS_COLUMN, trip.getStatus());
         long num = db.insert(TRIP_TABLE, null, values);
         if (num == -1)
         {
@@ -151,14 +149,14 @@ public class DBHandler extends SQLiteOpenHelper
         {
             do
             {
-                trips.add(new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getDouble(4), cursor.getString(5)));
+                trips.add(new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5)));
             } while (cursor.moveToNext());
         }
         cursor.close();
         return trips;
     }
 
-    public void deleteAllTrips()
+    /*public void deleteAllTrips()
     {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TRIP_TABLE);
@@ -694,7 +692,7 @@ public class DBHandler extends SQLiteOpenHelper
         }
         cursor.close();
         return trips;
-    }
+    }*/
 
     @Override
     public void onUpgrade(SQLiteDatabase db,int num1,int num2)

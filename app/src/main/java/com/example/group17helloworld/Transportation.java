@@ -35,7 +35,7 @@ public class Transportation {
         this.price = price;
         this.tripID = tripID;
     }
-    public void setTransportationID(Integer transportationID){
+    /*public void setTransportationID(Integer transportationID){
         this.transportationID = dbHandler.getTransportationID(getTripID(), getDate(), getDepartureTime()); //change to using dbHandler
     }
     public Integer getTransportationID() {
@@ -95,5 +95,5 @@ public class Transportation {
     }
     public Integer getTripID() {
         return tripID;
-    }
+    }*/
 }

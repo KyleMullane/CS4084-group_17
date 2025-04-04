@@ -30,7 +30,7 @@ public class Accommodation {
             this.tripID = tripID;
         }
 
-        public void setName(String name){
+        /*public void setName(String name){
             this.name = name;
             dbHandler.changeAccommodationName(getAccommodationID(), name);
         }
@@ -80,5 +80,5 @@ public class Accommodation {
 
         public Integer getAccommodationID(){
             return accommodationID;
-        }
+        }*/
     }

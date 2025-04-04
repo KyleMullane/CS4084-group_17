@@ -12,7 +12,6 @@ public class Trip {
     public ArrayList<Accommodation> accommodations;
     public ArrayList<Activity> activities;
     public ArrayList<Transportation> transportation;
-    public String status;
     private DBHandler dbHandler;
 
 
@@ -23,17 +22,15 @@ public class Trip {
         dateReturn = "";
         budget = 0.0;
         tripID = 0;
-        status = "";
     }
 
     public Trip(Integer tripID, String departure, String destination, String dateDeparture, String dateReturn, Double budget){
+        this.tripID = tripID;
         this.departure = departure;
         this.destination = destination;
         this.dateDeparture = dateDeparture;
         this.dateReturn = dateReturn;
         this.budget = budget;
-        //this.tripID = dbHandler.getTripID();
-        this.status = status;
     }
 
     // Getters ..
@@ -62,9 +59,9 @@ public class Trip {
 
     // Setters
 
-    public void setTripID(){
+    /*public void setTripID(){
         tripID = dbHandler.getTripID(getDateDeparture(), getDateReturn());
-    }
+    }*/
     public void setDeparture(String departure) { this.departure = departure; }
     public void setDestination(String destination) {
         this.destination = destination;
@@ -86,7 +83,7 @@ public class Trip {
         this.tripID = tripID;
     }
 
-    public void addAccommodation(Accommodation accommodation){
+    /*public void addAccommodation(Accommodation accommodation){
         accommodations.add(accommodation);
     }
 
@@ -106,12 +103,6 @@ public class Trip {
     }
     public ArrayList<Transportation> getTransportation(){
         return transportation;
-    }
-    public void setStatus(String status){
-        this.status = status;
-    }
-    public String getStatus(){
-        return status;
     }
     public Accommodation getAccommodation(Integer accommodationIndex){
         return getAccommodations().get(accommodationIndex);
@@ -136,5 +127,5 @@ public class Trip {
         transportation.remove(transportIndex);
         Integer transportID = transportation.get(transportIndex).getTransportationID();
         dbHandler.deleteTransport(transportID);
-    }
+    }*/
 }

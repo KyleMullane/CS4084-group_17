@@ -37,26 +37,21 @@ public class MainActivity extends AppCompatActivity {
         });
         Toast toast = Toast.makeText(getApplicationContext(), "onCreate Called", Toast.LENGTH_LONG);
         toast.show();
-        Fragment fragment = new TripTableFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_layout, fragment);
-        fragmentTransaction.commit();
 
         Context context = getApplicationContext();
         Log.d("MainActivity", "Testing to see if printing to the terminal works for debugging purposes!");
         database = DBHandler.getInstance(context);
         try {
-            database.addTrip(new Trip(0, "Ireland", "Switzerland", "21/3/2025", "24/3/2025", 500.0));
+            //database.addTrip(new Trip(0, "Ireland", "Switzerland", "21/3/2025", "24/3/2025", 500.0));
         } catch (Exception e) {
             Log.d("MainActivity", "Catch block triggered in addTrip attempt");
         }
 
         ArrayList<Trip> trips = database.getTrips();
         Trip testTrip = trips.get(0);
-        TripTableFragment tripTableFragment = (TripTableFragment) getSupportFragmentManager().findFragmentById(R.id.TripTableFragment);
-        TextView tripText = tripTableFragment.getView().findViewById(R.id.tripText);
-        tripText.setText("Test trip: Departure: " + testTrip.getDeparture() + " Destination: " + testTrip.getDestination() + " Date Departure: " + testTrip.getDateDeparture() + " Date Return: " + testTrip.getDateReturn() + " Budget: " + testTrip.getBudget() + " Trip ID: " + testTrip.getTripID());
+        Log.d("MainActivity", "Num trips in table is "+trips.size());
+        TextView tripText = findViewById(R.id.tripText);
+        tripText.setText("Leaving From: "+testTrip.getDeparture()+ "\nGoing to: "+testTrip.getDestination()+"\nDate: "+testTrip.getDateDeparture());
 
     }
 }

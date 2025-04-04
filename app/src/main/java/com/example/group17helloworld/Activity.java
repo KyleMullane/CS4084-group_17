@@ -28,7 +28,7 @@ public class Activity {
         this.price = price;
         this.tripID = tripID;
     }
-    public void setName(String name){
+    /*public void setName(String name){
         this.name = name;
         dbHandler.changeActivityName(getActivityID(), name);
     }
@@ -74,6 +74,6 @@ public class Activity {
     }
     public String getDate(){
         return date;
-    }
+    }*/
 
 }
