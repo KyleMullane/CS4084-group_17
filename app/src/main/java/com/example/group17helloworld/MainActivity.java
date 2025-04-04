@@ -79,10 +79,16 @@ public class MainActivity extends AppCompatActivity {
             rowText.setText("Leaving From: "+trips.get(i).getDeparture()+"\nGoing to: "+trips.get(i).getDestination()+"\nDate: "+trips.get(i).getDateDeparture());
             rowText.setPadding(8, 8, 8, 8);
 
+            String[] dropdownItems = {"", "Add Transportation", "Add Accommodation", "Add Activities"};
+            Spinner spinner = new Spinner(this);
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dropdownItems);
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(spinnerAdapter);
+            spinner.setScaleX(0.5f); // Scale width to 80%
+            spinner.setScaleY(0.5f);
+
             Button viewDetailsButton = new Button(this);
-            //viewDetailsButton.setLayoutParams(new ViewGroup.LayoutParams(20,20);
             viewDetailsButton.setText("View Details");
-            //viewDetailsButton.setTextSize(12);  // Set text size
             viewDetailsButton.setTextColor(Color.WHITE); // Change text color
             viewDetailsButton.setBackgroundResource(R.drawable.custom_button);
             viewDetailsButton.setPadding(0, 0, 0, 0); // Adjust padding
@@ -93,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
             verticalLayout.addView(rowText);
             verticalLayout.addView(viewDetailsButton);
-
+            row.addView(spinner);
             row.addView(verticalLayout);
             tableLayout.addView(row);
 

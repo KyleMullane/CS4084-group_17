@@ -18,7 +18,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome to TravelPlanner! Here are your upcoming trips: " />
+            android:textSize="12pt"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:text="Welcome to the Hello World TravelPlanner!"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:paddingLeft="10dp"
+            android:textSize="10pt"
+            android:text="Upcoming trips:"/>
 
         <TableLayout
             android:orientation="vertical"
