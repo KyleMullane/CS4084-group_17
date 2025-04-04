@@ -1,101 +1,141 @@
 package com.example.group17helloworld;
 
+import java.util.ArrayList;
+
 public class TravelManager implements TravelManagerInterface{
-    /*public User user;
-    public void login(String username, String password){
-        //finish later
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.getTrips(); //idk if that should work like this
-    } //maybe return a user object
-    public void signup(){
-        //finish later
-    } //maybe returns and saves a new user object
-    public void logout(){
-        //just clears user info
-    }
-    public void createTrip(String name, String date){
+    public ArrayList<Trip> trips;
+    public void createTrip(String destination, String departureDate, String returnDate, Double budget){
         Trip trip = new Trip();
-        trip.setName(name);
-        trip.setDate(date);
-        //trip.setType(); //add some sort of function that can tell if it is upcoming, current, or past --> convert date
-        user.addTrip(trip);
+        trip.setDestination(destination);
+        trip.setDateDeparture(departureDate);
+        trip.setDateReturn(returnDate);
+        trip.setBudget(budget);
+        trips.add(trip);
     }
     public ArrayList<Trip> getUpcomingTrips() {
-        ArrayList<Trip> trips = user.getTrips(); //create a for loop that goes through trips & sorts them based on type
         ArrayList<Trip> upcoming = new ArrayList<Trip>();
         for (Trip trip : trips) {
-            if (trip.getType().equals("upcoming")) {
+            if (trip.getStatus().equals("upcoming")) {
                 upcoming.add(trip);
             }
         }
         return upcoming;
     }//when you hit the button of upcoming trips
     public ArrayList<Trip> getCurrentTrips(){
-        ArrayList<Trip> trips = user.getTrips(); //create a for loop that goes through trips & sorts them based on type
         ArrayList<Trip> current = new ArrayList<Trip>();
         for (Trip trip : trips) {
-            if (trip.getType().equals("current")) {  //change all characters to lowercase
+            if (trip.getStatus().equals("current")) {  //change all characters to lowercase
                 current.add(trip);
             }
         }
         return current;
     } //when you hit the button of current trips
     public ArrayList<Trip> getPastTrips(){
-        ArrayList<Trip> trips = user.getTrips(); //create a for loop that goes through trips & sorts them based on type
         ArrayList<Trip> past = new ArrayList<Trip>();
         for (Trip trip : trips) {
-            if (trip.getType().equals("past")) {  //change all characters to lowercase
+            if (trip.getStatus().equals("past")) {  //change all characters to lowercase
                 past.add(trip);
             }
         }
         return past;
     } //when you hit the button of past trips
 
-    Trip getTripDetails(Trip trip); //idk what this returns //if we want to display trip info on one screen return all 3 types??
+    public Trip getTrip(Integer tripIndex){
+        return trips.get(tripIndex);
+    } //for selecting a chosen trip on the main screen
 
-    public void createAccommodation(Integer tripIndex, String name, Double price, String checkinDate, String checkoutDate, String address){
-        Accommodation accommodation = new Accommodation(name, price, checkinDate, checkoutDate, address);
-        user.getTrip(tripIndex).addAccommodation(accommodation); //0 for now but eventually need to get the proper index
+    public void createAccommodation(Integer tripIndex, String name, String address, String checkinDate, String checkoutDate, Double price){
+        Accommodation accommodation = new Accommodation();
+        accommodation.setName(name);
+        accommodation.setAddress(address);
+        accommodation.setCheckInDate(checkinDate);
+        accommodation.setCheckoutDate(checkoutDate);
+        accommodation.setPrice(price);
+        accommodation.setTripID(getTrip(tripIndex).getTripID());
+        getTrip(tripIndex).addAccommodation(accommodation);
+        //figure out how to set accommodationID in the object using DBHandler (not here)
     }
-    public void createActivity(Integer tripIndex, String name, Double price, String description, String date){
-        Activity activity = new Activity(name, price, description, date);
-        user.getTrip(tripIndex).addActivity(activity); //0 for now but eventually get the proper trip
-    }   //do we need parameters?? (I think so based on user input), use another class to save it to database?? --> save method is called in these methods
-    public void createFlight(Integer tripIndex, Double price, String destination, String departureLocation, String flightID, String date){
-        Flight flight = new Flight(price, destination, departureLocation, flightID, date);
-        user.getTrip(tripIndex).addFlight(flight); //0 for now but eventually get the proper trip
+    public void createActivity(Integer tripIndex, String name, String location, String date, String time, Double price){
+        Activity activity = new Activity();
+        activity.setName(name);
+        activity.setLocation(location);
+        activity.setDate(date);
+        activity.setTime(time);
+        activity.setPrice(price);
+        activity.setTripID(getTrip(tripIndex).getTripID());
+        getTrip(tripIndex).addActivity(activity);
+    }
+    public void createTransportation(Integer tripIndex, String departureLocation, String destination, String date, String departureTime, String arrivalTime, String type, Double price){
+        Transportation transport = new Transportation();
+        transport.setDepartureLocation(departureLocation);
+        transport.setDestination(destination);
+        transport.setDate(date);
+        transport.setDepartureTime(departureTime);
+        transport.setArrivalTime(arrivalTime);
+        transport.setType(type);
+        transport.setPrice(price);
+        transport.setTripID(getTrip(tripIndex).getTripID());
+        getTrip(tripIndex).addTransportation(transport);
     }
     public ArrayList<Accommodation> accessTripAccommodations(Integer tripIndex){
-        return user.getTrip(tripIndex).getAccommodations(); //figure out index
+        return getTrip(tripIndex).getAccommodations();
     }
     public ArrayList<Activity> accessTripActivities(Integer tripIndex){
-        return user.getTrip(tripIndex).getActivities(); //figure out index maybe change the index to trip name
+        return getTrip(tripIndex).getActivities();
     }  //these 3 methods are used when you press the button to go to the page for each category
-    public ArrayList<Flight> accessTripFlights(Integer tripIndex){
-        return user.getTrip(tripIndex).getFlights(); //in the other class will determine index by size/name & what button is clicked
+    public ArrayList<Transportation> accessTripTransportation(Integer tripIndex){
+        return getTrip(tripIndex).getTransportation();
     }
     public Accommodation viewAccommodation(Integer trip, Integer accommodation){
-        return user.getTrip(trip).getAccommodation(accommodation);
+        return getTrip(trip).getAccommodation(accommodation);
     }
     public Activity viewActivity(Integer trip, Integer activity){
-        return user.getTrip(trip).getActivity(activity);
+        return getTrip(trip).getActivity(activity);
     }    //we will have a class that deals with formatting the information accessed by these methods
-    public Flight viewFlight(Integer trip, Integer flight){
-        return user.getTrip(trip).getFlight(flight);
+    public Transportation viewTransport(Integer trip, Integer transport){
+        return getTrip(trip).getTransport(transport);
     }
-    void cancelTrip();
-    void cancelAccommodation();
-    void cancelActivity();  //deletes these from the database
-    void cancelFlight();
-    void deleteUser(); //deletes from database & clears user info
-    void updateAccommodation(Accommodation accommodation);
-    void updateActivity(Activity activity);   //maybe need more specific methods depending on what details you want to update
-    void updateFlight(Flight flight);
-    void reviewTrip();
-    void shareTripWithPublic(Trip trip); //might need a new entity set for shared trips so all trips to be displayed to public are in one place
-    ArrayList<Trip> getSuggestedTripsLocation(String location);
-    ArrayList<Trip> getSuggestedTripsRatings(Integer rating);*/
+    public void cancelTrip(Integer trip){
+        trips.remove(trip);
+    }
+    public void cancelAccommodation(Integer trip, Integer accommodation){
+        getTrip(trip).cancelAccommodation(accommodation);
+    }
+    public void cancelActivity(Integer trip, Integer activity){
+        getTrip(trip).cancelActivity(activity);
+    }  //deletes these from the database
+    public void cancelTransport(Integer trip, Integer transport){
+        getTrip(trip).cancelTransport(transport);
+    }
+    public void updateAccommodation(Integer tripIndex, Integer accommodationIndex, String name, String address, String checkinDate, String checkoutDate, Double price){
+        Trip trip = trips.get(tripIndex);
+        Accommodation accommodation = trip.getAccommodation(accommodationIndex);
+        accommodation.setName(name);
+        accommodation.setAddress(address);
+        accommodation.setCheckInDate(checkinDate);
+        accommodation.setCheckoutDate(checkoutDate);
+        accommodation.setPrice(price);
+    } //basically calls constructor to reset everything passed to it (excluding tripID & accommodationID) on screen will show text boxes you can edit and will resubmit all values each time even if you only edit one
+    public void updateActivity(Integer tripIndex, Integer activityIndex, String name, String location, String date, String time, Double price){
+        Trip trip = trips.get(tripIndex);
+        Activity activity = trip.getActivity(activityIndex);
+        activity.setName(name);
+        activity.setLocation(location);
+        activity.setDate(date);
+        activity.setTime(time);
+        activity.setPrice(price);
+    }   //might need to go into setters and make sure they reset the database fields
+    public void updateTransport(Integer tripIndex, Integer transportIndex, String departureLocation, String destination, String date, String departureTime, String arrivalTime, String type, Double price){
+        Trip trip = trips.get(tripIndex);
+        Transportation transport = trip.getTransport(transportIndex);
+        transport.setDepartureLocation(departureLocation);
+        transport.setDestination(destination);
+        transport.setDate(date);
+        transport.setDepartureTime(departureTime);
+        transport.setArrivalTime(arrivalTime);
+        transport.setType(type);
+        transport.setPrice(price);
+    } //need to go into setters and DBHandler and make methods to change the database
+
 }
 

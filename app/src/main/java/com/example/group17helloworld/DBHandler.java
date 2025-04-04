@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 import java.util.ArrayList;
 
@@ -16,6 +17,7 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String DEPARTURE_DATE_COLUMN = "departure_date";
     public static final String RETURN_DATE_COLUMN = "return_date";
     public static final String BUDGET_COLUMN = "budget";
+    public static final String STATUS_COLUMN = "status";
     private static final String DB_NAME = "travelappdb";
 
     //Accommodation Table
@@ -64,17 +66,18 @@ public class DBHandler extends SQLiteOpenHelper
     public void onCreate(SQLiteDatabase db)
     {
         String query1 = "CREATE TABLE " + TRIP_TABLE +
-                " (" + TRIP_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                DESTINATION_COLUMN + " VARCHAR(50), "
-                + DEPARTURE_DATE_COLUMN + " DATE, " + RETURN_DATE_COLUMN + " DATE, " +
-                BUDGET_COLUMN + " DOUBLE(10,2))";
+                " (" + TRIP_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + DESTINATION_COLUMN + " VARCHAR(50), "
+                + DEPARTURE_DATE_COLUMN + " DATE UNIQUE, " + RETURN_DATE_COLUMN + " DATE UNIQUE, "
+                + BUDGET_COLUMN + " DOUBLE(10,2), "
+                + STATUS_COLUMN + " ENUM('upcoming', 'current', 'past'))";
 
         String query2 = "CREATE TABLE " + ACCOMMODATION_TABLE +
                 " (" + ACCOMMODATION_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ACCOMMODATION_NAME_COLUMN + " VARCHAR(100), "
                 + ACCOMMODATION_ADDRESS_COLUMN + " VARCHAR(100), "
-                + ACCOMMODATION_CHECKIN_DATE_COLUMN + " DATE, "
-                + ACCOMMODATION_CHECKOUT_DATE_COLUMN + " DATE, "
+                + ACCOMMODATION_CHECKIN_DATE_COLUMN + " DATE UNIQUE, "
+                + ACCOMMODATION_CHECKOUT_DATE_COLUMN + " DATE UNIQUE, "
                 + ACCOMMODATION_PRICE_COLUMN + " DOUBLE(10,2), "
                 + ACCOMMODATION_TRIPID_COLUMN + " INTEGER, "
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
@@ -115,6 +118,7 @@ public class DBHandler extends SQLiteOpenHelper
         values.put(DEPARTURE_DATE_COLUMN, trip.getDateDeparture());
         values.put(RETURN_DATE_COLUMN, trip.getDateReturn());
         values.put(BUDGET_COLUMN, trip.getBudget());
+        values.put(STATUS_COLUMN, trip.getStatus());
         long num = db.insert(TRIP_TABLE, null, values);
         if (num == -1)
         {
@@ -136,7 +140,7 @@ public class DBHandler extends SQLiteOpenHelper
         {
             do
             {
-                trips.add(new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getDouble(4)));
+                trips.add(new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getDouble(4), cursor.getString(5)));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -157,6 +161,68 @@ public class DBHandler extends SQLiteOpenHelper
         db.execSQL(query);
         db.close();
     }
+    public void deleteTrip(Integer tripID)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM Trips WHERE tripID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindLong(1, tripID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeTripDestination(Integer tripID, String destination){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Trips SET destination = ? WHERE tripID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, destination);
+        statement.bindLong(2, tripID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+    public void changeTripDeparture(Integer tripID, String departureDate){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Trips SET departure_date = ? WHERE tripID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, departureDate);
+        statement.bindLong(2, tripID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeTripReturnDate(Integer tripID, String returnDate){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Trips SET return_date = ? WHERE tripID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, returnDate);
+        statement.bindLong(2, tripID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeTripBudget(Integer tripID, Double budget){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Trips SET budget = ? WHERE tripID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindDouble(1, budget);
+        statement.bindLong(2, tripID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public Integer getTripID(String departureDate, String returnDate){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT tripID FROM Trips WHERE departureDate = ? AND returnDate = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, departureDate);
+        statement.bindString(2, returnDate);
+        long tripID = statement.simpleQueryForLong();
+        db.close();
+        return (int) tripID;
+    }
+
+    //change status?? idk it should automatically change & we shouldn't actually need this field
+
 
     public void addAccommodation(Accommodation accommodation) throws Exception
     {
@@ -198,6 +264,77 @@ public class DBHandler extends SQLiteOpenHelper
         String query = "DROP TABLE IF EXISTS " + ACCOMMODATION_TABLE;
         db.execSQL(query);
         db.close();
+    }
+    public void deleteAccommodation(Integer accommodationID)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM Accommodations WHERE accommodationID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindLong(1, accommodationID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeAccommodationName(Integer accommodationID, String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Accommodations SET name = ? WHERE tripID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, name);
+        statement.bindLong(2, accommodationID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeAccommodationAddress(Integer accommodationID, String address){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Accommodations SET address = ? WHERE tripID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, address);
+        statement.bindLong(2, accommodationID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeAccommodationCheckin(Integer accommodationID, String checkinDate){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Accommodations SET checkin_date = ? WHERE tripID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, checkinDate);
+        statement.bindLong(2, accommodationID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeAccommodationCheckout(Integer accommodationID, String checkoutDate){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Accommodations SET checkout_date = ? WHERE tripID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, checkoutDate);
+        statement.bindLong(2, accommodationID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeAccommodationPrice(Integer accommodationID, Double price){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Accommodations SET price = ? WHERE tripID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindDouble(1, price);
+        statement.bindLong(2, accommodationID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public Integer getAccommodationID(Integer tripID, String checkinDate, String checkoutDate){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT accommodationID FROM Accommodations WHERE tripID = ? AND checkinDate = ? AND checkoutDate = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindLong(1, tripID);
+        statement.bindString(2, checkinDate);
+        statement.bindString(2, checkoutDate);
+        long accommodationID = statement.simpleQueryForLong();
+        db.close();
+        return (int) accommodationID;
     }
 
     public void addActivity(Activity activity) throws Exception
@@ -242,6 +379,77 @@ public class DBHandler extends SQLiteOpenHelper
         String query = "DROP TABLE IF EXISTS " + ACTIVITIES_TABLE;
         db.execSQL(query);
         db.close();
+    }
+    public void deleteActivity(Integer activityID)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM Activities WHERE activityID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindLong(1, activityID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeActivityName(Integer activityID, String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Activities SET name = ? WHERE activityID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, name);
+        statement.bindLong(2, activityID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeActivityLocation(Integer activityID, String location){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Activities SET location = ? WHERE activityID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, location);
+        statement.bindLong(2, activityID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeActivityDate(Integer activityID, String date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Activities SET date = ? WHERE activityID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, date);
+        statement.bindLong(2, activityID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeActivityTime(Integer activityID, String time){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Activities SET time = ? WHERE activityID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, time);
+        statement.bindLong(2, activityID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeActivityPrice(Integer activityID, Double price){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Activities SET price = ? WHERE activityID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindDouble(1, price);
+        statement.bindLong(2, activityID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public Integer getActivityID(Integer tripID, String date, String time){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT activityID FROM Activities WHERE tripID = ? AND date = ? AND time = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindLong(1, tripID);
+        statement.bindString(2, date);
+        statement.bindString(2, time);
+        long activityID = statement.simpleQueryForLong();
+        db.close();
+        return (int) activityID;
     }
 
     public void addTransportation(Transportation transportation) throws Exception
@@ -289,6 +497,97 @@ public class DBHandler extends SQLiteOpenHelper
         db.execSQL(query);
         db.close();
     }
+    public void deleteTransport(Integer transportID)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM Transportation WHERE transportationID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindLong(1, transportID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeTransportationDepartureLocation(Integer transportationID, String departureLocation){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Transportation SET departure_location = ? WHERE transportationID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, departureLocation);
+        statement.bindLong(2, transportationID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeTransportationDestination(Integer transportationID, String destination){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Transportation SET destination = ? WHERE transportationID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, destination);
+        statement.bindLong(2, transportationID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeTransportationDate(Integer transportationID, String date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Transportation SET date = ? WHERE transportationID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, date);
+        statement.bindLong(2, transportationID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeTransportationDepartureTime(Integer transportationID, String departureTime){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Transportation SET departure_time = ? WHERE transportationID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, departureTime);
+        statement.bindLong(2, transportationID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeTransportationArrivalTime(Integer transportationID, String arrivalTime){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Transportation SET arrival_time = ? WHERE transportationID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, arrivalTime);
+        statement.bindLong(2, transportationID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeTransportationType(Integer transportationID, String type){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Transportation SET type = ? WHERE transportationID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindString(1, type);
+        statement.bindLong(2, transportationID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void changeTransportationPrice(Integer transportationID, Double price){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE Transportation SET price = ? WHERE transportationID = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindDouble(1, price);
+        statement.bindLong(2, transportationID);
+        statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public Integer getTransportationID(Integer tripID, String date, String departureTime){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT transportationID FROM Transportation WHERE tripID = ? AND date = ? AND departure_time = ?";
+        SQLiteStatement statement = db.compileStatement(query);
+        statement.bindLong(1, tripID);
+        statement.bindString(2, date);
+        statement.bindString(2, departureTime);
+        long transportationID = statement.simpleQueryForLong();
+        db.close();
+        return (int) transportationID;
+    }
 
     public Double getTotalAccommodationsCost(Integer tripID)
     {
@@ -333,6 +632,57 @@ public class DBHandler extends SQLiteOpenHelper
         cursor.close();
         db.close();
         return totalCost;
+    }
+
+    public ArrayList<Trip> getUpcomingTrips()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // This will be the result.
+        ArrayList<Trip> trips = new ArrayList<Trip>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TRIP_TABLE + " WHERE departure_date > DATE('now')", null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                trips.add(new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getDouble(4), cursor.getString(5)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return trips;
+    }
+
+    public ArrayList<Trip> getPastTrips()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // This will be the result.
+        ArrayList<Trip> trips = new ArrayList<Trip>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TRIP_TABLE + " WHERE return_date < DATE('now')", null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                trips.add(new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getDouble(4), cursor.getString(5)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return trips;
+    }
+
+    public ArrayList<Trip> getCurrentTrips()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // This will be the result.
+        ArrayList<Trip> trips = new ArrayList<Trip>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TRIP_TABLE + " WHERE departure_date <= DATE('now') AND return_date >= DATE('now')", null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                trips.add(new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getDouble(4), cursor.getString(5)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return trips;
     }
 
     @Override

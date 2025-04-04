@@ -7,8 +7,12 @@ public class Trip {
     public String dateDeparture;
     public String dateReturn;
     public double budget;
-    //public ArrayList plans; //list of transports, accommodations, & activities, won't have plans in an arraylist, the tripID will be in each plan tho
     public Integer tripID;
+    public ArrayList<Accommodation> accommodations;
+    public ArrayList<Activity> activities;
+    public ArrayList<Transportation> transportation;
+    public String status;
+    private DBHandler dbHandler;
 
 
     public Trip(){
@@ -17,16 +21,16 @@ public class Trip {
         dateReturn = "";
         budget = 0.0;
         tripID = 0;
-        //plans = new ArrayList<Object>();
+        status = "";
     }
 
-    public Trip(Integer tripID, String destination, String dateDeparture, String dateReturn, Double budget){
+    public Trip(Integer tripID, String destination, String dateDeparture, String dateReturn, Double budget, String status){
         this.destination = destination;
         this.dateDeparture = dateDeparture;
         this.dateReturn = dateReturn;
         this.budget = budget;
-        this.tripID = tripID;
-        //this.plans = plans;
+        //this.tripID = dbHandler.getTripID();
+        this.status = status;
     }
 
     // Getters
@@ -54,6 +58,9 @@ public class Trip {
 
     // Setters
 
+    public void setTripID(){
+        tripID = dbHandler.getTripID(getDateDeparture(), getDateReturn());
+    }
     public void setDestination(String destination) {
         this.destination = destination;
     }
@@ -74,19 +81,55 @@ public class Trip {
         this.tripID = tripID;
     }
 
-//    public void addAccommodation(Accommodation accommodation){
-//        plans.add(accommodation);
-//    }
-//
-//    public void addActivity(Activity activity){
-//        plans.add(activity);
-//    }
-//
-//    public void addTransportation(Transportation transportation){
-//        plans.add(transportation);
-//    }
-//
-//    public ArrayList<Object> getPlans(){
-//        return plans;
-//    }
+    public void addAccommodation(Accommodation accommodation){
+        accommodations.add(accommodation);
+    }
+
+    public void addActivity(Activity activity){
+        activities.add(activity);
+    }
+
+    public void addTransportation(Transportation transportation){
+        this.transportation.add(transportation);
+    }
+
+    public ArrayList<Accommodation> getAccommodations(){
+        return accommodations;
+    }
+    public ArrayList<Activity> getActivities(){
+        return activities;
+    }
+    public ArrayList<Transportation> getTransportation(){
+        return transportation;
+    }
+    public void setStatus(String status){
+        this.status = status;
+    }
+    public String getStatus(){
+        return status;
+    }
+    public Accommodation getAccommodation(Integer accommodationIndex){
+        return getAccommodations().get(accommodationIndex);
+    }
+    public Activity getActivity(Integer activityIndex){
+        return getActivities().get(activityIndex);
+    }
+    public Transportation getTransport(Integer transportIndex){
+        return getTransportation().get(transportIndex);
+    }
+    public void cancelAccommodation(Integer accommodationIndex){
+        accommodations.remove(accommodationIndex); //also has to call DBHandler to delete from database
+        Integer accommodationID = accommodations.get(accommodationIndex).getAccommodationID();
+        dbHandler.deleteAccommodation(accommodationID);
+    }
+    public void cancelActivity(Integer activityIndex){
+        accommodations.remove(activityIndex);
+        Integer activityID = activities.get(activityIndex).getActivityID();
+        dbHandler.deleteActivity(activityID);
+    }
+    public void cancelTransport(Integer transportIndex){
+        transportation.remove(transportIndex);
+        Integer transportID = transportation.get(transportIndex).getTransportationID();
+        dbHandler.deleteTransport(transportID);
+    }
 }

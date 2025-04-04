@@ -8,6 +8,7 @@ public class Activity {
     public String time;
     public Double price;
     public Integer tripID;
+    private DBHandler dbHandler;
 
     public Activity(){
         activityID = 0;
@@ -29,30 +30,34 @@ public class Activity {
     }
     public void setName(String name){
         this.name = name;
+        dbHandler.changeActivityName(getActivityID(), name);
     }
     public String getName(){
         return name;
     }
     public void setPrice(Double price){
         this.price = price;
+        dbHandler.changeActivityPrice(getActivityID(), price);
     }
     public Double getPrice(){
         return price;
     }
     public void setActivityID(Integer activityID){
-        this.activityID = activityID;
+        this.activityID = dbHandler.getActivityID(getTripID(), getDate(), getTime()); //change to dbHandler accessing the activity ID ??
     }
     public Integer getActivityID(){
         return activityID;
     }
     public void setLocation(String location){
         this.location = location;
+        dbHandler.changeActivityLocation(getActivityID(), location);
     }
     public String getLocation(){
         return location;
     }
     public void setTime(String time){
         this.time = time;
+        dbHandler.changeActivityTime(getActivityID(), time);
     }
     public String getTime(){
         return time;
@@ -65,6 +70,7 @@ public class Activity {
     }
     public void setDate(String date){
         this.date = date;
+        dbHandler.changeActivityDate(getActivityID(), date);
     }
     public String getDate(){
         return date;

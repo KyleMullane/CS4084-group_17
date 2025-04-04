@@ -8,6 +8,7 @@ public class Accommodation {
         public Double price;
         public Integer accommodationID;
         public Integer tripID;
+        private DBHandler dbHandler;
 
         public Accommodation(){ //just never use this constructor
             name = "";
@@ -20,7 +21,7 @@ public class Accommodation {
         }
 
         public Accommodation(Integer accommodationID, String name, String address, String checkinDate, String checkoutdate, Double price, Integer tripID){
-            this.accommodationID = accommodationID;
+            this.accommodationID = accommodationID; //use DBHandler to set?
             this.name = name;
             this.address = address;
             this.checkinDate = checkinDate;
@@ -31,30 +32,35 @@ public class Accommodation {
 
         public void setName(String name){
             this.name = name;
+            dbHandler.changeAccommodationName(getAccommodationID(), name);
         }
         public String getName(){
             return name;
         }
         public void setPrice(Double price){
             this.price = price;
+            dbHandler.changeAccommodationPrice(getAccommodationID(), price);
         }
         public Double getPrice(){
             return price;
         }
         public void setCheckInDate(String checkinDate){
             this.checkinDate = checkinDate;
+            dbHandler.changeAccommodationCheckin(getAccommodationID(), checkinDate);
         }
         public String getCheckinDate(){
             return checkinDate;
         }
         public void setCheckoutDate(String checkoutDate){
             this.checkoutDate = checkoutDate;
+            dbHandler.changeAccommodationCheckout(getAccommodationID(), checkoutDate);
         }
         public String getCheckoutDate(){
             return checkoutDate;
         }
         public void setAddress(String address){
             this.address = address;
+            dbHandler.changeAccommodationAddress(getAccommodationID(), address);
         }
         public String getAddress(){
             return address;
@@ -69,7 +75,7 @@ public class Accommodation {
         }
 
         public void setAccommodationID(Integer accommodationID){
-            this.accommodationID = accommodationID;
+            this.accommodationID = dbHandler.getAccommodationID(getTripID(), getCheckinDate(), getCheckoutDate()); //change to using the dbHandler to access the id somehow/set it upon creation
         }
 
         public Integer getAccommodationID(){
