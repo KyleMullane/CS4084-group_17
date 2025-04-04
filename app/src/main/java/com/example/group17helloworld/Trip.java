@@ -3,6 +3,7 @@ package com.example.group17helloworld;
 import java.util.ArrayList;
 
 public class Trip {
+    public String departure;
     public String destination;
     public String dateDeparture;
     public String dateReturn;
@@ -16,6 +17,7 @@ public class Trip {
 
 
     public Trip(){
+        departure = "";
         destination = "";
         dateDeparture = "";
         dateReturn = "";
@@ -24,7 +26,8 @@ public class Trip {
         status = "";
     }
 
-    public Trip(Integer tripID, String destination, String dateDeparture, String dateReturn, Double budget, String status){
+    public Trip(Integer tripID, String departure, String destination, String dateDeparture, String dateReturn, Double budget){
+        this.departure = departure;
         this.destination = destination;
         this.dateDeparture = dateDeparture;
         this.dateReturn = dateReturn;
@@ -35,6 +38,7 @@ public class Trip {
 
     // Getters
 
+    public String getDeparture() { return departure; }
     public String getDestination() {
         return destination;
     }
@@ -61,6 +65,7 @@ public class Trip {
     public void setTripID(){
         tripID = dbHandler.getTripID(getDateDeparture(), getDateReturn());
     }
+    public void setDeparture(String departure) { this.departure = departure; }
     public void setDestination(String destination) {
         this.destination = destination;
     }

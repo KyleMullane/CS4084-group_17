@@ -10,9 +10,24 @@ import java.util.ArrayList;
 
 public class DBHandler extends SQLiteOpenHelper
 {
+    private static DBHandler instance;
+
+    public DBHandler(Context context)
+    {
+        super(context, DB_NAME, null, DB_VERSION);
+    }
+    public static synchronized DBHandler getInstance(Context context) {
+        if (instance == null) {
+            instance = new DBHandler(context.getApplicationContext());
+        }
+        return instance;
+    }
+
     //Trip Table
     public static final String TRIP_TABLE = "Trips";
     public static final String TRIP_ID_COLUMN = "tripID";
+
+    public static final String DEPARTURE_COLUMN = "departure";
     public static final String DESTINATION_COLUMN = "destination";
     public static final String DEPARTURE_DATE_COLUMN = "departure_date";
     public static final String RETURN_DATE_COLUMN = "return_date";
@@ -53,31 +68,26 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String TRANSPORTATION_TRIPID_COLUMN = "tripID";
 
     // This may be used for migration in the future.
-    private static final int DB_VERSION = 5;
+    private static final int DB_VERSION = 10;
 
 
-
-    public DBHandler(Context context)
-    {
-        super(context, DB_NAME, null, DB_VERSION);
-    }
 
     @Override
     public void onCreate(SQLiteDatabase db)
     {
+        Log.d("MainActivity", "OnCreate Called");
         String query1 = "CREATE TABLE " + TRIP_TABLE +
-                " (" + TRIP_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + DESTINATION_COLUMN + " VARCHAR(50), "
-                + DEPARTURE_DATE_COLUMN + " DATE UNIQUE, " + RETURN_DATE_COLUMN + " DATE UNIQUE, "
-                + BUDGET_COLUMN + " DOUBLE(10,2), "
-                + STATUS_COLUMN + " ENUM('upcoming', 'current', 'past'))";
+                " (" + TRIP_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DESTINATION_COLUMN + " VARCHAR(50), "
+                + DEPARTURE_DATE_COLUMN + " DATE, " + RETURN_DATE_COLUMN + " DATE, " +
+                BUDGET_COLUMN + " DOUBLE(10,2))";
 
         String query2 = "CREATE TABLE " + ACCOMMODATION_TABLE +
                 " (" + ACCOMMODATION_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ACCOMMODATION_NAME_COLUMN + " VARCHAR(100), "
                 + ACCOMMODATION_ADDRESS_COLUMN + " VARCHAR(100), "
-                + ACCOMMODATION_CHECKIN_DATE_COLUMN + " DATE UNIQUE, "
-                + ACCOMMODATION_CHECKOUT_DATE_COLUMN + " DATE UNIQUE, "
+                + ACCOMMODATION_CHECKIN_DATE_COLUMN + " DATE, "
+                + ACCOMMODATION_CHECKOUT_DATE_COLUMN + " DATE, "
                 + ACCOMMODATION_PRICE_COLUMN + " DOUBLE(10,2), "
                 + ACCOMMODATION_TRIPID_COLUMN + " INTEGER, "
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
@@ -114,6 +124,7 @@ public class DBHandler extends SQLiteOpenHelper
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(DEPARTURE_COLUMN, trip.getDeparture());
         values.put(DESTINATION_COLUMN, trip.getDestination());
         values.put(DEPARTURE_DATE_COLUMN, trip.getDateDeparture());
         values.put(RETURN_DATE_COLUMN, trip.getDateReturn());
@@ -688,13 +699,16 @@ public class DBHandler extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase db,int num1,int num2)
     {
-        String query = "CREATE TABLE " + TRIP_TABLE +
-                " (" + TRIP_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + DESTINATION_COLUMN + " TEXT NOT NULL, "
-                + DEPARTURE_DATE_COLUMN + " DATE NOT NULL UNIQUE, "
-                + RETURN_DATE_COLUMN + " DATE NOT NULL UNIQUE, "
-                + BUDGET_COLUMN + " DOUBLE(10,2) NOT NULL)";
-        db.execSQL(query);
+        Log.d("MainActivity", "OnUpgrade Called");
+        String createTripQuery = "CREATE TABLE " + TRIP_TABLE +
+                " (" + TRIP_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DEPARTURE_COLUMN + " TEXT NOT NULL,"
+                + DESTINATION_COLUMN + " TEXT NOT NULL,"
+                + DEPARTURE_DATE_COLUMN + " TEXT NOT NULL,"
+                + RETURN_DATE_COLUMN + " TEXT NOT NULL,"
+                + BUDGET_COLUMN + " REAL)";
+        db.execSQL(createTripQuery);
     }
+
 }
 

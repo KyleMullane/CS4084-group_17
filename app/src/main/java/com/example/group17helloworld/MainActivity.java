@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.content.Context;
 import android.view.View;
 import android.widget.*;
@@ -33,39 +37,26 @@ public class MainActivity extends AppCompatActivity {
         });
         Toast toast = Toast.makeText(getApplicationContext(), "onCreate Called", Toast.LENGTH_LONG);
         toast.show();
+        Fragment fragment = new TripTableFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_layout, fragment);
+        fragmentTransaction.commit();
 
         Context context = getApplicationContext();
         Log.d("MainActivity", "Testing to see if printing to the terminal works for debugging purposes!");
-        database = new DBHandler(context);
-        User jason = new User("jmcgettrick","1234");
-
-        try
-        {
-            database.addUser(jason);
-        }
-        catch (Exception e)
-        {
-            Log.e("MainActivity","Username or password already taken!");
+        database = DBHandler.getInstance(context);
+        try {
+            database.addTrip(new Trip(0, "Ireland", "Switzerland", "21/3/2025", "24/3/2025", 500.0));
+        } catch (Exception e) {
+            Log.d("MainActivity", "Catch block triggered in addTrip attempt");
         }
 
+        ArrayList<Trip> trips = database.getTrips();
+        Trip testTrip = trips.get(0);
+        TripTableFragment tripTableFragment = (TripTableFragment) getSupportFragmentManager().findFragmentById(R.id.TripTableFragment);
+        TextView tripText = tripTableFragment.getView().findViewById(R.id.tripText);
+        tripText.setText("Test trip: Departure: " + testTrip.getDeparture() + " Destination: " + testTrip.getDestination() + " Date Departure: " + testTrip.getDateDeparture() + " Date Return: " + testTrip.getDateReturn() + " Budget: " + testTrip.getBudget() + " Trip ID: " + testTrip.getTripID());
 
-        ArrayList<User> users = new ArrayList<User>();
-        users = database.getUsers();
-        for (int i=0; i<users.size(); i++)
-        {
-            Log.d("MainActivity", "Names in user database are: "+users.get(i).getUsername());
-        }
-    }
-
-    public void logIn(View view)
-    {
-        Intent intent = new Intent(this, LogInActivity.class);
-        startActivity(intent);
-    }
-
-    public void signUp(View view)
-    {
-        Intent intent = new Intent(this, SignUpActivity.class);
-        startActivity(intent);
     }
 }
