@@ -138,7 +138,6 @@ public class DBHandler extends SQLiteOpenHelper
     }
 
 
-    // Get the whole list of names.
     public ArrayList<Trip> getTrips()
     {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -154,6 +153,21 @@ public class DBHandler extends SQLiteOpenHelper
         }
         cursor.close();
         return trips;
+    }
+
+    public Trip selectTripByID(int ID)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TRIP_TABLE + " WHERE "+TRIP_ID_COLUMN+" = "+ID, null);
+        if (cursor.moveToFirst())
+        {
+            return new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5));
+        }
+        else
+        {
+            Log.d("DBHandler","No trip found with specified ID");
+        }
+        return new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5));
     }
 
     /*public void deleteAllTrips()

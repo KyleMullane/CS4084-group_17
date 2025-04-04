@@ -1,6 +1,7 @@
 package com.example.group17helloworld;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.os.Bundle;
 
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import androidx.core.content.ContextCompat;
 
@@ -58,19 +60,43 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i=0; i<trips.size(); i++)
         {
+            int index = i;
             TableRow row = new TableRow(this);
             row.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
             row.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
+            row.setPadding(10,10,10,10);
+
+            LinearLayout verticalLayout = new LinearLayout(this);
+            verticalLayout.setOrientation(LinearLayout.VERTICAL);
+            /*verticalLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));*/
+
+
             TextView rowText = new TextView(this);
             rowText.setText("Leaving From: "+trips.get(i).getDeparture()+"\nGoing to: "+trips.get(i).getDestination()+"\nDate: "+trips.get(i).getDateDeparture());
             rowText.setPadding(8, 8, 8, 8);
-            row.addView(rowText);
-            tableLayout.addView(row);
+
             Button viewDetailsButton = new Button(this);
+            //viewDetailsButton.setLayoutParams(new ViewGroup.LayoutParams(20,20);
             viewDetailsButton.setText("View Details");
-            viewDetailsButton.setOnClickListener(v -> viewTripDetails(trips.get(i)));
+            //viewDetailsButton.setTextSize(12);  // Set text size
+            viewDetailsButton.setTextColor(Color.WHITE); // Change text color
+            viewDetailsButton.setBackgroundResource(R.drawable.custom_button);
+            viewDetailsButton.setPadding(0, 0, 0, 0); // Adjust padding
+            viewDetailsButton.setScaleX(0.5f); // Scale width to 80%
+            viewDetailsButton.setScaleY(0.5f);
+            viewDetailsButton.setAllCaps(false);
+            viewDetailsButton.setOnClickListener(v -> viewTripDetails(trips.get(index)));
+
+            verticalLayout.addView(rowText);
+            verticalLayout.addView(viewDetailsButton);
+
+            row.addView(verticalLayout);
+            tableLayout.addView(row);
+
         }
 
     }

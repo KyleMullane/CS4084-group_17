@@ -35,13 +35,14 @@ public class ViewTripDetails extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Context context = getApplicationContext();
+        database = DBHandler.getInstance(context);
+        Intent intent = getIntent();
+        int tripID = intent.getIntExtra("TripID",-1);
+        Trip trip = database.selectTripByID(tripID);
+        TextView target = findViewById(R.id.tripDetails);
+        target.setText("Departure: " + trip.getDeparture() + "\nDestination: " + trip.getDestination() + "\nDate Departure: " + trip.getDateDeparture() + "\nDate Return: " + trip.getDateReturn() + "\nBudget: " + trip.getBudget() + "\nTrip ID: " + trip.getTripID());
+
     }
-    Context context = getApplicationContext();
-    database = DBHandler.getInstance(context);
-    Intent intent = getIntent();
-    int tripID = intent.getIntExtra("TripID");
-    TextView target = findViewById(R.id.greetingView);
-    target.setText("Hello, " + name + "!");
-
-
 }
