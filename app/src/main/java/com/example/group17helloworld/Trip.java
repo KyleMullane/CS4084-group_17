@@ -33,6 +33,15 @@ public class Trip {
         this.budget = budget;
     }
 
+    public Trip(String departure, String destination, String dateDeparture, String dateReturn, Double budget){
+        tripID = 0;
+        this.departure = departure;
+        this.destination = destination;
+        this.dateDeparture = dateDeparture;
+        this.dateReturn = dateReturn;
+        this.budget = budget;
+    }
+
     // Getters ..
 
     public String getDeparture() { return departure; }

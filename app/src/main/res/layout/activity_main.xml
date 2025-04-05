@@ -18,26 +18,41 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12pt"
+            android:textSize="10pt"
+            android:layout_gravity="top"
             android:textStyle="bold"
-            android:textAlignment="center"
-            android:text="Welcome to the Hello World TravelPlanner!"/>
+            android:gravity="center"
+            android:text="Welcome to the Hello World Travel Planner!"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:paddingLeft="10dp"
+            android:textSize="5pt"
+            android:gravity="center"
+            android:text="Are you ready to say hello to the world beyond?"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textSize="10pt"
-            android:text="Upcoming trips:"/>
-
-        <TableLayout
-            android:orientation="vertical"
-            android:layout_width="300dp"
-            android:layout_height="match_parent"
-            android:padding="16dp"
-            android:id="@+id/tripTable">
-        </TableLayout>
-
+            android:gravity="center"
+            android:text="Choose an option below to begin planning your next adventure!"/>
+        <Button
+            android:id="@+id/createTripPageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="sendToCreateTripPage"
+            android:text="Create a Trip" />
+        <Button
+            android:id="@+id/sendToHomePageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="sendToHomePage"
+            android:text="View Upcoming Trips" />
+        <Button
+            android:id="@+id/viewPastTripsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="viewPastTrips"
+            android:text="View Past Trips" />
     </LinearLayout>
     </ScrollView>
 

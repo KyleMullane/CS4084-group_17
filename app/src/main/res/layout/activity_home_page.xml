@@ -7,28 +7,39 @@
     android:layout_height="match_parent"
     tools:context=".HomePageActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
-        <TextView
-            android:id="@+id/loginPageText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="[username]'s Trips" />
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:name="com.example.group17helloworld.LogInSignUpFragment" />
-        <Button
-            android:id="@+id/loginSubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:onClick="submitLogIn"
-            android:text="Log In"/>
-    </LinearLayout>
+        android:fillViewport="true">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12pt"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:text="Welcome to the Hello World Travel Planner!"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:paddingLeft="10dp"
+                android:textSize="10pt"
+                android:text="Upcoming trips:"/>
+
+            <TableLayout
+                android:orientation="vertical"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:id="@+id/tripTable">
+            </TableLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
