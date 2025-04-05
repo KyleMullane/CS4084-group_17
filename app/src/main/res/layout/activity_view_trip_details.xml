@@ -14,11 +14,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="10pt"
             android:text="These Are Your Trip Details!"/>
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:textSize="9pt"
             android:id="@+id/tripDetails"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:id="@+id/transportationDetails" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,9 +5,9 @@ public class Accommodation {
         public String address;
         public String checkinDate;
         public String checkoutDate;
-        public Double price;
-        public Integer accommodationID;
-        public Integer tripID;
+        public double price;
+        public int accommodationID;
+        public int tripID;
         private DBHandler dbHandler;
 
         public Accommodation(){ //just never use this constructor
@@ -20,7 +20,7 @@ public class Accommodation {
             tripID = 0;
         }
 
-        public Accommodation(Integer accommodationID, String name, String address, String checkinDate, String checkoutdate, Double price, Integer tripID){
+        public Accommodation(int accommodationID, String name, String address, String checkinDate, String checkoutdate, double price, int tripID){
             this.accommodationID = accommodationID; //use DBHandler to set?
             this.name = name;
             this.address = address;
@@ -29,6 +29,65 @@ public class Accommodation {
             this.price = price;
             this.tripID = tripID;
         }
+
+    // Getters and Setters
+    public int getAccommodationID() {
+        return accommodationID;
+    }
+
+    public void setAccommodationID(int accommodationID) {
+        this.accommodationID = accommodationID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCheckinDate() {
+        return checkinDate;
+    }
+
+    public void setCheckinDate(String checkinDate) {
+        this.checkinDate = checkinDate;
+    }
+
+    public String getCheckoutDate() {
+        return checkoutDate;
+    }
+
+    public void setCheckoutDate(String checkoutDate) {
+        this.checkoutDate = checkoutDate;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getTripID() {
+        return tripID;
+    }
+
+    public void setTripID(int tripID) {
+        this.tripID = tripID;
+    }
+
+
 
         /*public void setName(String name){
             this.name = name;
@@ -81,4 +140,4 @@ public class Accommodation {
         public Integer getAccommodationID(){
             return accommodationID;
         }*/
-    }
+}

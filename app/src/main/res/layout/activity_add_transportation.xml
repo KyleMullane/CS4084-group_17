@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddTransportationActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/addTransportationTitleText"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="Add Transportation Below!"/>
+        <TextView
+            android:id="@+id/createTripErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="30dp">
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Departing from: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/departureInput"
+                    android:hint="departure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Destination"/>
+            </TableRow>
+            <TableRow>
+                <EditText
+                    android:id="@+id/destinationInput"
+                    android:hint="destination"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date of transportation: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/dateInput"
+                    android:hint="date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Departure Time: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/departureTimeInput"
+                    android:hint="depart. time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Arrival Time: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/arrivalTimeInput"
+                    android:hint="arr. time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="What type of transportation? (Plane/Bus/Car)"/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/typeInput"
+                    android:hint="type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Price of Transportation: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/priceInput"
+                    android:hint="price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+        </TableLayout>
+        <Button
+            android:id="@+id/createTripButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addTransportation"
+            android:text="Add Transportation" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

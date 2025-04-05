@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -79,6 +81,38 @@ public class HomePageActivity extends AppCompatActivity {
             spinner.setScaleX(0.5f); // Scale width to 80%
             spinner.setScaleY(0.5f);
 
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+            {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedItem = parent.getItemAtPosition(position).toString();
+
+                    switch (selectedItem) {
+                        case "Add Transportation":
+                            Log.d("HomePageActivity", "Add transportation selected");
+                            Intent addTransportationIntent = new Intent(context, AddTransportationActivity.class);
+                            addTransportationIntent.putExtra("TripID", trips.get(index).getTripID());
+                            startActivity(addTransportationIntent);
+                            break;
+                        case "Add Accommodation":
+                            Log.d("HomePageActivity", "Add accommodation selected");
+                            break;
+                        case "Add Activities":
+                            Log.d("HomePageActivity", "Add activities selected");
+                            break;
+                        default:
+                            //Nothing
+                            break;
+                    }
+                }
+                @Override
+                public void onNothingSelected (AdapterView<?> parent)
+                {
+                    // Do nothing
+                }
+            });
+
+
             Button viewDetailsButton = new Button(this);
             viewDetailsButton.setText("View Details");
             viewDetailsButton.setTextColor(Color.WHITE); // Change text color
@@ -91,8 +125,10 @@ public class HomePageActivity extends AppCompatActivity {
 
             verticalLayout.addView(rowText);
             verticalLayout.addView(viewDetailsButton);
-            row.addView(spinner);
+
             row.addView(verticalLayout);
+            row.addView(spinner);
+
             tableLayout.addView(row);
 
         }

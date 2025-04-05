@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Group17HelloWorld"
         tools:targetApi="31">
         <activity
+            android:name=".AddTransportationActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateATripActivity"
             android:exported="false" />
         <activity

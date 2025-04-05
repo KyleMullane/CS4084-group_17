@@ -9,8 +9,8 @@ public class Transportation {
     public String departureTime;
     public String arrivalTime;
     public String type;
-    public Double price;
-    public Integer tripID;
+    public double price;
+    public int tripID;
     private DBHandler dbHandler;
 
     public Transportation(){
@@ -24,7 +24,18 @@ public class Transportation {
         price = 0.0;
         tripID = 0;
     }
-    public Transportation(Integer transportationID, String departureLocation, String destination, String date, String departureTime, String arrivalTime, String type, Double price, Integer tripID){
+    public Transportation(int transportationID, String departureLocation, String destination, String date, String departureTime, String arrivalTime, String type, double price, int tripID){
+        this.transportationID = transportationID;
+        this.departureLocation = departureLocation;
+        this.destination = destination;
+        this.date = date;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.type = type;
+        this.price = price;
+        this.tripID = tripID;
+    }
+    public Transportation(String departureLocation, String destination, String date, String departureTime, String arrivalTime, String type, double price, int tripID){
         //this.transportationID = transportationID;
         this.departureLocation = departureLocation;
         this.destination = destination;
@@ -35,6 +46,78 @@ public class Transportation {
         this.price = price;
         this.tripID = tripID;
     }
+    public int getTransportationID() {
+        return transportationID;
+    }
+
+    public void setTransportationID(int transportationID) {
+        this.transportationID = transportationID;
+    }
+
+    public String getDepartureLocation() {
+        return departureLocation;
+    }
+
+    public void setDepartureLocation(String departureLocation) {
+        this.departureLocation = departureLocation;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(String departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public String getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(String arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getTripID() {
+        return tripID;
+    }
+
+    public void setTripID(int tripID) {
+        this.tripID = tripID;
+    }
+
     /*public void setTransportationID(Integer transportationID){
         this.transportationID = dbHandler.getTransportationID(getTripID(), getDate(), getDepartureTime()); //change to using dbHandler
     }

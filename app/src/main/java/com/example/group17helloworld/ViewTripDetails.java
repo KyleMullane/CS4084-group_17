@@ -41,8 +41,12 @@ public class ViewTripDetails extends AppCompatActivity {
         Intent intent = getIntent();
         int tripID = intent.getIntExtra("TripID",-1);
         Trip trip = database.selectTripByID(tripID);
-        TextView target = findViewById(R.id.tripDetails);
-        target.setText("Departure: " + trip.getDeparture() + "\nDestination: " + trip.getDestination() + "\nDate Departure: " + trip.getDateDeparture() + "\nDate Return: " + trip.getDateReturn() + "\nBudget: " + trip.getBudget() + "\nTrip ID: " + trip.getTripID());
-
+        ArrayList<Transportation> tripTransportations = database.selectTransportationByTripID(tripID);
+        Transportation firstTransport = tripTransportations.get(0);
+        TextView tripDetails = findViewById(R.id.tripDetails);
+        TextView transportationDetails = findViewById(R.id.transportationDetails);
+        tripDetails.setText("Departure: " + trip.getDeparture() + "\nDestination: " + trip.getDestination() + "\nDate Departure: " + trip.getDateDeparture() + "\nDate Return: " + trip.getDateReturn() + "\nBudget: " + trip.getBudget() + "\nTrip ID: " + trip.getTripID());
+        transportationDetails.setText("Transportation For Your Trip: \n Item 1: "+firstTransport.getType()+" from "+firstTransport.getDepartureLocation()+" to "+firstTransport.getDestination()+"\n Date: "+firstTransport.getDate()+" \n Departure Time: "+firstTransport.getDepartureTime()+" \n Arrival Time: "+firstTransport.getArrivalTime()+" \n Price: $"+firstTransport.getPrice());
+                //String departureLocation, String destination, String date, String departureTime, String arrivalTime, String type, double price, int tripID
     }
 }
