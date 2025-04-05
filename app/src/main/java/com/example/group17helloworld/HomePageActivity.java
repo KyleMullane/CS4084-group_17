@@ -78,7 +78,7 @@ public class HomePageActivity extends AppCompatActivity {
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dropdownItems);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(spinnerAdapter);
-            spinner.setScaleX(0.5f); // Scale width to 80%
+            spinner.setScaleX(0.5f);
             spinner.setScaleY(0.5f);
 
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()

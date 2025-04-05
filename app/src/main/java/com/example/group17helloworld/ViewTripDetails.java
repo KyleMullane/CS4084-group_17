@@ -46,7 +46,25 @@ public class ViewTripDetails extends AppCompatActivity {
         TextView tripDetails = findViewById(R.id.tripDetails);
         TextView transportationDetails = findViewById(R.id.transportationDetails);
         tripDetails.setText("Departure: " + trip.getDeparture() + "\nDestination: " + trip.getDestination() + "\nDate Departure: " + trip.getDateDeparture() + "\nDate Return: " + trip.getDateReturn() + "\nBudget: " + trip.getBudget() + "\nTrip ID: " + trip.getTripID());
-        transportationDetails.setText("Transportation For Your Trip: \n Item 1: "+firstTransport.getType()+" from "+firstTransport.getDepartureLocation()+" to "+firstTransport.getDestination()+"\n Date: "+firstTransport.getDate()+" \n Departure Time: "+firstTransport.getDepartureTime()+" \n Arrival Time: "+firstTransport.getArrivalTime()+" \n Price: $"+firstTransport.getPrice());
-                //String departureLocation, String destination, String date, String departureTime, String arrivalTime, String type, double price, int tripID
+
+
+        TableLayout transportationTable = findViewById(R.id.transportationTable);
+
+        for (int i=0; i<tripTransportations.size(); i++)
+        {
+            int index = i;
+            TableRow transportationRow = new TableRow(this);
+            transportationRow.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT));
+            transportationRow.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
+            transportationRow.setPadding(10,10,10,10);
+
+            TextView transportationRowText = new TextView(this);
+            transportationRowText.setText(tripTransportations.get(index).getType()+" from "+tripTransportations.get(index).getDepartureLocation()+" to "+tripTransportations.get(index).getDestination()+"\n Date: "+tripTransportations.get(index).getDate()+" \n Departure Time: "+tripTransportations.get(index).getDepartureTime()+" \n Arrival Time: "+tripTransportations.get(index).getArrivalTime()+" \n Price: $"+tripTransportations.get(index).getPrice());
+            transportationRow.addView(transportationRowText);
+            transportationTable.addView(transportationRow);
+        }
+
     }
 }
