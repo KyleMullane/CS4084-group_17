@@ -22,7 +22,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class HomePageActivity extends AppCompatActivity {
     private static DBHandler database;
@@ -38,21 +42,37 @@ public class HomePageActivity extends AppCompatActivity {
         });
         Context context = getApplicationContext();
         database = DBHandler.getInstance(context);
-        try {
-            //database.addTrip(new Trip(0, "Ireland", "Switzerland", "21/3/2025", "24/3/2025", 500.0));
-        } catch (Exception e) {
-            Log.d("MainActivity", "Catch block triggered in addTrip attempt");
-        }
 
         ArrayList<Trip> trips = database.getTrips();
-        Trip testTrip = trips.get(0);
+        ArrayList<Trip> upcomingTrips = new ArrayList<Trip>();
         Log.d("MainActivity", "Num trips in table is "+trips.size());
-        //TextView tripText = findViewById(R.id.tripText);
-        //tripText.setText("Leaving From: "+testTrip.getDeparture()+ "\nGoing to: "+testTrip.getDestination()+"\nDate: "+testTrip.getDateDeparture());
+        for (int i=0; i<trips.size();i++)
+        {
+            int index = i;
+            String inputDate = trips.get(index).getDateDeparture();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date parsedDate = null;
+            try {
+                parsedDate = sdf.parse(inputDate);  // Convert string to Date
+            } catch (ParseException e) {
+                e.printStackTrace();
+                Log.d("HomePageActivity", "Date was incorrectly input");
+            }
+            Date currentDate = new Date();
+            if (currentDate.before(parsedDate)) {
+                Log.d("HomePageActivity","The trip with TripID "+trips.get(index).getTripID()+" is upcoming");
+                upcomingTrips.add(trips.get(index));
+            } else if (currentDate.after(parsedDate)) {
+                Log.d("HomePageActivity","The trip with TripID "+trips.get(index).getTripID()+" is past");
+            } else {
+                Log.d("HomePageActivity","The trip with TripID "+trips.get(index).getTripID()+" is today");
+            }
+        }
 
         TableLayout tableLayout = findViewById(R.id.tripTable);
 
-        for (int i=0; i<trips.size(); i++)
+        for (int i=0; i<upcomingTrips.size(); i++)
         {
             int index = i;
             TableRow row = new TableRow(this);
@@ -70,8 +90,9 @@ public class HomePageActivity extends AppCompatActivity {
 
 
             TextView rowText = new TextView(this);
-            rowText.setText("Leaving From: "+trips.get(i).getDeparture()+"\nGoing to: "+trips.get(i).getDestination()+"\nDate: "+trips.get(i).getDateDeparture());
+            rowText.setText("Leaving From: "+upcomingTrips.get(i).getDeparture()+"\nGoing to: "+upcomingTrips.get(i).getDestination()+"\nDate: "+upcomingTrips.get(i).getDateDeparture());
             rowText.setPadding(8, 8, 8, 8);
+
 
             String[] dropdownItems = {"", "Add Transportation", "Add Accommodation", "Add Activities"};
             Spinner spinner = new Spinner(this);
@@ -91,19 +112,19 @@ public class HomePageActivity extends AppCompatActivity {
                         case "Add Transportation":
                             Log.d("HomePageActivity", "Add transportation selected");
                             Intent addTransportationIntent = new Intent(context, AddTransportationActivity.class);
-                            addTransportationIntent.putExtra("TripID", trips.get(index).getTripID());
+                            addTransportationIntent.putExtra("TripID", upcomingTrips.get(index).getTripID());
                             startActivity(addTransportationIntent);
                             break;
                         case "Add Accommodation":
                             Log.d("HomePageActivity", "Add accommodation selected");
                             Intent addAccommodationIntent = new Intent(context, AddAccommodationActivity.class);
-                            addAccommodationIntent.putExtra("TripID", trips.get(index).getTripID());
+                            addAccommodationIntent.putExtra("TripID", upcomingTrips.get(index).getTripID());
                             startActivity(addAccommodationIntent);
                             break;
                         case "Add Activities":
                             Log.d("HomePageActivity", "Add activities selected");
                             Intent addActivityIntent = new Intent(context, AddActivityActivity.class); //lol
-                            addActivityIntent.putExtra("TripID", trips.get(index).getTripID());
+                            addActivityIntent.putExtra("TripID", upcomingTrips.get(index).getTripID());
                             startActivity(addActivityIntent);
                             break;
                         default:
@@ -127,7 +148,7 @@ public class HomePageActivity extends AppCompatActivity {
             viewDetailsButton.setScaleX(0.5f); // Scale width to 80%
             viewDetailsButton.setScaleY(0.5f);
             viewDetailsButton.setAllCaps(false);
-            viewDetailsButton.setOnClickListener(v -> viewTripDetails(trips.get(index)));
+            viewDetailsButton.setOnClickListener(v -> viewTripDetails(upcomingTrips.get(index)));
 
             verticalLayout.addView(rowText);
             verticalLayout.addView(viewDetailsButton);

@@ -14,6 +14,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class CreateATripActivity extends AppCompatActivity {
     private static DBHandler database;
@@ -45,8 +49,16 @@ public class CreateATripActivity extends AppCompatActivity {
             EditText dateDepartureText = findViewById(R.id.dateDepartureInput);
             String dateDeparture = dateDepartureText.getText().toString();
 
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date parsedDepartureDate = sdf.parse(dateDeparture);
+
             EditText dateReturnText = findViewById(R.id.dateReturnInput);
             String dateReturn = dateReturnText.getText().toString();
+
+            if (!(dateReturn.isEmpty()))
+            {
+                Date parsedReturnDate = sdf.parse(dateReturn);
+            }
 
             EditText budgetText = findViewById(R.id.budgetInput);
             String budgetString = budgetText.getText().toString();
@@ -63,7 +75,7 @@ public class CreateATripActivity extends AppCompatActivity {
             TextView titleText = findViewById(R.id.createTripPageTitleText);
             titleText.setText("Error: trip creation not successful");
             TextView errorMessage = findViewById((R.id.createTripErrorMessage));
-            errorMessage.setText("Make sure that you input a number for the budget, not a word");
+            errorMessage.setText("Make sure that required fields are filled in, that dates are formatted correctly, and that a number is submitted for the budget, not a word");
         }
 
 

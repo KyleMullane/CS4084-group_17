@@ -132,7 +132,7 @@ public class DBHandler extends SQLiteOpenHelper
                 DEPARTURE_COLUMN + " TEXT NOT NULL,"
                 + DESTINATION_COLUMN + " TEXT NOT NULL,"
                 + DEPARTURE_DATE_COLUMN + " TEXT NOT NULL,"
-                + RETURN_DATE_COLUMN + " TEXT NOT NULL,"
+                + RETURN_DATE_COLUMN + " TEXT,"
                 + BUDGET_COLUMN + " REAL)";
         db.execSQL(createTripQuery);
         db.close();

@@ -33,7 +33,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Where are you going?"/>
+                android:text="Where are you going?*"/>
             </TableRow>
             <TableRow>
                 <EditText
@@ -47,7 +47,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Where are you leaving from?"/>
+                    android:text="Where are you leaving from?*"/>
             </TableRow>
             <TableRow>
                 <EditText android:id="@+id/departureInput"
@@ -60,11 +60,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="What date are you leaving?"/>
+                    android:text="What date are you leaving?*"/>
             </TableRow>
             <TableRow>
                 <EditText android:id="@+id/dateDepartureInput"
-                    android:hint="date of departure"
+                    android:hint="YYYY-MM-DD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:drawable/editbox_background"/>
@@ -77,7 +77,7 @@
             </TableRow>
             <TableRow>
                 <EditText android:id="@+id/dateReturnInput"
-                    android:hint="date of return"
+                    android:hint="YYYY-MM-DD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:drawable/editbox_background"/>
@@ -86,11 +86,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="What is your intended budget for the trip?"/>
+                    android:text="What is your intended budget for the trip?*"/>
             </TableRow>
             <TableRow>
                 <EditText android:id="@+id/budgetInput"
-                    android:hint="budget"
+                    android:hint="number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:drawable/editbox_background"/>

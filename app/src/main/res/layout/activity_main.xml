@@ -13,12 +13,12 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_height="match_parent">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="10pt"
+            android:paddingTop="200dp"
             android:layout_gravity="top"
             android:textStyle="bold"
             android:gravity="center"
@@ -26,31 +26,39 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="5pt"
+            android:layout_gravity="center"
+            android:paddingTop="30dp"
+            android:textSize="8pt"
             android:gravity="center"
             android:text="Are you ready to say hello to the world beyond?"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10pt"
+            android:textSize="7pt"
+            android:layout_gravity="center"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
             android:gravity="center"
             android:text="Choose an option below to begin planning your next adventure!"/>
         <Button
             android:id="@+id/createTripPageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:onClick="sendToCreateTripPage"
             android:text="Create a Trip" />
         <Button
             android:id="@+id/sendToHomePageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:onClick="sendToHomePage"
             android:text="View Upcoming Trips" />
         <Button
             android:id="@+id/viewPastTripsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:onClick="viewPastTrips"
             android:text="View Past Trips" />
     </LinearLayout>
