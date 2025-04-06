@@ -53,6 +53,7 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String ACTIVITY_DATE_COLUMN = "date";
     public static final String ACTIVITY_TIME_COLUMN = "time";
     public static final String ACTIVITY_PRICE_COLUMN = "price";
+    public static final String ACTIVITY_DESCRIPTION_COLUMN = "description";
     public static final String ACTIVITY_TRIPID_COLUMN = "tripID";
 
     //Transportation Table
@@ -99,6 +100,7 @@ public class DBHandler extends SQLiteOpenHelper
                 + ACTIVITY_DATE_COLUMN + " DATE, "
                 + ACTIVITY_TIME_COLUMN + " VARCHAR(30), "
                 + ACTIVITY_PRICE_COLUMN + " DOUBLE(10,2), "
+                + ACTIVITY_DESCRIPTION_COLUMN + " TEXT, "
                 + ACTIVITY_TRIPID_COLUMN + " INTEGER, "
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
 
@@ -286,6 +288,7 @@ public class DBHandler extends SQLiteOpenHelper
                 + ACCOMMODATION_TRIPID_COLUMN + " INTEGER, "
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
         db.execSQL(query);
+        db.close();
     }
     public ArrayList<Transportation> selectTransportationByTripID(int ID)
     {
@@ -357,6 +360,78 @@ public class DBHandler extends SQLiteOpenHelper
         return accommodations;
     }
 
+    // ***********ACTIVITIES**********
+    public void createActivitiesTable()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "CREATE TABLE " + ACTIVITIES_TABLE +
+                " (" + ACTIVITY_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ACTIVITY_NAME_COLUMN + " TEXT NOT NULL, "
+                + ACTIVITY_LOCATION_COLUMN + " TEXT NOT NULL, "
+                + ACTIVITY_DATE_COLUMN + " TEXT NOT NULL, "
+                + ACTIVITY_TIME_COLUMN + " TEXT NOT NULL, "
+                + ACTIVITY_PRICE_COLUMN + " REAL NOT NULL, "
+                + ACTIVITY_DESCRIPTION_COLUMN + " TEXT, "
+                + ACTIVITY_TRIPID_COLUMN + " INTEGER, "
+                + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
+        db.execSQL(query);
+        db.close();
+
+    }
+
+    public void addActivity(Activity activity) throws Exception
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ACTIVITY_NAME_COLUMN, activity.getName());
+        values.put(ACTIVITY_LOCATION_COLUMN, activity.getLocation());
+        values.put(ACTIVITY_DATE_COLUMN, activity.getDate());
+        values.put(ACTIVITY_TIME_COLUMN, activity.getTime());
+        values.put(ACTIVITY_PRICE_COLUMN, activity.getPrice());
+        values.put(ACTIVITY_DESCRIPTION_COLUMN, activity.getDescription());
+        values.put(ACTIVITY_TRIPID_COLUMN, activity.getTripID());
+        long num = db.insert(ACTIVITIES_TABLE, null, values);
+        if (num == -1)
+        {
+            throw new Exception();
+        }
+        Log.d("DBHandler", "Num is = "+num);
+        db.close();
+    }
+
+    public ArrayList<Activity> getActivities()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Activity> activities = new ArrayList<Activity>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + ACTIVITIES_TABLE, null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                activities.add(new Activity(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5), cursor.getString(6), cursor.getInt(7)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return activities;
+    }
+
+    public ArrayList<Activity> selectActivitiesByTripID(int ID)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Activity> activities = new ArrayList<Activity>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + ACTIVITIES_TABLE + " WHERE "+TRIP_ID_COLUMN+" = "+ID, null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                activities.add(new Activity(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5), cursor.getString(6), cursor.getInt(7)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return activities;
+    }
+
 
     /*public void changeTripDestination(Integer tripID, String destination){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -411,40 +486,7 @@ public class DBHandler extends SQLiteOpenHelper
     //change status?? idk it should automatically change & we shouldn't actually need this field
 
 
-    public void addAccommodation(Accommodation accommodation) throws Exception
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(ACCOMMODATION_NAME_COLUMN, accommodation.getName());
-        values.put(ACCOMMODATION_ADDRESS_COLUMN, accommodation.getAddress());
-        values.put(ACCOMMODATION_CHECKIN_DATE_COLUMN, accommodation.getCheckinDate());
-        values.put(ACCOMMODATION_CHECKOUT_DATE_COLUMN, accommodation.getCheckoutDate());
-        values.put(ACCOMMODATION_PRICE_COLUMN, accommodation.getPrice());
-        values.put(ACCOMMODATION_TRIPID_COLUMN, accommodation.getTripID());
-        long num = db.insert(ACCOMMODATION_TABLE, null, values);
-        if (num == -1)
-        {
-            throw new Exception();
-        }
-        Log.d("DBHandler", "Num is = "+num);
-        db.close();
-    }
-    public ArrayList<Accommodation> getAccommodations()
-    {
-        SQLiteDatabase db = this.getReadableDatabase();
-        // This will be the result.
-        ArrayList<Accommodation> accommodations = new ArrayList<Accommodation>();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + ACCOMMODATION_TABLE, null);
-        if (cursor.moveToFirst())
-        {
-            do
-            {
-                accommodations.add(new Accommodation(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5), cursor.getInt(6)));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return accommodations;
-    }
+
     public void deleteAccommodationTable()
     {
         SQLiteDatabase db = this.getWritableDatabase();

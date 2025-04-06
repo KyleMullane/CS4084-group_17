@@ -102,6 +102,9 @@ public class HomePageActivity extends AppCompatActivity {
                             break;
                         case "Add Activities":
                             Log.d("HomePageActivity", "Add activities selected");
+                            Intent addActivityIntent = new Intent(context, AddActivityActivity.class); //lol
+                            addActivityIntent.putExtra("TripID", trips.get(index).getTripID());
+                            startActivity(addActivityIntent);
                             break;
                         default:
                             //Nothing

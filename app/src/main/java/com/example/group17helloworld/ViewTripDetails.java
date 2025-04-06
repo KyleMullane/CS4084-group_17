@@ -44,7 +44,7 @@ public class ViewTripDetails extends AppCompatActivity {
 
         ArrayList<Transportation> tripTransportations = database.selectTransportationByTripID(tripID);
         ArrayList<Accommodation> tripAccommodations = database.selectAccommodationByTripID(tripID);
-
+        ArrayList<Activity> tripActivities = database.selectActivitiesByTripID(tripID);
 
         TextView tripDetails = findViewById(R.id.tripDetails);
         tripDetails.setText("Departure: " + trip.getDeparture() + "\nDestination: " + trip.getDestination() + "\nDate Departure: " + trip.getDateDeparture() + "\nDate Return: " + trip.getDateReturn() + "\nBudget: " + trip.getBudget() + "\nTrip ID: " + trip.getTripID());
@@ -83,6 +83,29 @@ public class ViewTripDetails extends AppCompatActivity {
             accommodationRowText.setText(tripAccommodations.get(index).getName()+" located at "+tripAccommodations.get(index).getAddress()+" \n Type: "+tripAccommodations.get(index).getType()+" \n Check In : "+tripAccommodations.get(index).getCheckinDate()+" \n Check Out Date: "+tripAccommodations.get(index).getCheckoutDate()+" \n Price: €"+tripAccommodations.get(index).getPrice());
             accommodationRow.addView(accommodationRowText);
             accommodationTable.addView(accommodationRow);
+        }
+
+        TableLayout activityTable = findViewById(R.id.activityTable);
+        for (int i=0; i<tripActivities.size(); i++)
+        {
+            int index = i;
+            TableRow activityRow = new TableRow(this);
+            activityRow.setLayoutParams(new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT));
+            activityRow.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
+            activityRow.setPadding(10,10,10,10);
+
+            TextView activityRowText = new TextView(this);
+            activityRowText.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.WRAP_CONTENT));
+            activityRowText.setMaxWidth(800);
+            activityRowText.setText(tripActivities.get(index).getName()+"\n Location: "+tripActivities.get(index).getLocation()+"\n Date: "+tripActivities.get(index).getDate()+"\n Time: "+tripActivities.get(index).getTime()+"\n Price: €"+tripActivities.get(index).getPrice()+"\n Description: "+tripActivities.get(index).getDescription());
+            activityRowText.setSingleLine(false);
+            activityRowText.setEllipsize(null);
+            activityRow.addView(activityRowText);
+            activityTable.addView(activityRow);
         }
 
     }

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddActivityActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/addActivityTitleText"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="Add an Activity Below!"/>
+        <TextView
+            android:id="@+id/addActivityErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="30dp">
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name of Activity: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/nameInput"
+                    android:hint="name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Location: "/>
+            </TableRow>
+            <TableRow>
+                <EditText
+                    android:id="@+id/locationInput"
+                    android:hint="location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date of Activity: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/dateInput"
+                    android:hint="date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Time: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/timeInput"
+                    android:hint="time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Price of Activity (€): "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/priceInput"
+                    android:hint="price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Description of Activity: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/descriptionInput"
+                    android:layout_width="350dp"
+                    android:layout_height="150dp"
+                    android:hint="description"
+                    android:inputType="textMultiLine"
+                    android:minLines="4"
+                    android:gravity="top|start"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+
+        </TableLayout>
+        <Button
+            android:id="@+id/addActivityButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addActivity"
+            android:text="Add Activity" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

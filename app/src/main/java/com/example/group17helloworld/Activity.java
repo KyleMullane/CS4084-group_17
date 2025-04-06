@@ -1,13 +1,14 @@
 package com.example.group17helloworld;
 
 public class Activity {
-    public Integer activityID;
+    public int activityID;
     public String name;
     public String location;
     public String date;
     public String time;
-    public Double price;
-    public Integer tripID;
+    public double price;
+    public String description;
+    public int tripID;
     private DBHandler dbHandler;
 
     public Activity(){
@@ -17,17 +18,98 @@ public class Activity {
         date = "";
         time = "";
         price = 0.0;
+        description = "";
         tripID = 0;
     }
-    public Activity(Integer activityID, String name, String location, String date, String time, Double price, Integer tripID){
+    public Activity(int activityID, String name, String location, String date, String time, double price, String description, int tripID){
         this.activityID = activityID;
         this.name = name;
         this.location = location;
         this.date = date;
         this.time = time;
         this.price = price;
+        this.description = description;
         this.tripID = tripID;
     }
+
+    public Activity(String name, String location, String date, String time, double price, String description, int tripID){
+        this.activityID = 0;
+        this.name = name;
+        this.location = location;
+        this.date = date;
+        this.time = time;
+        this.price = price;
+        this.description = description;
+        this.tripID = tripID;
+    }
+
+    // Getters and Setters
+    public int getActivityID() {
+        return activityID;
+    }
+
+    public void setActivityID(int activityID) {
+        this.activityID = activityID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getTripID() {
+        return tripID;
+    }
+
+    public void setTripID(int tripID) {
+        this.tripID = tripID;
+    }
+
+
+
     /*public void setName(String name){
         this.name = name;
         dbHandler.changeActivityName(getActivityID(), name);

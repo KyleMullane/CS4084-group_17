@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         database = DBHandler.getInstance(context);
 
 
+
     }
     public void sendToHomePage(View view)
     {

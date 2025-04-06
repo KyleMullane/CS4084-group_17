@@ -35,7 +35,7 @@
             android:id="@+id/transportationDetails" />
         <TableLayout
             android:orientation="vertical"
-            android:layout_width="300dp"
+            android:layout_width="350dp"
             android:layout_height="match_parent"
             android:padding="16dp"
             android:gravity="center"
@@ -51,11 +51,27 @@
             android:id="@+id/accommodationDetails" />
         <TableLayout
             android:orientation="vertical"
-            android:layout_width="300dp"
+            android:layout_width="350dp"
             android:layout_height="match_parent"
             android:padding="16dp"
             android:gravity="center"
             android:id="@+id/accommodationTable">
+        </TableLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:layout_gravity="left"
+            android:paddingLeft="30dp"
+            android:text="Activities: "
+            android:id="@+id/activityDetails" />
+        <TableLayout
+            android:orientation="vertical"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:gravity="center"
+            android:id="@+id/activityTable">
         </TableLayout>
     </LinearLayout>
 </ScrollView>
