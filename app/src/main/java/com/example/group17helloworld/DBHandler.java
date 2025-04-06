@@ -38,6 +38,7 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String ACCOMMODATION_TABLE = "Accommodations";
     public static final String ACCOMMODATION_ID_COLUMN = "accommodationID";
     public static final String ACCOMMODATION_NAME_COLUMN = "name";
+    public static final String ACCOMMODATION_TYPE_COLUMN = "type";
     public static final String ACCOMMODATION_ADDRESS_COLUMN = "address";
     public static final String ACCOMMODATION_CHECKIN_DATE_COLUMN = "checkin_date";
     public static final String ACCOMMODATION_CHECKOUT_DATE_COLUMN = "checkout_date";
@@ -119,6 +120,21 @@ public class DBHandler extends SQLiteOpenHelper
         db.execSQL(query4);
     }
 
+    //**********TRIPS**********
+
+    public void createTripTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String createTripQuery = "CREATE TABLE " + TRIP_TABLE +
+                " (" + TRIP_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DEPARTURE_COLUMN + " TEXT NOT NULL,"
+                + DESTINATION_COLUMN + " TEXT NOT NULL,"
+                + DEPARTURE_DATE_COLUMN + " TEXT NOT NULL,"
+                + RETURN_DATE_COLUMN + " TEXT NOT NULL,"
+                + BUDGET_COLUMN + " REAL)";
+        db.execSQL(createTripQuery);
+        db.close();
+    }
     public void addTrip(Trip trip) throws Exception
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -152,6 +168,7 @@ public class DBHandler extends SQLiteOpenHelper
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
         return trips;
     }
 
@@ -167,6 +184,8 @@ public class DBHandler extends SQLiteOpenHelper
         {
             Log.d("DBHandler","No trip found with specified ID");
         }
+        cursor.close();
+        db.close();
         return new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5));
     }
 
@@ -195,6 +214,23 @@ public class DBHandler extends SQLiteOpenHelper
     }
 
     // **********TRANSPORTATION**********
+    public void createTransportationTable()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "CREATE TABLE " + TRANSPORTATION_TABLE +
+                " (" + TRANSPORTATION_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + TRANSPORTATION_DEPARTURE_LOCATION_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_DESTINATION_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_DATE_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_DEPARTURE_TIME_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_ARRIVAL_TIME_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_TYPE_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_PRICE_COLUMN + " REAL NOT NULL, "
+                + TRANSPORTATION_TRIPID_COLUMN + " INTEGER NOT NULL, "
+                + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
+        db.execSQL(query);
+        db.close();
+    }
     public void addTransportation(Transportation transportation) throws Exception
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -230,26 +266,27 @@ public class DBHandler extends SQLiteOpenHelper
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
         return transportations;
     }
 
-    public void createTransportationTable()
+
+    //**********ACCOMMODATION**********
+    public void createAccommodationTable()
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "CREATE TABLE " + TRANSPORTATION_TABLE +
-                " (" + TRANSPORTATION_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + TRANSPORTATION_DEPARTURE_LOCATION_COLUMN + " TEXT NOT NULL, "
-                + TRANSPORTATION_DESTINATION_COLUMN + " TEXT NOT NULL, "
-                + TRANSPORTATION_DATE_COLUMN + " TEXT NOT NULL, "
-                + TRANSPORTATION_DEPARTURE_TIME_COLUMN + " TEXT NOT NULL, "
-                + TRANSPORTATION_ARRIVAL_TIME_COLUMN + " TEXT NOT NULL, "
-                + TRANSPORTATION_TYPE_COLUMN + " TEXT NOT NULL, "
-                + TRANSPORTATION_PRICE_COLUMN + " REAL NOT NULL, "
-                + TRANSPORTATION_TRIPID_COLUMN + " INTEGER NOT NULL, "
+        String query = "CREATE TABLE " + ACCOMMODATION_TABLE +
+                " (" + ACCOMMODATION_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ACCOMMODATION_NAME_COLUMN + " TEXT NOT NULL, "
+                + ACCOMMODATION_TYPE_COLUMN + " TEXT NOT NULL, "
+                + ACCOMMODATION_ADDRESS_COLUMN + " TEXT NOT NULL, "
+                + ACCOMMODATION_CHECKIN_DATE_COLUMN + " TEXT NOT NULL, "
+                + ACCOMMODATION_CHECKOUT_DATE_COLUMN + " TEXT NOT NULL, "
+                + ACCOMMODATION_PRICE_COLUMN + " REAL NOT NULL, "
+                + ACCOMMODATION_TRIPID_COLUMN + " INTEGER, "
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
         db.execSQL(query);
     }
-
     public ArrayList<Transportation> selectTransportationByTripID(int ID)
     {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -263,14 +300,16 @@ public class DBHandler extends SQLiteOpenHelper
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
         return transportations;
     }
 
-    /*public void addAccommodation(Accommodation accommodation) throws Exception
+    public void addAccommodation(Accommodation accommodation) throws Exception
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(ACCOMMODATION_NAME_COLUMN, accommodation.getName());
+        values.put(ACCOMMODATION_TYPE_COLUMN, accommodation.getType());
         values.put(ACCOMMODATION_ADDRESS_COLUMN, accommodation.getAddress());
         values.put(ACCOMMODATION_CHECKIN_DATE_COLUMN, accommodation.getCheckinDate());
         values.put(ACCOMMODATION_CHECKOUT_DATE_COLUMN, accommodation.getCheckoutDate());
@@ -287,22 +326,39 @@ public class DBHandler extends SQLiteOpenHelper
     public ArrayList<Accommodation> getAccommodations()
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        // This will be the result.
         ArrayList<Accommodation> accommodations = new ArrayList<Accommodation>();
         Cursor cursor = db.rawQuery("SELECT * FROM " + ACCOMMODATION_TABLE, null);
         if (cursor.moveToFirst())
         {
             do
             {
-                accommodations.add(new Accommodation(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5), cursor.getInt(6)));
+                accommodations.add(new Accommodation(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getDouble(6), cursor.getInt(7)));
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
+        return accommodations;
+    }
+
+    public ArrayList<Accommodation> selectAccommodationByTripID(int ID)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Accommodation> accommodations = new ArrayList<Accommodation>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + ACCOMMODATION_TABLE + " WHERE "+TRIP_ID_COLUMN+" = "+ID, null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                accommodations.add(new Accommodation(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getDouble(6), cursor.getInt(7)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
         return accommodations;
     }
 
 
-    public void changeTripDestination(Integer tripID, String destination){
+    /*public void changeTripDestination(Integer tripID, String destination){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE Trips SET destination = ? WHERE tripID = ?";
         SQLiteStatement statement = db.compileStatement(query);

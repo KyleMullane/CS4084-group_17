@@ -96,6 +96,9 @@ public class HomePageActivity extends AppCompatActivity {
                             break;
                         case "Add Accommodation":
                             Log.d("HomePageActivity", "Add accommodation selected");
+                            Intent addAccommodationIntent = new Intent(context, AddAccommodationActivity.class);
+                            addAccommodationIntent.putExtra("TripID", trips.get(index).getTripID());
+                            startActivity(addAccommodationIntent);
                             break;
                         case "Add Activities":
                             Log.d("HomePageActivity", "Add activities selected");

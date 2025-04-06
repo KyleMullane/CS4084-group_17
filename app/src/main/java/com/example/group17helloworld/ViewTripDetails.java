@@ -41,10 +41,12 @@ public class ViewTripDetails extends AppCompatActivity {
         Intent intent = getIntent();
         int tripID = intent.getIntExtra("TripID",-1);
         Trip trip = database.selectTripByID(tripID);
+
         ArrayList<Transportation> tripTransportations = database.selectTransportationByTripID(tripID);
-        Transportation firstTransport = tripTransportations.get(0);
+        ArrayList<Accommodation> tripAccommodations = database.selectAccommodationByTripID(tripID);
+
+
         TextView tripDetails = findViewById(R.id.tripDetails);
-        TextView transportationDetails = findViewById(R.id.transportationDetails);
         tripDetails.setText("Departure: " + trip.getDeparture() + "\nDestination: " + trip.getDestination() + "\nDate Departure: " + trip.getDateDeparture() + "\nDate Return: " + trip.getDateReturn() + "\nBudget: " + trip.getBudget() + "\nTrip ID: " + trip.getTripID());
 
 
@@ -61,9 +63,26 @@ public class ViewTripDetails extends AppCompatActivity {
             transportationRow.setPadding(10,10,10,10);
 
             TextView transportationRowText = new TextView(this);
-            transportationRowText.setText(tripTransportations.get(index).getType()+" from "+tripTransportations.get(index).getDepartureLocation()+" to "+tripTransportations.get(index).getDestination()+"\n Date: "+tripTransportations.get(index).getDate()+" \n Departure Time: "+tripTransportations.get(index).getDepartureTime()+" \n Arrival Time: "+tripTransportations.get(index).getArrivalTime()+" \n Price: $"+tripTransportations.get(index).getPrice());
+            transportationRowText.setText(tripTransportations.get(index).getType()+" from "+tripTransportations.get(index).getDepartureLocation()+" to "+tripTransportations.get(index).getDestination()+"\n Date: "+tripTransportations.get(index).getDate()+" \n Departure Time: "+tripTransportations.get(index).getDepartureTime()+" \n Arrival Time: "+tripTransportations.get(index).getArrivalTime()+" \n Price: €"+tripTransportations.get(index).getPrice());
             transportationRow.addView(transportationRowText);
             transportationTable.addView(transportationRow);
+        }
+
+        TableLayout accommodationTable = findViewById(R.id.accommodationTable);
+        for (int i=0; i<tripAccommodations.size(); i++)
+        {
+            int index = i;
+            TableRow accommodationRow = new TableRow(this);
+            accommodationRow.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT));
+            accommodationRow.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
+            accommodationRow.setPadding(10,10,10,10);
+
+            TextView accommodationRowText = new TextView(this);
+            accommodationRowText.setText(tripAccommodations.get(index).getName()+" located at "+tripAccommodations.get(index).getAddress()+" \n Type: "+tripAccommodations.get(index).getType()+" \n Check In : "+tripAccommodations.get(index).getCheckinDate()+" \n Check Out Date: "+tripAccommodations.get(index).getCheckoutDate()+" \n Price: €"+tripAccommodations.get(index).getPrice());
+            accommodationRow.addView(accommodationRowText);
+            accommodationTable.addView(accommodationRow);
         }
 
     }

@@ -2,6 +2,7 @@ package com.example.group17helloworld;
 
 public class Accommodation {
         public String name;
+        public String type;
         public String address;
         public String checkinDate;
         public String checkoutDate;
@@ -12,6 +13,7 @@ public class Accommodation {
 
         public Accommodation(){ //just never use this constructor
             name = "";
+            type="";
             address = "";
             checkinDate = "";
             checkoutDate = "";
@@ -20,15 +22,27 @@ public class Accommodation {
             tripID = 0;
         }
 
-        public Accommodation(int accommodationID, String name, String address, String checkinDate, String checkoutdate, double price, int tripID){
+        public Accommodation(int accommodationID, String name, String type, String address, String checkinDate, String checkoutdate, double price, int tripID){
             this.accommodationID = accommodationID; //use DBHandler to set?
             this.name = name;
+            this.type = type;
             this.address = address;
             this.checkinDate = checkinDate;
             this.checkoutDate = checkoutdate;
             this.price = price;
             this.tripID = tripID;
         }
+
+    public Accommodation(String name, String type, String address, String checkinDate, String checkoutdate, double price, int tripID){
+        this.accommodationID = 0;
+        this.name = name;
+        this.type = type;
+        this.address = address;
+        this.checkinDate = checkinDate;
+        this.checkoutDate = checkoutdate;
+        this.price = price;
+        this.tripID = tripID;
+    }
 
     // Getters and Setters
     public int getAccommodationID() {
@@ -37,6 +51,16 @@ public class Accommodation {
 
     public void setAccommodationID(int accommodationID) {
         this.accommodationID = accommodationID;
+    }
+
+    public String getType()
+    {
+        return this.type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
     }
 
     public String getName() {
