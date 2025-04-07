@@ -45,7 +45,7 @@ public class ViewPastTripsActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         database = DBHandler.getInstance(context);
         // Menu At Top of the Screen
-        String[] menuItems = {"Menu", "Create a Trip", "View Upcoming Trips", "View Past Trips"};
+        String[] menuItems = {"☰", "Create a Trip", "View Upcoming Trips", "View Past Trips"};
         Spinner menuSpinner = findViewById(R.id.pastSpinner);
         ArrayAdapter<String> menuSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, menuItems);
         menuSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -157,13 +157,13 @@ public class ViewPastTripsActivity extends AppCompatActivity {
             rowText.setPadding(8, 8, 8, 8);
 
 
-            String[] dropdownItems = {"", "Add Transportation", "Add Accommodation", "Add Activities"};
+            String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities"};
             Spinner spinner = new Spinner(this);
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dropdownItems);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(spinnerAdapter);
-            spinner.setScaleX(0.5f);
-            spinner.setScaleY(0.5f);
+            spinner.setScaleX(0.7f);
+            spinner.setScaleY(0.7f);
 
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
             {

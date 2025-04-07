@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -44,7 +46,7 @@ public class HomePageActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         database = DBHandler.getInstance(context);
         // Menu At Top of the Screen
-        String[] menuItems = {"Menu", "Create a Trip", "View Upcoming Trips", "View Past Trips"};
+        String[] menuItems = {"☰", "Create a Trip", "View Upcoming Trips", "View Past Trips"};
         Spinner menuSpinner = findViewById(R.id.menuSpinner);
         ArrayAdapter<String> menuSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, menuItems);
         menuSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -147,7 +149,7 @@ public class HomePageActivity extends AppCompatActivity {
             TableRow row = new TableRow(this);
             row.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT));
+                    TableRow.LayoutParams.MATCH_PARENT));
             row.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
             row.setPadding(10,10,10,10);
 
@@ -163,13 +165,13 @@ public class HomePageActivity extends AppCompatActivity {
             rowText.setPadding(8, 8, 8, 8);
 
 
-            String[] dropdownItems = {"", "Add Transportation", "Add Accommodation", "Add Activities"};
+            String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities", "View Budgeting"};
             Spinner spinner = new Spinner(this);
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dropdownItems);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(spinnerAdapter);
-            spinner.setScaleX(0.5f);
-            spinner.setScaleY(0.5f);
+            spinner.setScaleX(0.7f);
+            spinner.setScaleY(0.7f);
 
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
             {
@@ -195,6 +197,12 @@ public class HomePageActivity extends AppCompatActivity {
                             Intent addActivityIntent = new Intent(context, AddActivityActivity.class); //lol
                             addActivityIntent.putExtra("TripID", todaysTrips.get(index).getTripID());
                             startActivity(addActivityIntent);
+                            break;
+                        case "View Budgeting":
+                            Log.d("HomePageActivity", "View budgeting selected");
+                            Intent viewBudgetingIntent = new Intent(context, ViewBudgetingActivity.class);
+                            viewBudgetingIntent.putExtra("TripID", todaysTrips.get(index).getTripID());
+                            startActivity(viewBudgetingIntent);
                             break;
                         default:
                             //Nothing
@@ -256,13 +264,13 @@ public class HomePageActivity extends AppCompatActivity {
            rowText.setPadding(8, 8, 8, 8);
 
 
-           String[] dropdownItems = {"", "Add Transportation", "Add Accommodation", "Add Activities"};
+           String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities", "View Budgeting"};
            Spinner spinner = new Spinner(this);
            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dropdownItems);
            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
            spinner.setAdapter(spinnerAdapter);
-           spinner.setScaleX(0.5f);
-           spinner.setScaleY(0.5f);
+           spinner.setScaleX(0.7f);
+           spinner.setScaleY(0.7f);
 
            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
            {
@@ -288,6 +296,12 @@ public class HomePageActivity extends AppCompatActivity {
                            Intent addActivityIntent = new Intent(context, AddActivityActivity.class); //lol
                            addActivityIntent.putExtra("TripID", upcomingTrips.get(index).getTripID());
                            startActivity(addActivityIntent);
+                           break;
+                       case "View Budgeting":
+                           Log.d("HomePageActivity", "View budgeting selected");
+                           Intent viewBudgetingIntent = new Intent(context, ViewBudgetingActivity.class);
+                           viewBudgetingIntent.putExtra("TripID", upcomingTrips.get(index).getTripID());
+                           startActivity(viewBudgetingIntent);
                            break;
                        default:
                            //Nothing
