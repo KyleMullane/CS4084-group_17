@@ -2,7 +2,7 @@ package com.example.group17helloworld;
 
 import java.util.ArrayList;
 
-public class Trip {
+public class Trip implements Comparable<Trip> {
     public String departure;
     public String destination;
     public String dateDeparture;
@@ -90,6 +90,12 @@ public class Trip {
 
     public void setTripID(int tripID) {
         this.tripID = tripID;
+    }
+
+    @Override
+    public int compareTo(Trip other)
+    {
+        return this.dateDeparture.compareTo(other.dateDeparture);
     }
 
     /*public void addAccommodation(Accommodation accommodation){

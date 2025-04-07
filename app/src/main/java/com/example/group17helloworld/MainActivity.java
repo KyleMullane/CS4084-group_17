@@ -49,4 +49,10 @@ public class MainActivity extends AppCompatActivity {
         Intent createTripIntent = new Intent(this, CreateATripActivity.class);
         startActivity(createTripIntent);
     }
+
+    public void sendToPastTripsPage(View view)
+    {
+        Intent pastTripsIntent = new Intent(this, ViewPastTripsActivity.class);
+        startActivity(pastTripsIntent);
+    }
 }

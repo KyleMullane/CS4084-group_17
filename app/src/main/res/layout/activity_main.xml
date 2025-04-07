@@ -6,39 +6,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/connemara_national_park" />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:textSize="10pt"
-            android:paddingTop="200dp"
-            android:layout_gravity="top"
+            android:layout_gravity="center"
             android:textStyle="bold"
             android:gravity="center"
+            android:background="@drawable/text_border"
             android:text="Welcome to the Hello World Travel Planner!"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingTop="30dp"
             android:textSize="8pt"
             android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/text_border"
             android:text="Are you ready to say hello to the world beyond?"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="7pt"
             android:layout_gravity="center"
-            android:paddingTop="20dp"
-            android:paddingBottom="10dp"
             android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/text_border"
             android:text="Choose an option below to begin planning your next adventure!"/>
         <Button
             android:id="@+id/createTripPageButton"
@@ -59,9 +65,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:onClick="viewPastTrips"
+            android:onClick="sendToPastTripsPage"
             android:text="View Past Trips" />
     </LinearLayout>
-    </ScrollView>
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
