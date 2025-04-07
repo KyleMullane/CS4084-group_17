@@ -51,7 +51,11 @@ public class ViewTripDetails extends AppCompatActivity {
 
 
         TableLayout transportationTable = findViewById(R.id.transportationTable);
-
+        if (tripTransportations.isEmpty())
+        {
+            TextView noTransportation = findViewById(R.id.noTransportation);
+            noTransportation.setText("You currently have no transportation added for this trip");
+        }
         for (int i=0; i<tripTransportations.size(); i++)
         {
             int index = i;
@@ -69,6 +73,11 @@ public class ViewTripDetails extends AppCompatActivity {
         }
 
         TableLayout accommodationTable = findViewById(R.id.accommodationTable);
+        if (tripAccommodations.isEmpty())
+        {
+            TextView noAccommodation = findViewById(R.id.noAccommodation);
+            noAccommodation.setText("You currently have no accommodation added for this trip");
+        }
         for (int i=0; i<tripAccommodations.size(); i++)
         {
             int index = i;
@@ -86,6 +95,11 @@ public class ViewTripDetails extends AppCompatActivity {
         }
 
         TableLayout activityTable = findViewById(R.id.activityTable);
+        if (tripActivities.isEmpty())
+        {
+            TextView noActivity = findViewById(R.id.noActivity);
+            noActivity.setText("You currently have no activities added for this trip");
+        }
         for (int i=0; i<tripActivities.size(); i++)
         {
             int index = i;
@@ -108,5 +122,11 @@ public class ViewTripDetails extends AppCompatActivity {
             activityTable.addView(activityRow);
         }
 
+    }
+
+    public void sendToHomePage(View view)
+    {
+        Intent homePageIntent = new Intent(this, HomePageActivity.class);
+        startActivity(homePageIntent);
     }
 }

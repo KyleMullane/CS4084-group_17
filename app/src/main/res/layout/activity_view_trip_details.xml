@@ -33,6 +33,12 @@
             android:paddingLeft="30dp"
             android:text="Transportation: "
             android:id="@+id/transportationDetails" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7pt"
+            android:layout_gravity="center"
+            android:id="@+id/noTransportation" />
         <TableLayout
             android:orientation="vertical"
             android:layout_width="350dp"
@@ -49,6 +55,12 @@
             android:paddingLeft="30dp"
             android:text="Accommodation: "
             android:id="@+id/accommodationDetails" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7pt"
+            android:layout_gravity="center"
+            android:id="@+id/noAccommodation" />
         <TableLayout
             android:orientation="vertical"
             android:layout_width="350dp"
@@ -65,6 +77,12 @@
             android:paddingLeft="30dp"
             android:text="Activities: "
             android:id="@+id/activityDetails" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7pt"
+            android:layout_gravity="center"
+            android:id="@+id/noActivity" />
         <TableLayout
             android:orientation="vertical"
             android:layout_width="350dp"
@@ -73,6 +91,13 @@
             android:gravity="center"
             android:id="@+id/activityTable">
         </TableLayout>
+        <Button
+            android:id="@+id/sendToHomePageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="sendToHomePage"
+            android:text="Back" />
     </LinearLayout>
 </ScrollView>
 
