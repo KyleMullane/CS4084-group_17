@@ -68,6 +68,12 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String TRANSPORTATION_PRICE_COLUMN = "price";
     public static final String TRANSPORTATION_TRIPID_COLUMN = "tripID";
 
+    //BucketList Table
+    public static final String BUCKET_LIST_TABLE = "BucketList";
+    public static final String ITEM_ID_COLUMN = "itemID";
+    public static final String ITEM_NAME_COLUMN = "itemName";
+    public static final String STATUS_COLUMN = "status";
+
     // This may be used for migration in the future.
     private static final int DB_VERSION = 10;
 
@@ -124,6 +130,12 @@ public class DBHandler extends SQLiteOpenHelper
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
         db.execSQL(transportationQuery);
 
+        String query5 = "CREATE TABLE " + BUCKET_LIST_TABLE +
+                " (" + ITEM_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ITEM_NAME_COLUMN + " VARCHAR(100), "
+                + STATUS_COLUMN + " INTEGER)"; //WILL BE 1- COMPLETED OR 0- NOT COMPLETED
+
+        db.execSQL(query5);
     }
 
     //**********TRIPS**********
@@ -436,6 +448,44 @@ public class DBHandler extends SQLiteOpenHelper
         return activities;
     }
 
+    //**********BUCKETLIST**********
+
+    public void addItem(BucketListItem item) throws Exception {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ITEM_NAME_COLUMN, item.getItem());
+        values.put(STATUS_COLUMN, item.getStatus());
+        long num = db.insert(BUCKET_LIST_TABLE, null, values);
+        if (num == -1)
+        {
+            throw new Exception();
+        }
+        Log.d("DBHandler", "Num is = "+num);
+        db.close();
+    }
+
+//    public void deleteItem(Integer){
+//
+//    }
+
+//    public void completeItem(){
+//        //changes the status to 1 in db
+//    }
+
+    public ArrayList<BucketListItem> getBucketListItems(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<BucketListItem> items = new ArrayList<BucketListItem>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + BUCKET_LIST_TABLE, null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                items.add(new BucketListItem(cursor.getString(1), cursor.getInt(2))); //not sure if this works --> I ignore the ID
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return items;
+    }
 
     /*public void changeTripDestination(Integer tripID, String destination){
         SQLiteDatabase db = this.getWritableDatabase();
