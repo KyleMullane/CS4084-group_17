@@ -46,7 +46,7 @@ public class HomePageActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         database = DBHandler.getInstance(context);
         // Menu At Top of the Screen
-        String[] menuItems = {"☰", "Create a Trip", "View Upcoming Trips", "View Past Trips"};
+        String[] menuItems = {"☰", "Create a Trip", "View Upcoming Trips", "View Past Trips", "View Bucket List"};
         Spinner menuSpinner = findViewById(R.id.menuSpinner);
         ArrayAdapter<String> menuSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, menuItems);
         menuSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -70,6 +70,9 @@ public class HomePageActivity extends AppCompatActivity {
                         break;
                     case "View Past Trips":
                         sendToPastTripsPage();
+                        break;
+                    case "View Bucket List":
+                        sendToBucketListPage();
                         break;
                     default:
                         //Nothing
@@ -360,5 +363,11 @@ public class HomePageActivity extends AppCompatActivity {
     {
         Intent pastTripsIntent = new Intent(this, ViewPastTripsActivity.class);
         startActivity(pastTripsIntent);
+    }
+
+    public void sendToBucketListPage()
+    {
+        Intent bucketListIntent = new Intent(this, ViewBucketListActivity.class);
+        startActivity(bucketListIntent);
     }
 }
