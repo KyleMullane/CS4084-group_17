@@ -77,49 +77,53 @@ public class DBHandler extends SQLiteOpenHelper
     public void onCreate(SQLiteDatabase db)
     {
         Log.d("MainActivity", "OnCreate Called");
-        String query1 = "CREATE TABLE " + TRIP_TABLE +
+        String createTripQuery = "CREATE TABLE " + TRIP_TABLE +
                 " (" + TRIP_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                DESTINATION_COLUMN + " VARCHAR(50), "
-                + DEPARTURE_DATE_COLUMN + " DATE, " + RETURN_DATE_COLUMN + " DATE, " +
-                BUDGET_COLUMN + " DOUBLE(10,2))";
+                DEPARTURE_COLUMN + " TEXT NOT NULL,"
+                + DESTINATION_COLUMN + " TEXT NOT NULL,"
+                + DEPARTURE_DATE_COLUMN + " TEXT NOT NULL,"
+                + RETURN_DATE_COLUMN + " TEXT,"
+                + BUDGET_COLUMN + " REAL)";
+        db.execSQL(createTripQuery);
 
-        String query2 = "CREATE TABLE " + ACCOMMODATION_TABLE +
+
+        String accommodationQuery = "CREATE TABLE " + ACCOMMODATION_TABLE +
                 " (" + ACCOMMODATION_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + ACCOMMODATION_NAME_COLUMN + " VARCHAR(100), "
-                + ACCOMMODATION_ADDRESS_COLUMN + " VARCHAR(100), "
-                + ACCOMMODATION_CHECKIN_DATE_COLUMN + " DATE, "
-                + ACCOMMODATION_CHECKOUT_DATE_COLUMN + " DATE, "
-                + ACCOMMODATION_PRICE_COLUMN + " DOUBLE(10,2), "
+                + ACCOMMODATION_NAME_COLUMN + " TEXT NOT NULL, "
+                + ACCOMMODATION_TYPE_COLUMN + " TEXT NOT NULL, "
+                + ACCOMMODATION_ADDRESS_COLUMN + " TEXT NOT NULL, "
+                + ACCOMMODATION_CHECKIN_DATE_COLUMN + " TEXT NOT NULL, "
+                + ACCOMMODATION_CHECKOUT_DATE_COLUMN + " TEXT NOT NULL, "
+                + ACCOMMODATION_PRICE_COLUMN + " REAL NOT NULL, "
                 + ACCOMMODATION_TRIPID_COLUMN + " INTEGER, "
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
+        db.execSQL(accommodationQuery);
 
-        String query3 = "CREATE TABLE " + ACTIVITIES_TABLE +
+        String activitiesQuery = "CREATE TABLE " + ACTIVITIES_TABLE +
                 " (" + ACTIVITY_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + ACTIVITY_NAME_COLUMN + " VARCHAR(100), "
-                + ACTIVITY_LOCATION_COLUMN + " VARCHAR(100), "
-                + ACTIVITY_DATE_COLUMN + " DATE, "
-                + ACTIVITY_TIME_COLUMN + " VARCHAR(30), "
-                + ACTIVITY_PRICE_COLUMN + " DOUBLE(10,2), "
+                + ACTIVITY_NAME_COLUMN + " TEXT NOT NULL, "
+                + ACTIVITY_LOCATION_COLUMN + " TEXT NOT NULL, "
+                + ACTIVITY_DATE_COLUMN + " TEXT NOT NULL, "
+                + ACTIVITY_TIME_COLUMN + " TEXT NOT NULL, "
+                + ACTIVITY_PRICE_COLUMN + " REAL NOT NULL, "
                 + ACTIVITY_DESCRIPTION_COLUMN + " TEXT, "
                 + ACTIVITY_TRIPID_COLUMN + " INTEGER, "
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
+        db.execSQL(activitiesQuery);
 
-        String query4 = "CREATE TABLE " + TRANSPORTATION_TABLE +
+        String transportationQuery = "CREATE TABLE " + TRANSPORTATION_TABLE +
                 " (" + TRANSPORTATION_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + TRANSPORTATION_DEPARTURE_LOCATION_COLUMN + " VARCHAR(100), "
-                + TRANSPORTATION_DESTINATION_COLUMN + " VARCHAR(100), "
-                + TRANSPORTATION_DATE_COLUMN + " DATE, "
-                + TRANSPORTATION_DEPARTURE_TIME_COLUMN + " VARCHAR(30), "
-                + TRANSPORTATION_ARRIVAL_TIME_COLUMN + " VARCHAR(30), "
-                + TRANSPORTATION_TYPE_COLUMN + "VARCHAR(50), "
-                + TRANSPORTATION_PRICE_COLUMN + " DOUBLE(10,2), "
-                + TRANSPORTATION_TRIPID_COLUMN + " INTEGER, "
+                + TRANSPORTATION_DEPARTURE_LOCATION_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_DESTINATION_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_DATE_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_DEPARTURE_TIME_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_ARRIVAL_TIME_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_TYPE_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_PRICE_COLUMN + " REAL NOT NULL, "
+                + TRANSPORTATION_TRIPID_COLUMN + " INTEGER NOT NULL, "
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
+        db.execSQL(transportationQuery);
 
-        db.execSQL(query1);
-        db.execSQL(query2);
-        db.execSQL(query3);
-        db.execSQL(query4);
     }
 
     //**********TRIPS**********
@@ -219,7 +223,7 @@ public class DBHandler extends SQLiteOpenHelper
     public void createTransportationTable()
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "CREATE TABLE " + TRANSPORTATION_TABLE +
+        String transportationQuery = "CREATE TABLE " + TRANSPORTATION_TABLE +
                 " (" + TRANSPORTATION_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + TRANSPORTATION_DEPARTURE_LOCATION_COLUMN + " TEXT NOT NULL, "
                 + TRANSPORTATION_DESTINATION_COLUMN + " TEXT NOT NULL, "
@@ -230,7 +234,7 @@ public class DBHandler extends SQLiteOpenHelper
                 + TRANSPORTATION_PRICE_COLUMN + " REAL NOT NULL, "
                 + TRANSPORTATION_TRIPID_COLUMN + " INTEGER NOT NULL, "
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
-        db.execSQL(query);
+        db.execSQL(transportationQuery);
         db.close();
     }
     public void addTransportation(Transportation transportation) throws Exception
@@ -277,7 +281,7 @@ public class DBHandler extends SQLiteOpenHelper
     public void createAccommodationTable()
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "CREATE TABLE " + ACCOMMODATION_TABLE +
+        String accommodationQuery = "CREATE TABLE " + ACCOMMODATION_TABLE +
                 " (" + ACCOMMODATION_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ACCOMMODATION_NAME_COLUMN + " TEXT NOT NULL, "
                 + ACCOMMODATION_TYPE_COLUMN + " TEXT NOT NULL, "
@@ -287,7 +291,7 @@ public class DBHandler extends SQLiteOpenHelper
                 + ACCOMMODATION_PRICE_COLUMN + " REAL NOT NULL, "
                 + ACCOMMODATION_TRIPID_COLUMN + " INTEGER, "
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
-        db.execSQL(query);
+        db.execSQL(accommodationQuery);
         db.close();
     }
     public ArrayList<Transportation> selectTransportationByTripID(int ID)
@@ -364,7 +368,7 @@ public class DBHandler extends SQLiteOpenHelper
     public void createActivitiesTable()
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "CREATE TABLE " + ACTIVITIES_TABLE +
+        String activitiesQuery = "CREATE TABLE " + ACTIVITIES_TABLE +
                 " (" + ACTIVITY_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ACTIVITY_NAME_COLUMN + " TEXT NOT NULL, "
                 + ACTIVITY_LOCATION_COLUMN + " TEXT NOT NULL, "
@@ -374,7 +378,7 @@ public class DBHandler extends SQLiteOpenHelper
                 + ACTIVITY_DESCRIPTION_COLUMN + " TEXT, "
                 + ACTIVITY_TRIPID_COLUMN + " INTEGER, "
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
-        db.execSQL(query);
+        db.execSQL(activitiesQuery);
         db.close();
 
     }
