@@ -2,14 +2,14 @@ package com.example.group17helloworld;
 
 public class BucketListItem {
     public String item;
-    public boolean completed;
+    public Integer completed;
 
     public BucketListItem(){
         item = "";
-        completed = false;
+        completed = 0;
     }
 
-    public BucketListItem(String item, boolean completed){
+    public BucketListItem(String item, Integer completed){
         this.item = item;
         this.completed = completed;
     }
@@ -18,7 +18,7 @@ public class BucketListItem {
         return item;
     }
 
-    public boolean getStatus(){
+    public Integer getStatus(){
         return completed;
     }
 
@@ -26,7 +26,7 @@ public class BucketListItem {
         this.item = item;
     }
 
-    public void setStatus(boolean completed){
+    public void setStatus(Integer completed){
         this.completed = completed;
     }
 
