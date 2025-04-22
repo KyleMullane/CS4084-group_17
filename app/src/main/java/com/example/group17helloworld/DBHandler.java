@@ -132,9 +132,8 @@ public class DBHandler extends SQLiteOpenHelper
 
         String query5 = "CREATE TABLE " + BUCKET_LIST_TABLE +
                 " (" + ITEM_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + ITEM_NAME_COLUMN + " VARCHAR(100), "
+                + ITEM_NAME_COLUMN + " TEXT NOT NULL, "
                 + STATUS_COLUMN + " INTEGER)"; //WILL BE 1- COMPLETED OR 0- NOT COMPLETED
-
         db.execSQL(query5);
     }
 
