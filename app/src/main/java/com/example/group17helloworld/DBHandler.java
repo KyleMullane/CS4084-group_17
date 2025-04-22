@@ -463,6 +463,18 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
     }
 
+    public void changeStatus(BucketListItem item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Prepare the content values to update the status
+        ContentValues values = new ContentValues();
+        //values.put("item", item.getItem());
+        values.put("status", item.getStatus() ? 1 : 0);
+        db.update("BucketList", values, "item = ?", new String[]
+                {String.valueOf(item.getItem())});
+        db.close();
+    }
+
 //    public void deleteItem(Integer){
 //
 //    }
@@ -980,6 +992,5 @@ public class DBHandler extends SQLiteOpenHelper
                 + BUDGET_COLUMN + " REAL)";
         db.execSQL(createTripQuery);
     }
-
 }
 

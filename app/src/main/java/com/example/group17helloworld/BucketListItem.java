@@ -18,8 +18,13 @@ public class BucketListItem {
         return item;
     }
 
-    public Integer getStatus(){
-        return completed;
+    public boolean getStatus(){
+        if (completed == 1){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public void setItem(String item){

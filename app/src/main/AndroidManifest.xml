@@ -36,13 +36,10 @@
             android:name=".ViewTripDetails"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".ViewBucketListActivity"
             android:exported="false" />
         <activity
             android:name=".HomePageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LogInActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
