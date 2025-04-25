@@ -76,7 +76,7 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String STATUS_COLUMN = "status";
 
     // This may be used for migration in the future.
-    private static final int DB_VERSION = 10;
+    private static final int DB_VERSION = 11;
 
 
 
@@ -164,7 +164,7 @@ public class DBHandler extends SQLiteOpenHelper
         values.put(DEPARTURE_DATE_COLUMN, trip.getDateDeparture());
         values.put(RETURN_DATE_COLUMN, trip.getDateReturn());
         values.put(BUDGET_COLUMN, trip.getBudget());
-        values.put(FAVORITE_COLUMN, trip.getIsFavorite());
+        values.put(FAVORITE_COLUMN, trip.getIsFavorite() ? 1 : 0);
         long num = db.insert(TRIP_TABLE, null, values);
         if (num == -1)
         {
@@ -207,7 +207,7 @@ public class DBHandler extends SQLiteOpenHelper
         }
         cursor.close();
         db.close();
-        return new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5), cursor.getInt(6));
+        return new Trip(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getDouble(4), cursor.getInt(5));
     }
 
     public void deleteAllTrips()
@@ -267,6 +267,15 @@ public class DBHandler extends SQLiteOpenHelper
         db.execSQL(transportationQuery);
         db.close();
     }
+
+    public void deleteTransportationTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DROP TABLE IF EXISTS " + TRANSPORTATION_TABLE;
+        db.execSQL(query);
+        db.close();
+    }
+
     public void addTransportation(Transportation transportation) throws Exception
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -324,6 +333,15 @@ public class DBHandler extends SQLiteOpenHelper
         db.execSQL(accommodationQuery);
         db.close();
     }
+
+    public void deleteAccommodationTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DROP TABLE IF EXISTS " + ACCOMMODATION_TABLE;
+        db.execSQL(query);
+        db.close();
+    }
+
     public ArrayList<Transportation> selectTransportationByTripID(int ID)
     {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -413,6 +431,14 @@ public class DBHandler extends SQLiteOpenHelper
 
     }
 
+    public void deleteActivityTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DROP TABLE IF EXISTS " + ACTIVITIES_TABLE;
+        db.execSQL(query);
+        db.close();
+    }
+
     public void addActivity(Activity activity) throws Exception
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -468,6 +494,17 @@ public class DBHandler extends SQLiteOpenHelper
 
     //**********BUCKETLIST**********
 
+    public void createBucketListTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String createBucketListTableQuery = "CREATE TABLE " + BUCKET_LIST_TABLE +
+                " (" + ITEM_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ITEM_NAME_COLUMN + " TEXT NOT NULL, "
+                + STATUS_COLUMN + " INTEGER)"; //WILL BE 1- COMPLETED OR 0- NOT COMPLETED
+        db.execSQL(createBucketListTableQuery);
+        db.close();
+    }
+
     public void addItem(BucketListItem item) throws Exception {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
@@ -479,6 +516,14 @@ public class DBHandler extends SQLiteOpenHelper
             throw new Exception();
         }
         Log.d("DBHandler", "Num is = "+num);
+        db.close();
+    }
+
+    public void deleteBucketListTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DROP TABLE IF EXISTS " + BUCKET_LIST_TABLE;
+        db.execSQL(query);
         db.close();
     }
 
@@ -1004,14 +1049,14 @@ public class DBHandler extends SQLiteOpenHelper
     public void onUpgrade(SQLiteDatabase db,int num1,int num2)
     {
         Log.d("MainActivity", "OnUpgrade Called");
-        String createTripQuery = "CREATE TABLE " + TRIP_TABLE +
-                " (" + TRIP_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                DEPARTURE_COLUMN + " TEXT NOT NULL,"
-                + DESTINATION_COLUMN + " TEXT NOT NULL,"
-                + DEPARTURE_DATE_COLUMN + " TEXT NOT NULL,"
-                + RETURN_DATE_COLUMN + " TEXT NOT NULL,"
-                + BUDGET_COLUMN + " REAL)";
-        db.execSQL(createTripQuery);
+        // Drop all existing tables
+        db.execSQL("DROP TABLE IF EXISTS " + TRIP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ACCOMMODATION_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ACTIVITIES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRANSPORTATION_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BUCKET_LIST_TABLE);
+
+        onCreate(db);
     }
 }
 

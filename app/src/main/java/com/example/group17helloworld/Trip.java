@@ -27,8 +27,8 @@ public class Trip implements Comparable<Trip> {
         isFavorite = 0;
     }
 
-    public Trip(Integer tripID, String departure, String destination, String dateDeparture, String dateReturn, Double budget, Integer isFavorite){
-        this.tripID = tripID;
+    public Trip(int tripID, String departure, String destination, String dateDeparture, String dateReturn, Double budget, Integer isFavorite){
+        this.tripID = tripID; //get rid of because this is auto-increment
         this.departure = departure;
         this.destination = destination;
         this.dateDeparture = dateDeparture;
@@ -37,13 +37,14 @@ public class Trip implements Comparable<Trip> {
         this.isFavorite = isFavorite;
     }
 
-    public Trip(String departure, String destination, String dateDeparture, String dateReturn, Double budget){
+    public Trip(String departure, String destination, String dateDeparture, String dateReturn, Double budget, Integer isFavorite){
         tripID = 0;
         this.departure = departure;
         this.destination = destination;
         this.dateDeparture = dateDeparture;
         this.dateReturn = dateReturn;
         this.budget = budget;
+        this.isFavorite = isFavorite;
     }
 
     // Getters ..

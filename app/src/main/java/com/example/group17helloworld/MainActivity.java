@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //database.deleteTripTable();
+        //database.createTripTable();
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -31,11 +33,25 @@ public class MainActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(getApplicationContext(), "onCreate Called", Toast.LENGTH_LONG);
         toast.show();
 
+        //database.deleteTripTable();
+        //database.createTripTable();
+
         Context context = getApplicationContext();
         Log.d("MainActivity", "Testing to see if printing to the terminal works for debugging purposes!");
         database = DBHandler.getInstance(context);
 
+//        database.deleteBucketListTable();
+//        database.deleteActivityTable();
+//        database.deleteAccommodationTable();
+//        database.deleteTransportationTable();
+//        database.deleteTripTable();
 
+        //database.createTripTable();
+//        database.createTripTable();
+//        database.createTransportationTable();
+//        database.createActivitiesTable();
+//        database.createAccommodationTable();
+//        database.createBucketListTable();
 
     }
     public void sendToHomePage(View view)
