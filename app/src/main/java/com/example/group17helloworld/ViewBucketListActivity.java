@@ -89,11 +89,15 @@ public class ViewBucketListActivity extends AppCompatActivity {
             checkBox.setText(item.getItem());
             checkBox.setChecked(item.getStatus());
 
+            Log.d("CHECKBOX_CREATION", "Creating checkbox for item: " + item.getItem());
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                item.setStatus(1); //how do i change isChecked to handle 1s or 0s?
+                Log.d("CHECKBOX_STATUS", "Checkbox clicked: " + isChecked);
+                item.setStatus(isChecked ? 1 : 0); //how do i change isChecked to handle 1s or 0s?
                 database.changeStatus(item);
+                //checkBox.setChecked(item.getStatus());
+                //bucketListLayout.addView(checkBox);
             });
-
+            checkBox.setChecked(item.getStatus());
             bucketListLayout.addView(checkBox);
         }
 

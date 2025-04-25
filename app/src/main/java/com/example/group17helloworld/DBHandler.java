@@ -470,8 +470,10 @@ public class DBHandler extends SQLiteOpenHelper
         ContentValues values = new ContentValues();
         //values.put("item", item.getItem());
         values.put("status", item.getStatus() ? 1 : 0);
-        db.update("BucketList", values, "item = ?", new String[]
-                {String.valueOf(item.getItem())});
+
+        //Log.d("DB_UPDATE", "Updating status for " + item.getItem() + " to " + item.getStatus());
+
+        db.update("BucketList", values, "itemName = ?", new String[]{String.valueOf(item.getItem())});
         db.close();
     }
 

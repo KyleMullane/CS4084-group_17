@@ -55,4 +55,10 @@ public class MainActivity extends AppCompatActivity {
         Intent pastTripsIntent = new Intent(this, ViewPastTripsActivity.class);
         startActivity(pastTripsIntent);
     }
+
+    public void sendToBucketListPage(View view)
+    {
+        Intent bucketListIntent = new Intent(this, ViewBucketListActivity.class);
+        startActivity(bucketListIntent);
+    }
 }
