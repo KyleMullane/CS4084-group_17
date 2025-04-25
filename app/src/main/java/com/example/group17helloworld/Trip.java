@@ -14,6 +14,8 @@ public class Trip implements Comparable<Trip> {
     public ArrayList<Transportation> transportation;
     private DBHandler dbHandler;
 
+    public Integer isFavorite;
+
 
     public Trip(){
         departure = "";
@@ -22,15 +24,17 @@ public class Trip implements Comparable<Trip> {
         dateReturn = "";
         budget = 0.0;
         tripID = 0;
+        isFavorite = 0;
     }
 
-    public Trip(Integer tripID, String departure, String destination, String dateDeparture, String dateReturn, Double budget){
+    public Trip(Integer tripID, String departure, String destination, String dateDeparture, String dateReturn, Double budget, Integer isFavorite){
         this.tripID = tripID;
         this.departure = departure;
         this.destination = destination;
         this.dateDeparture = dateDeparture;
         this.dateReturn = dateReturn;
         this.budget = budget;
+        this.isFavorite = isFavorite;
     }
 
     public Trip(String departure, String destination, String dateDeparture, String dateReturn, Double budget){
@@ -66,6 +70,15 @@ public class Trip implements Comparable<Trip> {
         return tripID;
     }
 
+    public boolean getIsFavorite(){
+        if (isFavorite == 1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     // Setters
 
     /*public void setTripID(){
@@ -90,6 +103,10 @@ public class Trip implements Comparable<Trip> {
 
     public void setTripID(int tripID) {
         this.tripID = tripID;
+    }
+
+    public void setFavoriteStatus(int isFavorite){
+        this.isFavorite = isFavorite;
     }
 
     @Override

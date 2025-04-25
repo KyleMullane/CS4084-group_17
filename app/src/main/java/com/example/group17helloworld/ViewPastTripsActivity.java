@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -158,6 +159,28 @@ public class ViewPastTripsActivity extends AppCompatActivity {
             TextView rowText = new TextView(this);
             rowText.setText("Leaving From: "+pastTrips.get(i).getDeparture()+"\nGoing to: "+pastTrips.get(i).getDestination()+"\nDate: "+pastTrips.get(i).getDateDeparture());
             rowText.setPadding(8, 8, 8, 8);
+
+
+            ImageButton favButton = new ImageButton(this);
+            if (pastTrips.get(i).getIsFavorite()) {
+                favButton.setImageResource(R.drawable.ic_star_filled);  // Your filled star drawable
+            } else {
+                favButton.setImageResource(R.drawable.ic_star_border);  // Your empty star drawable
+            }
+            favButton.setContentDescription("Favorite Trip");
+            favButton.setOnClickListener(v -> {
+                // Toggle the favorite status when clicked
+                int newStatus = !pastTrips.get(index).getIsFavorite() ? 1 : 0;
+                pastTrips.get(index).setFavoriteStatus(newStatus);
+                database.favoriteTrip(pastTrips.get(index));
+
+                // Update the star icon
+                if (newStatus == 1) {
+                    favButton.setImageResource(R.drawable.ic_star_filled);
+                } else {
+                    favButton.setImageResource(R.drawable.ic_star_border);
+                }
+            });
 
 
             String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities"};

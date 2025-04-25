@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Group17HelloWorld"
         tools:targetApi="31">
         <activity
+            android:name=".ViewFavoritesActivity"
+            android:exported="false" />
+        <activity
             android:name=".ViewBudgetingActivity"
             android:exported="false" />
         <activity

@@ -32,6 +32,7 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String DEPARTURE_DATE_COLUMN = "departure_date";
     public static final String RETURN_DATE_COLUMN = "return_date";
     public static final String BUDGET_COLUMN = "budget";
+    public static final String FAVORITE_COLUMN = "isFavorite";
     private static final String DB_NAME = "travelappdb";
 
     //Accommodation Table
@@ -89,7 +90,8 @@ public class DBHandler extends SQLiteOpenHelper
                 + DESTINATION_COLUMN + " TEXT NOT NULL,"
                 + DEPARTURE_DATE_COLUMN + " TEXT NOT NULL,"
                 + RETURN_DATE_COLUMN + " TEXT,"
-                + BUDGET_COLUMN + " REAL)";
+                + BUDGET_COLUMN + " REAL, "
+                + FAVORITE_COLUMN + "INTEGER)";
         db.execSQL(createTripQuery);
 
 
@@ -148,7 +150,8 @@ public class DBHandler extends SQLiteOpenHelper
                 + DESTINATION_COLUMN + " TEXT NOT NULL,"
                 + DEPARTURE_DATE_COLUMN + " TEXT NOT NULL,"
                 + RETURN_DATE_COLUMN + " TEXT,"
-                + BUDGET_COLUMN + " REAL)";
+                + BUDGET_COLUMN + " REAL, "
+                + FAVORITE_COLUMN + " INTEGER)";
         db.execSQL(createTripQuery);
         db.close();
     }
@@ -161,6 +164,7 @@ public class DBHandler extends SQLiteOpenHelper
         values.put(DEPARTURE_DATE_COLUMN, trip.getDateDeparture());
         values.put(RETURN_DATE_COLUMN, trip.getDateReturn());
         values.put(BUDGET_COLUMN, trip.getBudget());
+        values.put(FAVORITE_COLUMN, trip.getIsFavorite());
         long num = db.insert(TRIP_TABLE, null, values);
         if (num == -1)
         {
@@ -181,7 +185,7 @@ public class DBHandler extends SQLiteOpenHelper
         {
             do
             {
-                trips.add(new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5)));
+                trips.add(new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5), cursor.getInt(6)));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -195,7 +199,7 @@ public class DBHandler extends SQLiteOpenHelper
         Cursor cursor = db.rawQuery("SELECT * FROM " + TRIP_TABLE + " WHERE "+TRIP_ID_COLUMN+" = "+ID, null);
         if (cursor.moveToFirst())
         {
-            return new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5));
+            return new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5), cursor.getInt(6));
         }
         else
         {
@@ -203,7 +207,7 @@ public class DBHandler extends SQLiteOpenHelper
         }
         cursor.close();
         db.close();
-        return new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5));
+        return new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5), cursor.getInt(6));
     }
 
     public void deleteAllTrips()
@@ -227,6 +231,21 @@ public class DBHandler extends SQLiteOpenHelper
         SQLiteStatement statement = db.compileStatement(query);
         statement.bindLong(1, tripID);
         statement.executeUpdateDelete();
+        db.close();
+    }
+
+    public void favoriteTrip(Trip trip){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Prepare the content values to update the status
+        ContentValues values = new ContentValues();
+        //values.put("item", item.getItem());
+        values.put("isFavorite", trip.getIsFavorite());
+        // might need to change to trip.getIsFavorite() ? 1 : 0, & change method to return a boolean in Trip class if doesn't work
+
+        //Log.d("DB_UPDATE", "Updating status for " + item.getItem() + " to " + item.getStatus());
+
+        db.update("Trips", values, "tripID = ?", new String[]{String.valueOf(trip.getTripID())});
         db.close();
     }
 
