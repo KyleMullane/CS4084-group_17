@@ -241,11 +241,12 @@ public class ViewPastTripsActivity extends AppCompatActivity {
             viewDetailsButton.setOnClickListener(v -> viewTripDetails(pastTrips.get(index)));
 
             verticalLayout.addView(rowText);
-            verticalLayout.addView(favButton);
+            //verticalLayout.addView(favButton);
             verticalLayout.addView(viewDetailsButton);
 
             row.addView(verticalLayout);
             row.addView(spinner);
+            row.addView(favButton);
 
             tableLayout.addView(row);
 
