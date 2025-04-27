@@ -75,6 +75,13 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String ITEM_NAME_COLUMN = "itemName";
     public static final String STATUS_COLUMN = "status";
 
+    //Comments Table
+    public static final String COMMENTS_TABLE = "FavoriteComments";
+    public static final String COMMENT_ID_COLUMN = "commentID";
+    public static final String TRIP_ID_COMMENT_COLUMN = "tripID";
+    public static final String COMMENT_COLUMN = "comment";
+    public static final String LOCKED_COLUMN = "isLocked";
+
     // This may be used for migration in the future.
     private static final int DB_VERSION = 11;
 
@@ -132,11 +139,18 @@ public class DBHandler extends SQLiteOpenHelper
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
         db.execSQL(transportationQuery);
 
-        String query5 = "CREATE TABLE " + BUCKET_LIST_TABLE +
+        String createBucketListQuery = "CREATE TABLE " + BUCKET_LIST_TABLE +
                 " (" + ITEM_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ITEM_NAME_COLUMN + " TEXT NOT NULL, "
                 + STATUS_COLUMN + " INTEGER)"; //WILL BE 1- COMPLETED OR 0- NOT COMPLETED
-        db.execSQL(query5);
+        db.execSQL(createBucketListQuery);
+
+        String createCommentsQuery = "CREATE TABLE " + COMMENTS_TABLE +
+                " (" + COMMENT_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + TRIP_ID_COMMENT_COLUMN + " INTEGER NOT NULL,"
+                + COMMENT_COLUMN + " TEXT NOT NULL,"
+                + LOCKED_COLUMN + " INTEGER DEFAULT 0)";
+        db.execSQL(createCommentsQuery);
     }
 
     //**********TRIPS**********
@@ -563,9 +577,6 @@ public class DBHandler extends SQLiteOpenHelper
 //
 //    }
 
-//    public void completeItem(){
-//        //changes the status to 1 in db
-//    }
 
     public ArrayList<BucketListItem> getBucketListItems(){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -581,6 +592,81 @@ public class DBHandler extends SQLiteOpenHelper
         cursor.close();
         return items;
     }
+
+    //**********BUCKETLIST**********
+    public void createCommentsTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String createCommentsQuery = "CREATE TABLE " + COMMENTS_TABLE
+                + " (" + COMMENT_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + TRIP_ID_COMMENT_COLUMN + " INTEGER NOT NULL, "
+                + COMMENT_COLUMN + " TEXT NOT NULL, "
+                + LOCKED_COLUMN + " INTEGER DEFAULT 0)";
+        db.execSQL(createCommentsQuery);
+        db.close();
+    }
+
+    public void addComment(Trip trip, String comment) throws Exception{
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TRIP_ID_COMMENT_COLUMN, trip.getTripID());
+        values.put(COMMENT_COLUMN, comment);
+        values.put(LOCKED_COLUMN, 1);
+            long num = db.insert(COMMENTS_TABLE, null, values);
+            if (num == -1)
+            {
+                throw new Exception();
+            }
+            Log.d("DBHandler", "Num is = "+num);
+            db.close();
+        }
+
+    public String getComment(int tripID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String comment = "";
+        Cursor cursor = db.rawQuery("SELECT comment FROM FavoriteComments WHERE tripID = ?", new String[]{String.valueOf(tripID)});
+        if (cursor.moveToFirst()) {
+            comment = cursor.getString(0);
+        }
+        cursor.close();
+        db.close();
+        return comment;
+    }
+
+    public void deleteCommentsTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DROP TABLE IF EXISTS " + COMMENTS_TABLE;
+        db.execSQL(query);
+        db.close();
+    }
+
+    public boolean isCommentLocked(int tripID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Query the database for the "isCommentLocked" column based on the tripID
+        Cursor cursor = db.query("FavoriteComments", new String[]{"isLocked"}, "tripID = ?", new String[]{String.valueOf(tripID)}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            // Get the column index for "isCommentLocked"
+            int isLockedColumnIndex = cursor.getColumnIndex("isLocked");
+
+            // Get the value from the "isCommentLocked" column
+            int isLocked = cursor.getInt(isLockedColumnIndex);
+
+            // Close the cursor
+            cursor.close();
+
+            // Return true if locked (1), false otherwise (0)
+            return isLocked == 1;
+        }
+
+        // If no result was found, return false (not locked)
+        if (cursor != null) {
+            cursor.close();
+        }
+        return false;
+    }
+
 
     /*public void changeTripDestination(Integer tripID, String destination){
         SQLiteDatabase db = this.getWritableDatabase();

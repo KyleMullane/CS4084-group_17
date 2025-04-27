@@ -40,18 +40,19 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity", "Testing to see if printing to the terminal works for debugging purposes!");
         database = DBHandler.getInstance(context);
 
+//        database.deleteCommentsTable();
 //        database.deleteBucketListTable();
 //        database.deleteActivityTable();
 //        database.deleteAccommodationTable();
 //        database.deleteTransportationTable();
 //        database.deleteTripTable();
 
-        //database.createTripTable();
 //        database.createTripTable();
 //        database.createTransportationTable();
 //        database.createActivitiesTable();
 //        database.createAccommodationTable();
 //        database.createBucketListTable();
+//        database.createCommentsTable();
 
     }
     public void sendToHomePage(View view)
