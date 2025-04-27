@@ -74,6 +74,13 @@
             android:layout_gravity="center"
             android:onClick="sendToBucketListPage"
             android:text="View Bucket List" />
+        <Button
+            android:id="@+id/favoritesLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="sendToFavoritesPage"
+            android:text="View Favorites" />
     </LinearLayout>
     </FrameLayout>
 

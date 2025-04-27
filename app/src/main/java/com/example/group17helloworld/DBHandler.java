@@ -210,6 +210,24 @@ public class DBHandler extends SQLiteOpenHelper
         return new Trip(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getDouble(4), cursor.getInt(5));
     }
 
+    public ArrayList<Trip> getFavoriteTrips()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // This will be the result.
+        ArrayList<Trip> trips = new ArrayList<Trip>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TRIP_TABLE + " WHERE " + FAVORITE_COLUMN + " = 1", null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                trips.add(new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5), cursor.getInt(6)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return trips;
+    }
+
     public void deleteAllTrips()
     {
         SQLiteDatabase db = this.getWritableDatabase();

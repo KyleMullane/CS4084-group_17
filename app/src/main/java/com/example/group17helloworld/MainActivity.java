@@ -77,4 +77,9 @@ public class MainActivity extends AppCompatActivity {
         Intent bucketListIntent = new Intent(this, ViewBucketListActivity.class);
         startActivity(bucketListIntent);
     }
+
+    public void sendToFavoritesPage(View view){
+        Intent favoritesIntent = new Intent(this, ViewFavoritesActivity.class);
+        startActivity(favoritesIntent);
+    }
 }
