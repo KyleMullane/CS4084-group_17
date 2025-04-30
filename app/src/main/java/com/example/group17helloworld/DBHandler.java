@@ -98,7 +98,7 @@ public class DBHandler extends SQLiteOpenHelper
                 + DEPARTURE_DATE_COLUMN + " TEXT NOT NULL,"
                 + RETURN_DATE_COLUMN + " TEXT,"
                 + BUDGET_COLUMN + " REAL, "
-                + FAVORITE_COLUMN + "INTEGER)";
+                + FAVORITE_COLUMN + " INTEGER)";
         db.execSQL(createTripQuery);
 
 
