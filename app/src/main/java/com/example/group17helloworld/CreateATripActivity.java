@@ -55,10 +55,12 @@ public class CreateATripActivity extends AppCompatActivity {
             EditText dateDepartureText = findViewById(R.id.dateDepartureInput);
             String dateDeparture = dateDepartureText.getText().toString();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            sdf.setLenient(false);
             TextView dateErrorMessage = findViewById(R.id.dateErrorMessage);
             dateErrorMessage.setText("");
+            Date parsedDepartureDate = new Date();
             try {
-                Date parsedDepartureDate = sdf.parse(dateDeparture);
+                parsedDepartureDate = sdf.parse(dateDeparture);
             }
             catch (Exception e)
             {
@@ -69,11 +71,12 @@ public class CreateATripActivity extends AppCompatActivity {
 
             EditText dateReturnText = findViewById(R.id.dateReturnInput);
             String dateReturn = dateReturnText.getText().toString();
+            Date parsedReturnDate = new Date();
 
             if (!(dateReturn.isEmpty()))
             {
                 try {
-                    Date parsedReturnDate = sdf.parse(dateReturn);
+                    parsedReturnDate = sdf.parse(dateReturn);
                 }
                 catch (Exception e)
                 {
@@ -99,6 +102,15 @@ public class CreateATripActivity extends AppCompatActivity {
                 exceptionTriggered = true;
                 budgetErrorMessage.setText("Invalid budget. Make sure to input a numerical value that is positive");
             }
+            TextView incorrectOrderMessage = findViewById(R.id.incorrectOrderMessage);
+            incorrectOrderMessage.setText("");
+
+            if (!dateReturn.isEmpty() && parsedReturnDate.before(parsedDepartureDate))
+            {
+                exceptionTriggered = true;
+                incorrectOrderMessage.setText("Return date is before departure date. This isn't a time traveling planner!");
+            }
+
             if (departure.isEmpty() || destination.isEmpty())
             {
                 throw new Exception();
