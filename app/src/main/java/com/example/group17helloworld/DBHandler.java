@@ -64,6 +64,7 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String TRANSPORTATION_DESTINATION_COLUMN = "destination";
     public static final String TRANSPORTATION_DATE_COLUMN = "date";
     public static final String TRANSPORTATION_DEPARTURE_TIME_COLUMN = "departure_time";
+    public static final String TRANSPORTATION_ARRIVAL_DATE_COLUMN = "arrival_date";
     public static final String TRANSPORTATION_ARRIVAL_TIME_COLUMN = "arrival_time";
     public static final String TRANSPORTATION_TYPE_COLUMN = "type";
     public static final String TRANSPORTATION_PRICE_COLUMN = "price";
@@ -132,6 +133,7 @@ public class DBHandler extends SQLiteOpenHelper
                 + TRANSPORTATION_DESTINATION_COLUMN + " TEXT NOT NULL, "
                 + TRANSPORTATION_DATE_COLUMN + " TEXT NOT NULL, "
                 + TRANSPORTATION_DEPARTURE_TIME_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_ARRIVAL_DATE_COLUMN + " TEXT NOT NULL, "
                 + TRANSPORTATION_ARRIVAL_TIME_COLUMN + " TEXT NOT NULL, "
                 + TRANSPORTATION_TYPE_COLUMN + " TEXT NOT NULL, "
                 + TRANSPORTATION_PRICE_COLUMN + " REAL NOT NULL, "
@@ -291,6 +293,7 @@ public class DBHandler extends SQLiteOpenHelper
                 + TRANSPORTATION_DESTINATION_COLUMN + " TEXT NOT NULL, "
                 + TRANSPORTATION_DATE_COLUMN + " TEXT NOT NULL, "
                 + TRANSPORTATION_DEPARTURE_TIME_COLUMN + " TEXT NOT NULL, "
+                + TRANSPORTATION_ARRIVAL_DATE_COLUMN + " TEXT NOT NULL, "
                 + TRANSPORTATION_ARRIVAL_TIME_COLUMN + " TEXT NOT NULL, "
                 + TRANSPORTATION_TYPE_COLUMN + " TEXT NOT NULL, "
                 + TRANSPORTATION_PRICE_COLUMN + " REAL NOT NULL, "
@@ -316,6 +319,7 @@ public class DBHandler extends SQLiteOpenHelper
         values.put(TRANSPORTATION_DESTINATION_COLUMN, transportation.getDestination());
         values.put(TRANSPORTATION_DATE_COLUMN, transportation.getDate());
         values.put(TRANSPORTATION_DEPARTURE_TIME_COLUMN, transportation.getDepartureTime());
+        values.put(TRANSPORTATION_ARRIVAL_DATE_COLUMN, transportation.getArrivalDate());
         values.put(TRANSPORTATION_ARRIVAL_TIME_COLUMN, transportation.getArrivalTime());
         values.put(TRANSPORTATION_TYPE_COLUMN, transportation.getType());
         values.put(TRANSPORTATION_PRICE_COLUMN, transportation.getPrice());
@@ -339,7 +343,7 @@ public class DBHandler extends SQLiteOpenHelper
         {
             do
             {
-                transportations.add(new Transportation(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getDouble(7), cursor.getInt(8)));
+                transportations.add(new Transportation(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getDouble(8), cursor.getInt(9)));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -383,7 +387,7 @@ public class DBHandler extends SQLiteOpenHelper
         {
             do
             {
-                transportations.add(new Transportation(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getDouble(7), cursor.getInt(8)));
+                transportations.add(new Transportation(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getDouble(8), cursor.getInt(9)));
             } while (cursor.moveToNext());
         }
         cursor.close();

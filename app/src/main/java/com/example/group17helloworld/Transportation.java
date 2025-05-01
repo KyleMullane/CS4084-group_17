@@ -1,12 +1,13 @@
 package com.example.group17helloworld;
 
-public class Transportation {
+public class Transportation implements Comparable<Transportation> {
 
     public Integer transportationID;
     public String departureLocation;
     public String destination;
     public String date;
     public String departureTime;
+    public String arrivalDate;
     public String arrivalTime;
     public String type;
     public double price;
@@ -19,28 +20,31 @@ public class Transportation {
         destination = "";
         date = "";
         departureTime = "";
+        arrivalDate = "";
         arrivalTime = "";
         type = "";
         price = 0.0;
         tripID = 0;
     }
-    public Transportation(int transportationID, String departureLocation, String destination, String date, String departureTime, String arrivalTime, String type, double price, int tripID){
+    public Transportation(int transportationID, String departureLocation, String destination, String date, String departureTime, String arrivalDate, String arrivalTime, String type, double price, int tripID){
         this.transportationID = transportationID;
         this.departureLocation = departureLocation;
         this.destination = destination;
         this.date = date;
         this.departureTime = departureTime;
+        this.arrivalDate = arrivalDate;
         this.arrivalTime = arrivalTime;
         this.type = type;
         this.price = price;
         this.tripID = tripID;
     }
-    public Transportation(String departureLocation, String destination, String date, String departureTime, String arrivalTime, String type, double price, int tripID){
+    public Transportation(String departureLocation, String destination, String date, String departureTime, String arrivalDate, String arrivalTime, String type, double price, int tripID){
         //this.transportationID = transportationID;
         this.departureLocation = departureLocation;
         this.destination = destination;
         this.date = date;
         this.departureTime = departureTime;
+        this.arrivalDate = arrivalDate;
         this.arrivalTime = arrivalTime;
         this.type = type;
         this.price = price;
@@ -85,7 +89,8 @@ public class Transportation {
     public void setDepartureTime(String departureTime) {
         this.departureTime = departureTime;
     }
-
+    public void setArrivalDate(String arrivalDate) {this.arrivalDate = arrivalDate;}
+    public String getArrivalDate() {return this.arrivalDate;}
     public String getArrivalTime() {
         return arrivalTime;
     }
@@ -116,6 +121,11 @@ public class Transportation {
 
     public void setTripID(int tripID) {
         this.tripID = tripID;
+    }
+    @Override
+    public int compareTo(Transportation other)
+    {
+        return this.date.compareTo(other.getDate());
     }
 
     /*public void setTransportationID(Integer transportationID){

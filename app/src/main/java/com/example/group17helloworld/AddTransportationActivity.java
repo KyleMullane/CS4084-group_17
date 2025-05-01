@@ -165,7 +165,7 @@ public class AddTransportationActivity extends AppCompatActivity {
 
             if (!exceptionTriggered)
             {
-                database.addTransportation(new Transportation(departure,destination,date,departureTime,arrivalTime,type,price,trip.getTripID()));
+                database.addTransportation(new Transportation(departure,destination,date,departureTime,arrivalDate,arrivalTime,type,price,trip.getTripID()));
                 Log.d("AddTransportationActivity", "Adding transportation to database was successful");
                 ArrayList<Transportation> transportationList = database.getTransportations();
                 Log.d("AddTransportationActivity","First item in transportation list is "+transportationList.get(0));
