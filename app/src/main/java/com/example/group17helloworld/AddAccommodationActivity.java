@@ -14,7 +14,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class AddAccommodationActivity extends AppCompatActivity {
     private static DBHandler database;
@@ -40,8 +43,11 @@ public class AddAccommodationActivity extends AppCompatActivity {
 
     public void addAccommodation(View view)
     {
+        boolean exceptionTriggered = false;
         try
         {
+            TextView emptyFieldMessage = findViewById(R.id.checkInDateErrorMessage);
+            emptyFieldMessage.setText("");
             //String name, String type, String address, String checkinDate, String checkoutdate, double price, int tripID
             EditText nameText = findViewById(R.id.nameInput);
             String name = nameText.getText().toString();
@@ -54,26 +60,71 @@ public class AddAccommodationActivity extends AppCompatActivity {
 
             EditText checkInDateText = findViewById(R.id.checkInInput);
             String checkInDate = checkInDateText.getText().toString();
-
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date parsedDate = new Date();
+            TextView checkInMessage = findViewById(R.id.checkInDateErrorMessage);
+            try {
+                sdf.setLenient(false);
+                parsedDate = sdf.parse(checkInDate);
+                checkInMessage.setText("");
+            }
+            catch (Exception e)
+            {
+                exceptionTriggered = true;
+                checkInMessage.setText("Error with check in date format. Make sure to use the format YYYY-MM-DD, with no spaces. Sample date: 2025-05-02");
+            }
             EditText checkOutDateText = findViewById(R.id.checkOutInput);
             String checkOutDate = checkOutDateText.getText().toString();
-
+            TextView checkOutMessage = findViewById(R.id.checkOutDateErrorMessage);
+            try {
+                sdf.setLenient(false);
+                parsedDate = sdf.parse(checkOutDate);
+                checkOutMessage.setText("");
+            }
+            catch (Exception e)
+            {
+                exceptionTriggered = true;
+                checkOutMessage.setText("Error with check out date format. Make sure to use the format YYYY-MM-DD, with no spaces. Sample date: 2025-05-02");
+            }
             EditText priceText = findViewById(R.id.priceInput);
             String priceString = priceText.getText().toString();
-            double price = Double.parseDouble(priceString);
+            TextView priceMessage = findViewById(R.id.priceErrorMessage);
+            double price = 0.0;
+            try {
+                priceMessage.setText("");
+                price = Double.parseDouble(priceString);
+                if (price < 0)
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception e)
+            {
+                exceptionTriggered = true;
+                priceMessage.setText("Invalid price. Make sure to enter a numerical value that is positive");
+            }
 
-            database.addAccommodation(new Accommodation(name,type,address,checkInDate,checkOutDate,price,trip.getTripID()));
-            Log.d("AddAccommodationActivity", "Adding accommodation to database was successful");
-            ArrayList<Accommodation> accommodationList = database.getAccommodations();
-            Log.d("AddAccommodationActivity","First item in accommodation list is "+accommodationList.get(0));
-            Intent homePageIntent = new Intent(this, HomePageActivity.class);
-            startActivity(homePageIntent);
+            if (name.isEmpty() || type.isEmpty() || address.isEmpty())
+            {
+                throw new Exception();
+            }
+
+            if (!exceptionTriggered)
+            {
+                database.addAccommodation(new Accommodation(name,type,address,checkInDate,checkOutDate,price,trip.getTripID()));
+                Log.d("AddAccommodationActivity", "Adding accommodation to database was successful");
+                ArrayList<Accommodation> accommodationList = database.getAccommodations();
+                Log.d("AddAccommodationActivity","First item in accommodation list is "+accommodationList.get(0));
+                Intent homePageIntent = new Intent(this, HomePageActivity.class);
+                startActivity(homePageIntent);
+            }
+
         }
         catch (Exception e)
         {
             Log.d("AddAccommodationActivity", "Catch block triggered in addAccommodation attempt");
-            TextView titleText = findViewById(R.id.addAccommodationTitleText);
-            titleText.setText("Error: adding accommodation was not successful");
+            TextView emptyFieldMessage = findViewById(R.id.checkInDateErrorMessage);
+            emptyFieldMessage.setText("Not all fields filled in");
         }
 
 

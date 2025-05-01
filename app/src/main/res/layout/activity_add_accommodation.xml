@@ -6,7 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddAccommodationActivity">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        tools:ignore="MissingConstraints">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -20,6 +24,24 @@
             android:textStyle="bold"
             android:gravity="center"
             android:text="Add Accommodation Below!"/>
+        <TextView
+            android:id="@+id/checkInDateErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/checkOutDateErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/priceErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
         <TextView
             android:id="@+id/createTripErrorMessage"
             android:layout_height="match_parent"
@@ -78,7 +100,7 @@
             </TableRow>
             <TableRow>
                 <EditText android:id="@+id/checkInInput"
-                    android:hint="check in date"
+                    android:hint="YYYY-MM-DD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:drawable/editbox_background"/>
@@ -91,7 +113,7 @@
             </TableRow>
             <TableRow>
                 <EditText android:id="@+id/checkOutInput"
-                    android:hint="check out date"
+                    android:hint="YYYY-MM-DD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:drawable/editbox_background"/>
@@ -117,5 +139,6 @@
             android:onClick="addAccommodation"
             android:text="Add Accommodation" />
     </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

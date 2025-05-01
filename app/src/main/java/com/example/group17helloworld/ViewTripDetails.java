@@ -91,7 +91,7 @@ public class ViewTripDetails extends AppCompatActivity {
             accommodationRow.setPadding(10,10,10,10);
 
             TextView accommodationRowText = new TextView(this);
-            accommodationRowText.setText(tripAccommodations.get(index).getName()+" located at "+tripAccommodations.get(index).getAddress()+" \n Type: "+tripAccommodations.get(index).getType()+" \n Check In : "+tripAccommodations.get(index).getCheckinDate()+" \n Check Out Date: "+tripAccommodations.get(index).getCheckoutDate()+" \n Price: €"+tripAccommodations.get(index).getPrice());
+            accommodationRowText.setText(tripAccommodations.get(index).getName()+" located at "+tripAccommodations.get(index).getAddress()+" \n Type: "+tripAccommodations.get(index).getType()+" \n Check In Date: "+tripAccommodations.get(index).getCheckinDate()+" \n Check Out Date: "+tripAccommodations.get(index).getCheckoutDate()+" \n Price: €"+tripAccommodations.get(index).getPrice());
             accommodationRow.addView(accommodationRowText);
             accommodationTable.addView(accommodationRow);
         }
