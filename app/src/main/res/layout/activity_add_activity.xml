@@ -55,8 +55,9 @@
             <TableRow>
                 <EditText android:id="@+id/nameInput"
                     android:hint="name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="330dp"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:background="@android:drawable/editbox_background"/>
             </TableRow>
             <TableRow>
@@ -69,8 +70,9 @@
                 <EditText
                     android:id="@+id/locationInput"
                     android:hint="location"
-                    android:layout_width="wrap_content"
+                    android:layout_width="330dp"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:background="@android:drawable/editbox_background"/>
             </TableRow>
             <TableRow>
@@ -82,8 +84,9 @@
             <TableRow>
                 <EditText android:id="@+id/dateInput"
                     android:hint="YYYY-MM-DD"
-                    android:layout_width="wrap_content"
+                    android:layout_width="330dp"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:background="@android:drawable/editbox_background"/>
             </TableRow>
             <TableRow>
@@ -95,8 +98,9 @@
             <TableRow>
                 <EditText android:id="@+id/timeInput"
                     android:hint="HH:mm"
-                    android:layout_width="wrap_content"
+                    android:layout_width="330dp"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:background="@android:drawable/editbox_background"/>
             </TableRow>
             <TableRow>
@@ -108,8 +112,9 @@
             <TableRow>
                 <EditText android:id="@+id/priceInput"
                     android:hint="price"
-                    android:layout_width="wrap_content"
+                    android:layout_width="330dp"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:background="@android:drawable/editbox_background"/>
             </TableRow>
             <TableRow>

@@ -154,8 +154,8 @@ public class HomePageActivity extends AppCompatActivity {
             int index = i;
             TableRow row = new TableRow(this);
             row.setLayoutParams(new TableRow.LayoutParams(
-                    TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.MATCH_PARENT));
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT));
             row.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
             row.setPadding(10,10,10,10);
 
@@ -167,7 +167,13 @@ public class HomePageActivity extends AppCompatActivity {
 
 
             TextView rowText = new TextView(this);
+            rowText.setMaxWidth(500);
+            rowText.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.WRAP_CONTENT));
             rowText.setText("Leaving From: "+todaysTrips.get(i).getDeparture()+"\nGoing to: "+todaysTrips.get(i).getDestination()+"\nDate: "+todaysTrips.get(i).getDateDeparture());
+            rowText.setSingleLine(false);
+            rowText.setEllipsize(null);
             rowText.setPadding(8, 8, 8, 8);
 
 
@@ -252,9 +258,9 @@ public class HomePageActivity extends AppCompatActivity {
        {
            int index = i;
            TableRow row = new TableRow(this);
-           row.setLayoutParams(new TableRow.LayoutParams(
-                   TableRow.LayoutParams.MATCH_PARENT,
-                   TableRow.LayoutParams.WRAP_CONTENT));
+           row.setLayoutParams(new TableLayout.LayoutParams(
+                   TableLayout.LayoutParams.MATCH_PARENT,
+                   TableLayout.LayoutParams.WRAP_CONTENT));
            row.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
            row.setPadding(10,10,10,10);
 
@@ -266,8 +272,11 @@ public class HomePageActivity extends AppCompatActivity {
 
 
            TextView rowText = new TextView(this);
+           rowText.setMaxWidth(500);
            rowText.setText("Leaving From: "+upcomingTrips.get(i).getDeparture()+"\nGoing to: "+upcomingTrips.get(i).getDestination()+"\nDate: "+upcomingTrips.get(i).getDateDeparture());
            rowText.setPadding(8, 8, 8, 8);
+           rowText.setSingleLine(false);
+           rowText.setEllipsize(null);
 
 
            String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities", "View Budgeting"};

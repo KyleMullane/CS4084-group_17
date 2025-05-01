@@ -73,8 +73,9 @@
             <TableRow>
                 <EditText android:id="@+id/departureInput"
                     android:hint="departure"
-                    android:layout_width="wrap_content"
+                    android:layout_width="330dp"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:background="@android:drawable/editbox_background"/>
             </TableRow>
             <TableRow>
@@ -87,8 +88,9 @@
                 <EditText
                     android:id="@+id/destinationInput"
                     android:hint="destination"
-                    android:layout_width="wrap_content"
+                    android:layout_width="330dp"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:background="@android:drawable/editbox_background"/>
             </TableRow>
             <TableRow>
@@ -100,8 +102,9 @@
             <TableRow>
                 <EditText android:id="@+id/dateInput"
                     android:hint="YYYY-MM-DD"
-                    android:layout_width="wrap_content"
+                    android:layout_width="330dp"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:background="@android:drawable/editbox_background"/>
             </TableRow>
             <TableRow>
@@ -113,8 +116,9 @@
             <TableRow>
                 <EditText android:id="@+id/departureTimeInput"
                     android:hint="HH:mm"
-                    android:layout_width="wrap_content"
+                    android:layout_width="330dp"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:background="@android:drawable/editbox_background"/>
             </TableRow>
             <TableRow>
@@ -126,8 +130,9 @@
             <TableRow>
                 <EditText android:id="@+id/arrivalDateInput"
                     android:hint="YYYY-MM-DD"
-                    android:layout_width="wrap_content"
+                    android:layout_width="330dp"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:background="@android:drawable/editbox_background"/>
             </TableRow>
             <TableRow>
@@ -139,8 +144,9 @@
             <TableRow>
                 <EditText android:id="@+id/arrivalTimeInput"
                     android:hint="HH:mm"
-                    android:layout_width="wrap_content"
+                    android:layout_width="330dp"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:background="@android:drawable/editbox_background"/>
             </TableRow>
             <TableRow>
@@ -152,8 +158,9 @@
             <TableRow>
                 <EditText android:id="@+id/typeInput"
                     android:hint="type"
-                    android:layout_width="wrap_content"
+                    android:layout_width="330dp"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:background="@android:drawable/editbox_background"/>
             </TableRow>
             <TableRow>
@@ -165,8 +172,9 @@
             <TableRow>
                 <EditText android:id="@+id/priceInput"
                     android:hint="price"
-                    android:layout_width="wrap_content"
+                    android:layout_width="330dp"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:background="@android:drawable/editbox_background"/>
             </TableRow>
         </TableLayout>

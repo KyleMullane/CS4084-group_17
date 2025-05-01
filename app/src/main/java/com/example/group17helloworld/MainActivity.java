@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("MainActivity", "Testing to see if printing to the terminal works for debugging purposes!");
         database = DBHandler.getInstance(context);
 
+
 //        database.deleteCommentsTable();
 //        database.deleteBucketListTable();
 //        database.deleteActivityTable();
