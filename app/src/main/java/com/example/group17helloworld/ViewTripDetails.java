@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.group17helloworld.DBHandler;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -68,8 +69,11 @@ public class ViewTripDetails extends AppCompatActivity {
             transportationRow.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
             transportationRow.setPadding(10,10,10,10);
 
+            String departureTime = tripTransportations.get(index).getDepartureTime().substring(11,16);
+            String arrivalTime =  tripTransportations.get(index).getArrivalTime().substring(11,16);
+            Log.d("ViewTripDetails", "Length of time string is: "+tripTransportations.get(index).getArrivalTime().length());
             TextView transportationRowText = new TextView(this);
-            transportationRowText.setText(tripTransportations.get(index).getType()+" from "+tripTransportations.get(index).getDepartureLocation()+" to "+tripTransportations.get(index).getDestination()+"\n Date: "+tripTransportations.get(index).getDate()+" \n Departure Time: "+tripTransportations.get(index).getDepartureTime()+" \n Arrival Date: "+tripTransportations.get(index).getArrivalDate()+" \n Arrival Time: "+tripTransportations.get(index).getArrivalTime()+" \n Price: €"+tripTransportations.get(index).getPrice());
+            transportationRowText.setText(tripTransportations.get(index).getType()+" from "+tripTransportations.get(index).getDepartureLocation()+" to "+tripTransportations.get(index).getDestination()+"\n Date: "+tripTransportations.get(index).getDate()+" \n Departure Time: "+departureTime+" \n Arrival Date: "+tripTransportations.get(index).getArrivalDate()+" \n Arrival Time: "+arrivalTime+" \n Price: €"+tripTransportations.get(index).getPrice());
             transportationRow.addView(transportationRowText);
             transportationTable.addView(transportationRow);
         }
@@ -117,7 +121,8 @@ public class ViewTripDetails extends AppCompatActivity {
                     TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
             activityRowText.setMaxWidth(800);
-            activityRowText.setText(tripActivities.get(index).getName()+"\n Location: "+tripActivities.get(index).getLocation()+"\n Date: "+tripActivities.get(index).getDate()+"\n Time: "+tripActivities.get(index).getTime()+"\n Price: €"+tripActivities.get(index).getPrice()+"\n Description: "+tripActivities.get(index).getDescription());
+            String activityTime = tripActivities.get(index).getTime().substring(11,16);
+            activityRowText.setText(tripActivities.get(index).getName()+"\n Location: "+tripActivities.get(index).getLocation()+"\n Date: "+tripActivities.get(index).getDate()+"\n Time: "+activityTime+"\n Price: €"+tripActivities.get(index).getPrice()+"\n Description: "+tripActivities.get(index).getDescription());
             activityRowText.setSingleLine(false);
             activityRowText.setEllipsize(null);
             activityRow.addView(activityRowText);
