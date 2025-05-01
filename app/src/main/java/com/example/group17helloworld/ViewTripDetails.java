@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import com.example.group17helloworld.DBHandler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ViewTripDetails extends AppCompatActivity {
     private static DBHandler database;
@@ -56,6 +57,7 @@ public class ViewTripDetails extends AppCompatActivity {
             TextView noTransportation = findViewById(R.id.noTransportation);
             noTransportation.setText("You currently have no transportation added for this trip");
         }
+        Collections.sort(tripTransportations);
         for (int i=0; i<tripTransportations.size(); i++)
         {
             int index = i;

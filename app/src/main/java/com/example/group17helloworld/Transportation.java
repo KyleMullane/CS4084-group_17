@@ -125,7 +125,7 @@ public class Transportation implements Comparable<Transportation> {
     @Override
     public int compareTo(Transportation other)
     {
-        return this.date.compareTo(other.getDate());
+        return this.departureTime.compareTo(other.getDepartureTime());
     }
 
     /*public void setTransportationID(Integer transportationID){

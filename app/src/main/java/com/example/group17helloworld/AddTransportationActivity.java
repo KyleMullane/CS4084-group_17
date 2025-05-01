@@ -49,9 +49,12 @@ public class AddTransportationActivity extends AppCompatActivity {
         boolean arrivalDateExceptionTriggered = false;
         try
         {
+            TextView emptyFieldsMessage = findViewById(R.id.dateErrorMessage);
+            emptyFieldsMessage.setText("");
             // String departureLocation, String destination, String date, String departureTime, String arrivalTime, String type, double price, int tripID
             EditText departureText = findViewById(R.id.departureInput);
             String departure = departureText.getText().toString();
+            Log.d("AddTransportationActivity", "departure is: "+departure);
 
             EditText destinationText = findViewById(R.id.destinationInput);
             String destination = destinationText.getText().toString();
@@ -70,18 +73,19 @@ public class AddTransportationActivity extends AppCompatActivity {
             {
                 exceptionTriggered = true;
                 dateExceptionTriggered = true;
-                dateErrorMessage.setText("Error with departure date format. Make sure to use the format YYYY-MM-DD, with no spaces (even after). Sample date: 2025-05-02");
+                dateErrorMessage.setText("Error with departure date format. Make sure to use the format YYYY-MM-DD, with no spaces. Sample date: 2025-05-02");
             }
 
             EditText departureTimeText = findViewById(R.id.departureTimeInput);
             String departureTime = departureTimeText.getText().toString();
             TextView departureTimeMessage = findViewById(R.id.departTimeMessage);
             Date parsedDepartureTime = new Date();
+            String dateTime = "";
             try {
                 departureTimeMessage.setText("");
                 SimpleDateFormat timeSdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm");
                 timeSdf.setLenient(false);
-                String dateTime = date + "-" + departureTime;
+                dateTime = date + "-" + departureTime;
                 parsedDepartureTime = timeSdf.parse(dateTime);
             }
             catch (Exception e)
@@ -107,18 +111,19 @@ public class AddTransportationActivity extends AppCompatActivity {
             {
                 exceptionTriggered = true;
                 arrivalDateExceptionTriggered = true;
-                arrivalDateMessage.setText("Error with arrival date format. Make sure to use the format YYYY-MM-DD, with no spaces (even after). Sample date: 2025-05-02");
+                arrivalDateMessage.setText("Error with arrival date format. Make sure to use the format YYYY-MM-DD, with no spaces. Sample date: 2025-05-02");
             }
 
             EditText arrivalTimeText = findViewById(R.id.arrivalTimeInput);
             String arrivalTime = arrivalTimeText.getText().toString();
             TextView arrivalTimeMessage = findViewById(R.id.arrivalTimeMessage);
             Date parsedArrivalTime = new Date();
+            String arrivalDateTime = "";
             try {
                 arrivalTimeMessage.setText("");
                 SimpleDateFormat arrivalTimeSdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm");
                 arrivalTimeSdf.setLenient(false);
-                String arrivalDateTime = arrivalDate + "-" + arrivalTime;
+                arrivalDateTime = arrivalDate + "-" + arrivalTime;
                 parsedArrivalTime = arrivalTimeSdf.parse(arrivalDateTime);
             }
             catch (Exception e)
@@ -162,10 +167,13 @@ public class AddTransportationActivity extends AppCompatActivity {
                 costMessage.setText("Invalid cost. Make sure to enter a numerical value that is positive");
             }
 
-
+            if (departure.isEmpty() || type.isEmpty() || destination.isEmpty())
+            {
+                throw new Exception();
+            }
             if (!exceptionTriggered)
             {
-                database.addTransportation(new Transportation(departure,destination,date,departureTime,arrivalDate,arrivalTime,type,price,trip.getTripID()));
+                database.addTransportation(new Transportation(departure,destination,date,dateTime,arrivalDateTime,arrivalTime,type,price,trip.getTripID()));
                 Log.d("AddTransportationActivity", "Adding transportation to database was successful");
                 ArrayList<Transportation> transportationList = database.getTransportations();
                 Log.d("AddTransportationActivity","First item in transportation list is "+transportationList.get(0));
@@ -177,8 +185,8 @@ public class AddTransportationActivity extends AppCompatActivity {
         catch (Exception e)
         {
             Log.d("AddTransportationActivity", "Catch block triggered in addTransportation attempt");
-            TextView titleText = findViewById(R.id.addTransportationTitleText);
-            titleText.setText("Error: adding transportation was not successful");
+            TextView emptyFieldsMessage = findViewById(R.id.dateErrorMessage);
+            emptyFieldsMessage.setText("Error: some fields not filled in");
         }
 
 
