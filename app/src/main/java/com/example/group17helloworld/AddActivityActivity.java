@@ -14,7 +14,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class AddActivityActivity extends AppCompatActivity {
     private static DBHandler database;
@@ -39,8 +42,12 @@ public class AddActivityActivity extends AppCompatActivity {
 
     public void addActivity(View view)
     {
+        boolean exceptionTriggered = false;
+        boolean dateExceptionTriggered = false;
         try
         {
+            TextView emptyViewMessage = findViewById(R.id.addDateErrorMessage);
+            emptyViewMessage.setText("");
             //String name, String location, String date, String time, double price, String description, int tripID
             EditText nameText = findViewById(R.id.nameInput);
             String name = nameText.getText().toString();
@@ -50,29 +57,84 @@ public class AddActivityActivity extends AppCompatActivity {
 
             EditText dateText = findViewById(R.id.dateInput);
             String date = dateText.getText().toString();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date parsedDate = new Date();
+            TextView dateMessage = findViewById(R.id.addDateErrorMessage);
+            try {
+                dateMessage.setText("");
+                sdf.setLenient(false);
+                parsedDate = sdf.parse(date);
+            }
+            catch (Exception e)
+            {
+                exceptionTriggered = true;
+                dateExceptionTriggered = true;
+                dateMessage.setText("Error with the date format. Make sure to use the format YYYY-MM-DD, with no spaces. Sample date: 2025-05-02");
+            }
 
             EditText timeText = findViewById(R.id.timeInput);
             String time = timeText.getText().toString();
+            TextView timeMessage = findViewById(R.id.addTimeErrorMessage);
+            String dateTime = "";
+            Date parsedTime = new Date();
+            try {
+                timeMessage.setText("");
+                SimpleDateFormat timeSdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm");
+                timeSdf.setLenient(false);
+                dateTime = date + "-" + time;
+                parsedTime = timeSdf.parse(dateTime);
+            }
+            catch (Exception e)
+            {
+                exceptionTriggered = true;
+                if (!dateExceptionTriggered)
+                {
+                    timeMessage.setText("Error with time format. Make sure to use HH:mm with the 24 hour clock, and no spaces. Sample time: 15:31");
+                }
+            }
 
             EditText priceText = findViewById(R.id.priceInput);
             String priceString = priceText.getText().toString();
-            double price = Double.parseDouble(priceString);
+            TextView priceMessage = findViewById(R.id.priceErrorMessage);
+            double price = 0.0;
+            try {
+                priceMessage.setText("");
+                price = Double.parseDouble(priceString);
+                if (price < 0)
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception e)
+            {
+                exceptionTriggered = true;
+                priceMessage.setText("Invalid price. Make sure to enter a numerical value that is positive");
+            }
 
             EditText descriptionText = findViewById(R.id.descriptionInput);
             String description = descriptionText.getText().toString();
 
-            database.addActivity(new Activity(name,location,date,time,price,description,trip.getTripID()));
-            Log.d("AddActivityActivity", "Adding activity to database was successful");
-            ArrayList<Activity> activityList = database.getActivities();
-            Log.d("AddActivityActivity","First item in activity list is "+activityList.get(0));
-            Intent homePageIntent = new Intent(this, HomePageActivity.class);
-            startActivity(homePageIntent);
+            if (name.isEmpty() || location.isEmpty() || description.isEmpty())
+            {
+                throw new Exception();
+            }
+
+            if (!exceptionTriggered)
+            {
+                database.addActivity(new Activity(name,location,date,dateTime,price,description,trip.getTripID()));
+                Log.d("AddActivityActivity", "Adding activity to database was successful");
+                ArrayList<Activity> activityList = database.getActivities();
+                Log.d("AddActivityActivity","First item in activity list is "+activityList.get(0));
+                Intent homePageIntent = new Intent(this, HomePageActivity.class);
+                startActivity(homePageIntent);
+            }
+
         }
         catch (Exception e)
         {
             Log.d("AddActivityActivity", "Catch block triggered in addActivity attempt");
-            TextView titleText = findViewById(R.id.addActivityTitleText);
-            titleText.setText("Error: adding activity was not successful");
+            TextView emptyViewMessage = findViewById(R.id.addDateErrorMessage);
+            emptyViewMessage.setText("Error: some fields are not filled in");
         }
 
 

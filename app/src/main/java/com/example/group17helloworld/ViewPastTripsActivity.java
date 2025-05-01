@@ -166,18 +166,18 @@ public class ViewPastTripsActivity extends AppCompatActivity {
 
             ImageButton favButton = new ImageButton(this);
             if (pastTrips.get(i).getIsFavorite()) {
-                favButton.setImageResource(R.drawable.ic_star_filled);  // Your filled star drawable
+                favButton.setImageResource(R.drawable.ic_star_filled); 
             } else {
-                favButton.setImageResource(R.drawable.ic_star_border);  // Your empty star drawable
+                favButton.setImageResource(R.drawable.ic_star_border);
             }
             favButton.setContentDescription("Favorite Trip");
             favButton.setOnClickListener(v -> {
-                // Toggle the favorite status when clicked
+
                 int newStatus = !pastTrips.get(index).getIsFavorite() ? 1 : 0;
                 pastTrips.get(index).setFavoriteStatus(newStatus);
                 database.favoriteTrip(pastTrips.get(index));
 
-                // Update the star icon
+
                 if (newStatus == 1) {
                     favButton.setImageResource(R.drawable.ic_star_filled);
                 } else {

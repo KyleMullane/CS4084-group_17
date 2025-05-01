@@ -6,6 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddActivityActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        tools:ignore="MissingConstraints">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -20,7 +25,19 @@
             android:gravity="center"
             android:text="Add an Activity Below!"/>
         <TextView
-            android:id="@+id/addActivityErrorMessage"
+            android:id="@+id/addDateErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/addTimeErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/priceErrorMessage"
             android:layout_height="match_parent"
             android:layout_width="wrap_content"
             android:textSize="8pt"
@@ -64,7 +81,7 @@
             </TableRow>
             <TableRow>
                 <EditText android:id="@+id/dateInput"
-                    android:hint="date"
+                    android:hint="YYYY-MM-DD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:drawable/editbox_background"/>
@@ -73,11 +90,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Time: "/>
+                    android:text="Time (24-hour clock): "/>
             </TableRow>
             <TableRow>
                 <EditText android:id="@+id/timeInput"
-                    android:hint="time"
+                    android:hint="HH:mm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:drawable/editbox_background"/>
@@ -120,5 +137,5 @@
             android:onClick="addActivity"
             android:text="Add Activity" />
     </LinearLayout>
-
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
