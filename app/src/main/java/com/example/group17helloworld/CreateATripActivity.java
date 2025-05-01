@@ -43,6 +43,8 @@ public class CreateATripActivity extends AppCompatActivity {
         Log.d("CreateATripActivity", "onCreate() called");
         try
         {
+            TextView errorMessage = findViewById((R.id.emptyFieldsErrorMessage));
+            errorMessage.setText("");
             EditText destinationText = findViewById(R.id.destinationInput);
             String destination = destinationText.getText().toString();
             //Log.d("CreateTrip", "Destination: " + destination);
@@ -54,6 +56,7 @@ public class CreateATripActivity extends AppCompatActivity {
             String dateDeparture = dateDepartureText.getText().toString();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             TextView dateErrorMessage = findViewById(R.id.dateErrorMessage);
+            dateErrorMessage.setText("");
             try {
                 Date parsedDepartureDate = sdf.parse(dateDeparture);
             }
@@ -74,7 +77,7 @@ public class CreateATripActivity extends AppCompatActivity {
                 }
                 catch (Exception e)
                 {
-                    dateErrorMessage.setText("Error with departure date format. Make sure to use the format YYYY-MM-DD, with no spaces. Sample date: 2025-05-02");
+                    dateErrorMessage.setText("Error with return date format. Make sure to use the format YYYY-MM-DD, with no spaces. Sample date: 2025-05-02");
                 }
 
             }
@@ -82,6 +85,7 @@ public class CreateATripActivity extends AppCompatActivity {
             EditText budgetText = findViewById(R.id.budgetInput);
             String budgetString = budgetText.getText().toString();
             TextView budgetErrorMessage = findViewById(R.id.budgetErrorMessage);
+            budgetErrorMessage.setText("");
             double budget = 0.0;
             try {
                 budget = Double.parseDouble(budgetString);
@@ -95,7 +99,10 @@ public class CreateATripActivity extends AppCompatActivity {
                 exceptionTriggered = true;
                 budgetErrorMessage.setText("Invalid budget. Make sure to input a numerical value that is positive");
             }
-
+            if (departure.isEmpty() || destination.isEmpty())
+            {
+                throw new Exception();
+            }
 
             Integer isFavorite = 0;
             //String departure, String destination, String dateDeparture, String dateReturn, Double budget
