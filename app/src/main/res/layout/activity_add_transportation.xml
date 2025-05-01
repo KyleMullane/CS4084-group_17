@@ -20,7 +20,37 @@
             android:gravity="center"
             android:text="Add Transportation Below!"/>
         <TextView
-            android:id="@+id/createTripErrorMessage"
+            android:id="@+id/dateErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/departTimeMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/arrivalDateMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/arrivalTimeMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/wrongDatesMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/wrongCostMessage"
             android:layout_height="match_parent"
             android:layout_width="wrap_content"
             android:textSize="8pt"
@@ -64,7 +94,7 @@
             </TableRow>
             <TableRow>
                 <EditText android:id="@+id/dateInput"
-                    android:hint="date"
+                    android:hint="YYYY-MM-DD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:drawable/editbox_background"/>
@@ -73,11 +103,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Departure Time: "/>
+                    android:text="Departure Time (24-hour clock): "/>
             </TableRow>
             <TableRow>
                 <EditText android:id="@+id/departureTimeInput"
-                    android:hint="depart. time"
+                    android:hint="HH:mm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:drawable/editbox_background"/>
@@ -86,11 +116,24 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Arrival Time: "/>
+                    android:text="Date of Arrival: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/arrivalDateInput"
+                    android:hint="YYYY-MM-DD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Arrival Time (24-hour clock): "/>
             </TableRow>
             <TableRow>
                 <EditText android:id="@+id/arrivalTimeInput"
-                    android:hint="arr. time"
+                    android:hint="HH:mm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:drawable/editbox_background"/>
@@ -99,7 +142,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="What type of transportation? (Plane/Bus/Car)"/>
+                    android:text="What type of transportation? (Flight, Bus, etc.)"/>
             </TableRow>
             <TableRow>
                 <EditText android:id="@+id/typeInput"
