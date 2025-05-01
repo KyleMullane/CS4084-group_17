@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //database.deleteTripTable();
+        //database.createTripTable();
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -31,11 +33,26 @@ public class MainActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(getApplicationContext(), "onCreate Called", Toast.LENGTH_LONG);
         toast.show();
 
+        //database.deleteTripTable();
+        //database.createTripTable();
+
         Context context = getApplicationContext();
         Log.d("MainActivity", "Testing to see if printing to the terminal works for debugging purposes!");
         database = DBHandler.getInstance(context);
 
+//        database.deleteCommentsTable();
+//        database.deleteBucketListTable();
+//        database.deleteActivityTable();
+//        database.deleteAccommodationTable();
+//        database.deleteTransportationTable();
+//        database.deleteTripTable();
 
+//        database.createTripTable();
+//        database.createTransportationTable();
+//        database.createActivitiesTable();
+//        database.createAccommodationTable();
+//        database.createBucketListTable();
+//        database.createCommentsTable();
 
     }
     public void sendToHomePage(View view)
@@ -54,5 +71,16 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent pastTripsIntent = new Intent(this, ViewPastTripsActivity.class);
         startActivity(pastTripsIntent);
+    }
+
+    public void sendToBucketListPage(View view)
+    {
+        Intent bucketListIntent = new Intent(this, ViewBucketListActivity.class);
+        startActivity(bucketListIntent);
+    }
+
+    public void sendToFavoritesPage(View view){
+        Intent favoritesIntent = new Intent(this, ViewFavoritesActivity.class);
+        startActivity(favoritesIntent);
     }
 }

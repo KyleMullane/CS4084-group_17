@@ -38,10 +38,13 @@ public class CreateATripActivity extends AppCompatActivity {
 
     public void createTrip(View view)
     {
+        //super.onCreate(savedInstanceState);
+        Log.d("CreateATripActivity", "onCreate() called");
         try
         {
             EditText destinationText = findViewById(R.id.destinationInput);
             String destination = destinationText.getText().toString();
+            //Log.d("CreateTrip", "Destination: " + destination);
 
             EditText departureText = findViewById(R.id.departureInput);
             String departure = departureText.getText().toString();
@@ -63,19 +66,30 @@ public class CreateATripActivity extends AppCompatActivity {
             EditText budgetText = findViewById(R.id.budgetInput);
             String budgetString = budgetText.getText().toString();
             double budget = Double.parseDouble(budgetString);
+
+            Integer isFavorite = 0;
             //String departure, String destination, String dateDeparture, String dateReturn, Double budget
 
-            database.addTrip(new Trip(departure,destination,dateDeparture,dateReturn,budget));
+            Trip trip = new Trip(); //might cause the ID to be stored incorrectly
+            trip.setDestination(destination);
+            trip.setDeparture(departure);
+            trip.setDateDeparture(dateDeparture);
+            trip.setDateReturn(dateReturn);
+            trip.setBudget(budget);
+            trip.setFavoriteStatus(isFavorite);
+
+            database.addTrip(trip);
+            //database.addTrip(new Trip(departure, destination, dateDeparture, dateReturn, budget, isFavorite));
             Intent homePageIntent = new Intent(this, HomePageActivity.class);
             startActivity(homePageIntent);
         }
-        catch (Exception e)
-        {
-            Log.d("CreateATripActivity", "Catch block triggered in addTrip attempt");
+        catch (Exception e) {
+            Log.e("CreateTrip", "Error adding trip to database: ", e); // This will print the stack trace
+            Log.e("CreateTrip", "Error message: " + e.getMessage()); // This will print the specific error message
             TextView titleText = findViewById(R.id.createTripPageTitleText);
             titleText.setText("Error: trip creation not successful");
             TextView errorMessage = findViewById((R.id.createTripErrorMessage));
-            errorMessage.setText("Make sure that required fields are filled in, that dates are formatted correctly, and that a number is submitted for the budget, not a word");
+            errorMessage.setText("Error during trip creation: " + e.getMessage());
         }
 
 

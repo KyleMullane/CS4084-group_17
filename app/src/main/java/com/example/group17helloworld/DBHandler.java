@@ -32,6 +32,7 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String DEPARTURE_DATE_COLUMN = "departure_date";
     public static final String RETURN_DATE_COLUMN = "return_date";
     public static final String BUDGET_COLUMN = "budget";
+    public static final String FAVORITE_COLUMN = "isFavorite";
     private static final String DB_NAME = "travelappdb";
 
     //Accommodation Table
@@ -74,8 +75,15 @@ public class DBHandler extends SQLiteOpenHelper
     public static final String ITEM_NAME_COLUMN = "itemName";
     public static final String STATUS_COLUMN = "status";
 
+    //Comments Table
+    public static final String COMMENTS_TABLE = "FavoriteComments";
+    public static final String COMMENT_ID_COLUMN = "commentID";
+    public static final String TRIP_ID_COMMENT_COLUMN = "tripID";
+    public static final String COMMENT_COLUMN = "comment";
+    public static final String LOCKED_COLUMN = "isLocked";
+
     // This may be used for migration in the future.
-    private static final int DB_VERSION = 10;
+    private static final int DB_VERSION = 11;
 
 
 
@@ -89,7 +97,8 @@ public class DBHandler extends SQLiteOpenHelper
                 + DESTINATION_COLUMN + " TEXT NOT NULL,"
                 + DEPARTURE_DATE_COLUMN + " TEXT NOT NULL,"
                 + RETURN_DATE_COLUMN + " TEXT,"
-                + BUDGET_COLUMN + " REAL)";
+                + BUDGET_COLUMN + " REAL, "
+                + FAVORITE_COLUMN + " INTEGER)";
         db.execSQL(createTripQuery);
 
 
@@ -130,11 +139,18 @@ public class DBHandler extends SQLiteOpenHelper
                 + "FOREIGN KEY (tripID) REFERENCES Trips(tripID))";
         db.execSQL(transportationQuery);
 
-        String query5 = "CREATE TABLE " + BUCKET_LIST_TABLE +
+        String createBucketListQuery = "CREATE TABLE " + BUCKET_LIST_TABLE +
                 " (" + ITEM_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ITEM_NAME_COLUMN + " TEXT NOT NULL, "
                 + STATUS_COLUMN + " INTEGER)"; //WILL BE 1- COMPLETED OR 0- NOT COMPLETED
-        db.execSQL(query5);
+        db.execSQL(createBucketListQuery);
+
+        String createCommentsQuery = "CREATE TABLE " + COMMENTS_TABLE +
+                " (" + COMMENT_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + TRIP_ID_COMMENT_COLUMN + " INTEGER NOT NULL,"
+                + COMMENT_COLUMN + " TEXT NOT NULL,"
+                + LOCKED_COLUMN + " INTEGER DEFAULT 0)";
+        db.execSQL(createCommentsQuery);
     }
 
     //**********TRIPS**********
@@ -148,7 +164,8 @@ public class DBHandler extends SQLiteOpenHelper
                 + DESTINATION_COLUMN + " TEXT NOT NULL,"
                 + DEPARTURE_DATE_COLUMN + " TEXT NOT NULL,"
                 + RETURN_DATE_COLUMN + " TEXT,"
-                + BUDGET_COLUMN + " REAL)";
+                + BUDGET_COLUMN + " REAL, "
+                + FAVORITE_COLUMN + " INTEGER)";
         db.execSQL(createTripQuery);
         db.close();
     }
@@ -161,6 +178,7 @@ public class DBHandler extends SQLiteOpenHelper
         values.put(DEPARTURE_DATE_COLUMN, trip.getDateDeparture());
         values.put(RETURN_DATE_COLUMN, trip.getDateReturn());
         values.put(BUDGET_COLUMN, trip.getBudget());
+        values.put(FAVORITE_COLUMN, trip.getIsFavorite() ? 1 : 0);
         long num = db.insert(TRIP_TABLE, null, values);
         if (num == -1)
         {
@@ -181,7 +199,7 @@ public class DBHandler extends SQLiteOpenHelper
         {
             do
             {
-                trips.add(new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5)));
+                trips.add(new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5), cursor.getInt(6)));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -195,7 +213,7 @@ public class DBHandler extends SQLiteOpenHelper
         Cursor cursor = db.rawQuery("SELECT * FROM " + TRIP_TABLE + " WHERE "+TRIP_ID_COLUMN+" = "+ID, null);
         if (cursor.moveToFirst())
         {
-            return new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5));
+            return new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5), cursor.getInt(6));
         }
         else
         {
@@ -203,7 +221,25 @@ public class DBHandler extends SQLiteOpenHelper
         }
         cursor.close();
         db.close();
-        return new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5));
+        return new Trip(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getDouble(4), cursor.getInt(5));
+    }
+
+    public ArrayList<Trip> getFavoriteTrips()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // This will be the result.
+        ArrayList<Trip> trips = new ArrayList<Trip>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TRIP_TABLE + " WHERE " + FAVORITE_COLUMN + " = 1", null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                trips.add(new Trip(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getDouble(5), cursor.getInt(6)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return trips;
     }
 
     public void deleteAllTrips()
@@ -230,6 +266,21 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
     }
 
+    public void favoriteTrip(Trip trip){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Prepare the content values to update the status
+        ContentValues values = new ContentValues();
+        //values.put("item", item.getItem());
+        values.put("isFavorite", trip.getIsFavorite());
+        // might need to change to trip.getIsFavorite() ? 1 : 0, & change method to return a boolean in Trip class if doesn't work
+
+        //Log.d("DB_UPDATE", "Updating status for " + item.getItem() + " to " + item.getStatus());
+
+        db.update("Trips", values, "tripID = ?", new String[]{String.valueOf(trip.getTripID())});
+        db.close();
+    }
+
     // **********TRANSPORTATION**********
     public void createTransportationTable()
     {
@@ -248,6 +299,15 @@ public class DBHandler extends SQLiteOpenHelper
         db.execSQL(transportationQuery);
         db.close();
     }
+
+    public void deleteTransportationTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DROP TABLE IF EXISTS " + TRANSPORTATION_TABLE;
+        db.execSQL(query);
+        db.close();
+    }
+
     public void addTransportation(Transportation transportation) throws Exception
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -305,6 +365,15 @@ public class DBHandler extends SQLiteOpenHelper
         db.execSQL(accommodationQuery);
         db.close();
     }
+
+    public void deleteAccommodationTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DROP TABLE IF EXISTS " + ACCOMMODATION_TABLE;
+        db.execSQL(query);
+        db.close();
+    }
+
     public ArrayList<Transportation> selectTransportationByTripID(int ID)
     {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -394,6 +463,14 @@ public class DBHandler extends SQLiteOpenHelper
 
     }
 
+    public void deleteActivityTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DROP TABLE IF EXISTS " + ACTIVITIES_TABLE;
+        db.execSQL(query);
+        db.close();
+    }
+
     public void addActivity(Activity activity) throws Exception
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -449,6 +526,17 @@ public class DBHandler extends SQLiteOpenHelper
 
     //**********BUCKETLIST**********
 
+    public void createBucketListTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String createBucketListTableQuery = "CREATE TABLE " + BUCKET_LIST_TABLE +
+                " (" + ITEM_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ITEM_NAME_COLUMN + " TEXT NOT NULL, "
+                + STATUS_COLUMN + " INTEGER)"; //WILL BE 1- COMPLETED OR 0- NOT COMPLETED
+        db.execSQL(createBucketListTableQuery);
+        db.close();
+    }
+
     public void addItem(BucketListItem item) throws Exception {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
@@ -463,13 +551,32 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
     }
 
+    public void deleteBucketListTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DROP TABLE IF EXISTS " + BUCKET_LIST_TABLE;
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void changeStatus(BucketListItem item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Prepare the content values to update the status
+        ContentValues values = new ContentValues();
+        //values.put("item", item.getItem());
+        values.put("status", item.getStatus() ? 1 : 0);
+
+        //Log.d("DB_UPDATE", "Updating status for " + item.getItem() + " to " + item.getStatus());
+
+        db.update("BucketList", values, "itemName = ?", new String[]{String.valueOf(item.getItem())});
+        db.close();
+    }
+
 //    public void deleteItem(Integer){
 //
 //    }
 
-//    public void completeItem(){
-//        //changes the status to 1 in db
-//    }
 
     public ArrayList<BucketListItem> getBucketListItems(){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -485,6 +592,81 @@ public class DBHandler extends SQLiteOpenHelper
         cursor.close();
         return items;
     }
+
+    //**********BUCKETLIST**********
+    public void createCommentsTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String createCommentsQuery = "CREATE TABLE " + COMMENTS_TABLE
+                + " (" + COMMENT_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + TRIP_ID_COMMENT_COLUMN + " INTEGER NOT NULL, "
+                + COMMENT_COLUMN + " TEXT NOT NULL, "
+                + LOCKED_COLUMN + " INTEGER DEFAULT 0)";
+        db.execSQL(createCommentsQuery);
+        db.close();
+    }
+
+    public void addComment(Trip trip, String comment) throws Exception{
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TRIP_ID_COMMENT_COLUMN, trip.getTripID());
+        values.put(COMMENT_COLUMN, comment);
+        values.put(LOCKED_COLUMN, 1);
+            long num = db.insert(COMMENTS_TABLE, null, values);
+            if (num == -1)
+            {
+                throw new Exception();
+            }
+            Log.d("DBHandler", "Num is = "+num);
+            db.close();
+        }
+
+    public String getComment(int tripID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String comment = "";
+        Cursor cursor = db.rawQuery("SELECT comment FROM FavoriteComments WHERE tripID = ?", new String[]{String.valueOf(tripID)});
+        if (cursor.moveToFirst()) {
+            comment = cursor.getString(0);
+        }
+        cursor.close();
+        db.close();
+        return comment;
+    }
+
+    public void deleteCommentsTable()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DROP TABLE IF EXISTS " + COMMENTS_TABLE;
+        db.execSQL(query);
+        db.close();
+    }
+
+    public boolean isCommentLocked(int tripID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Query the database for the "isCommentLocked" column based on the tripID
+        Cursor cursor = db.query("FavoriteComments", new String[]{"isLocked"}, "tripID = ?", new String[]{String.valueOf(tripID)}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            // Get the column index for "isCommentLocked"
+            int isLockedColumnIndex = cursor.getColumnIndex("isLocked");
+
+            // Get the value from the "isCommentLocked" column
+            int isLocked = cursor.getInt(isLockedColumnIndex);
+
+            // Close the cursor
+            cursor.close();
+
+            // Return true if locked (1), false otherwise (0)
+            return isLocked == 1;
+        }
+
+        // If no result was found, return false (not locked)
+        if (cursor != null) {
+            cursor.close();
+        }
+        return false;
+    }
+
 
     /*public void changeTripDestination(Integer tripID, String destination){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -971,15 +1153,14 @@ public class DBHandler extends SQLiteOpenHelper
     public void onUpgrade(SQLiteDatabase db,int num1,int num2)
     {
         Log.d("MainActivity", "OnUpgrade Called");
-        String createTripQuery = "CREATE TABLE " + TRIP_TABLE +
-                " (" + TRIP_ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                DEPARTURE_COLUMN + " TEXT NOT NULL,"
-                + DESTINATION_COLUMN + " TEXT NOT NULL,"
-                + DEPARTURE_DATE_COLUMN + " TEXT NOT NULL,"
-                + RETURN_DATE_COLUMN + " TEXT NOT NULL,"
-                + BUDGET_COLUMN + " REAL)";
-        db.execSQL(createTripQuery);
-    }
+        // Drop all existing tables
+        db.execSQL("DROP TABLE IF EXISTS " + TRIP_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ACCOMMODATION_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + ACTIVITIES_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TRANSPORTATION_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + BUCKET_LIST_TABLE);
 
+        onCreate(db);
+    }
 }
 

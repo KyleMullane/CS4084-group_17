@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -30,13 +31,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
-public class ViewPastTripsActivity extends AppCompatActivity {
+public class ViewFavoritesActivity extends AppCompatActivity {
     private static DBHandler database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_view_past_trips);
+        setContentView(R.layout.activity_view_favorites);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -55,17 +56,22 @@ public class ViewPastTripsActivity extends AppCompatActivity {
 
         menuSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
+            boolean isFirstSelection = true; // Add this
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (isFirstSelection) {
+                    isFirstSelection = false;
+                    return;
+                }
+
                 String selectedItem = parent.getItemAtPosition(position).toString();
 
                 switch (selectedItem) {
                     case "Create a Trip":
-                        Log.d("HomePageActivity", "Create a Trip selected");
                         sendToCreateTripPage();
                         break;
                     case "View Upcoming Trips":
-                        Log.d("HomePageActivity", "View Upcoming Trips selected");
                         sendToHomePage();
                         break;
                     case "View Past Trips":
@@ -75,27 +81,23 @@ public class ViewPastTripsActivity extends AppCompatActivity {
                         sendToBucketListPage();
                         break;
                     case "View Favorites":
-                        sendToFavoritesPage();
+                        // Already here! Don't do anything
                         break;
                     default:
-                        //Nothing
                         break;
                 }
             }
+
             @Override
-            public void onNothingSelected (AdapterView<?> parent)
-            {
+            public void onNothingSelected(AdapterView<?> parent) {
                 // Do nothing
             }
         });
-        //LinearLayout topOfHomePage = findViewById(R.id.topOfHomePageLayout);
-        //topOfHomePage.addView(menuSpinner);
 
 
-        ArrayList<Trip> trips = database.getTrips();
-        ArrayList<Trip> pastTrips = new ArrayList<Trip>();
+        ArrayList<Trip> trips = database.getFavoriteTrips();
 
-        Log.d("MainActivity", "Num trips in table is "+trips.size());
+        //Log.d("MainActivity", "Num trips in table is "+trips.size());
         for (int i=0; i<trips.size();i++)
         {
             int index = i;
@@ -121,71 +123,45 @@ public class ViewPastTripsActivity extends AppCompatActivity {
                 Log.d("HomePageActivity","The trip with TripID "+trips.get(index).getTripID()+" is upcoming");
             } else if (currentDate.after(parsedDate)) {
                 Log.d("HomePageActivity","The trip with TripID "+trips.get(index).getTripID()+" is past");
-                pastTrips.add(trips.get(index));
+                //trips.add(trips.get(index));
             } else {
                 Log.d("HomePageActivity","The trip with TripID "+trips.get(index).getTripID()+" is today");
             }
         }
 
-        Collections.sort(pastTrips);
-        Collections.reverse(pastTrips);
-        if (!pastTrips.isEmpty())
+        Collections.sort(trips);
+        Collections.reverse(trips);
+        if (!trips.isEmpty())
         {
-            displayPastTrips(pastTrips, context);
+            displayFavoriteTrips(trips, context);
         }
 
 
     }
 
 
-    public void displayPastTrips(ArrayList<Trip> pastTrips, Context context)
-    {
-        TableLayout tableLayout = findViewById(R.id.pastTripTable);
+    public void displayFavoriteTrips(ArrayList<Trip> favoriteTrips, Context context) {
+        TableLayout tableLayout = findViewById(R.id.favoriteTripTable);
 
-        for (int i=0; i<pastTrips.size(); i++)
-        {
+        for (int i = 0; i < favoriteTrips.size(); i++) {
             int index = i;
+
             TableRow row = new TableRow(this);
             row.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
             row.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
-            row.setPadding(10,10,10,10);
+            row.setPadding(10, 10, 10, 10);
 
+            // Set up the vertical layout
             LinearLayout verticalLayout = new LinearLayout(this);
             verticalLayout.setOrientation(LinearLayout.VERTICAL);
-            /*verticalLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));*/
-
+            TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f);
+            verticalLayout.setLayoutParams(layoutParams);
 
             TextView rowText = new TextView(this);
-            rowText.setText("Leaving From: "+pastTrips.get(i).getDeparture()+"\nGoing to: "+pastTrips.get(i).getDestination()+"\nDate: "+pastTrips.get(i).getDateDeparture());
+            rowText.setText("Leaving From: " + favoriteTrips.get(i).getDeparture() + "\nGoing to: " + favoriteTrips.get(i).getDestination() + "\nDate: " + favoriteTrips.get(i).getDateDeparture());
             rowText.setPadding(8, 8, 8, 8);
-
-
-            ImageButton favButton = new ImageButton(this);
-            if (pastTrips.get(i).getIsFavorite()) {
-                favButton.setImageResource(R.drawable.ic_star_filled);  // Your filled star drawable
-            } else {
-                favButton.setImageResource(R.drawable.ic_star_border);  // Your empty star drawable
-            }
-            favButton.setContentDescription("Favorite Trip");
-            favButton.setOnClickListener(v -> {
-                // Toggle the favorite status when clicked
-                int newStatus = !pastTrips.get(index).getIsFavorite() ? 1 : 0;
-                pastTrips.get(index).setFavoriteStatus(newStatus);
-                database.favoriteTrip(pastTrips.get(index));
-
-                // Update the star icon
-                if (newStatus == 1) {
-                    favButton.setImageResource(R.drawable.ic_star_filled);
-                } else {
-                    favButton.setImageResource(R.drawable.ic_star_border);
-                }
-            });
-
-
 
             String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities"};
             Spinner spinner = new Spinner(this);
@@ -195,66 +171,90 @@ public class ViewPastTripsActivity extends AppCompatActivity {
             spinner.setScaleX(0.7f);
             spinner.setScaleY(0.7f);
 
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-            {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String selectedItem = parent.getItemAtPosition(position).toString();
+            Button viewDetailsButton = new Button(this);
+            viewDetailsButton.setText("View Details");
+            viewDetailsButton.setTextColor(Color.WHITE);
+            viewDetailsButton.setBackgroundResource(R.drawable.custom_button);
+            viewDetailsButton.setPadding(0, 0, 0, 0);
+            viewDetailsButton.setScaleX(0.5f);
+            viewDetailsButton.setScaleY(0.5f);
+            viewDetailsButton.setAllCaps(false);
+            viewDetailsButton.setOnClickListener(v -> viewTripDetails(favoriteTrips.get(index)));
 
-                    switch (selectedItem) {
-                        case "Add Transportation":
-                            Log.d("HomePageActivity", "Add transportation selected");
-                            Intent addTransportationIntent = new Intent(context, AddTransportationActivity.class);
-                            addTransportationIntent.putExtra("TripID", pastTrips.get(index).getTripID());
-                            startActivity(addTransportationIntent);
-                            break;
-                        case "Add Accommodation":
-                            Log.d("HomePageActivity", "Add accommodation selected");
-                            Intent addAccommodationIntent = new Intent(context, AddAccommodationActivity.class);
-                            addAccommodationIntent.putExtra("TripID", pastTrips.get(index).getTripID());
-                            startActivity(addAccommodationIntent);
-                            break;
-                        case "Add Activities":
-                            Log.d("HomePageActivity", "Add activities selected");
-                            Intent addActivityIntent = new Intent(context, AddActivityActivity.class); //lol
-                            addActivityIntent.putExtra("TripID", pastTrips.get(index).getTripID());
-                            startActivity(addActivityIntent);
-                            break;
-                        default:
-                            //Nothing
-                            break;
+            // Retrieve the saved comment and locked status from the database
+            String savedComment = database.getComment(favoriteTrips.get(i).getTripID());
+            boolean isCommentLocked = database.isCommentLocked(favoriteTrips.get(i).getTripID());
+
+            EditText commentEditText = new EditText(this);
+            commentEditText.setHint("Add a comment...");
+            commentEditText.setText(savedComment);
+            commentEditText.setPadding(8, 8, 8, 8);
+
+            if (isCommentLocked) {
+                // Disable the EditText if the comment is locked
+                commentEditText.setFocusable(false);
+                commentEditText.setClickable(false);
+                commentEditText.setBackgroundColor(Color.LTGRAY); // Optional: Change background color to indicate it's non-editable
+            }
+
+            Button saveCommentButton = new Button(this);
+            saveCommentButton.setText("Save Comment");
+            saveCommentButton.setTextSize(12);
+            saveCommentButton.setBackgroundResource(R.drawable.custom_button);
+            saveCommentButton.setTextColor(Color.WHITE);
+            saveCommentButton.setScaleX(0.7f);
+            saveCommentButton.setScaleY(0.7f);
+            saveCommentButton.setAllCaps(false);
+
+            // Hide the save button if the comment is already saved and locked
+            if (!savedComment.isEmpty() && isCommentLocked) {
+                saveCommentButton.setVisibility(View.GONE); // Hide button if comment is locked
+            } else {
+                saveCommentButton.setVisibility(View.VISIBLE); // Show button if comment is not saved or locked
+            }
+
+            saveCommentButton.setOnClickListener(v -> {
+                String comment = commentEditText.getText().toString().trim();
+
+                if (!comment.isEmpty() && !isCommentLocked) {
+                    // Save the comment to the database and lock it
+                    try {
+                        database.addComment(favoriteTrips.get(index), comment);
+
+                        // Disable the EditText after saving
+                        commentEditText.setFocusable(false);
+                        commentEditText.setClickable(false);
+                        commentEditText.setBackgroundColor(Color.LTGRAY); // Optional: Change background color
+
+                        // Hide the save button
+                        saveCommentButton.setVisibility(View.GONE); // Hide save button
+
+                        // Optionally, change the hint text
+                        commentEditText.setHint("Comment Saved");
+
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
                     }
-                }
-                @Override
-                public void onNothingSelected (AdapterView<?> parent)
-                {
-                    // Do nothing
                 }
             });
 
-
-            Button viewDetailsButton = new Button(this);
-            viewDetailsButton.setText("View Details");
-            viewDetailsButton.setTextColor(Color.WHITE); // Change text color
-            viewDetailsButton.setBackgroundResource(R.drawable.custom_button);
-            viewDetailsButton.setPadding(0, 0, 0, 0); // Adjust padding
-            viewDetailsButton.setScaleX(0.5f); // Scale width to 80%
-            viewDetailsButton.setScaleY(0.5f);
-            viewDetailsButton.setAllCaps(false);
-            viewDetailsButton.setOnClickListener(v -> viewTripDetails(pastTrips.get(index)));
-
+            // Add everything to the vertical layout
             verticalLayout.addView(rowText);
-            //verticalLayout.addView(favButton);
             verticalLayout.addView(viewDetailsButton);
+            verticalLayout.addView(commentEditText);
+            verticalLayout.addView(saveCommentButton);
 
+            // Add the vertical layout to the row
             row.addView(verticalLayout);
             row.addView(spinner);
-            row.addView(favButton);
 
+            // Finally, add the row to the table layout
             tableLayout.addView(row);
-
         }
     }
+
+
+
     public void viewTripDetails(Trip trip)
     {
         Intent intent = new Intent(this, ViewTripDetails.class);
@@ -286,8 +286,7 @@ public class ViewPastTripsActivity extends AppCompatActivity {
         startActivity(bucketListIntent);
     }
 
-    public void sendToFavoritesPage()
-    {
+    public void sendToFavoritesPage(){
         Intent favoritesIntent = new Intent(this, ViewFavoritesActivity.class);
         startActivity(favoritesIntent);
     }
