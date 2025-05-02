@@ -142,91 +142,91 @@ public class ViewStatsActivity extends AppCompatActivity {
         double totalCost = totalTransportationCost + totalAccommodationCost + totalActivitiesCost;
 
         TextView totalTripText = findViewById(R.id.totalTrips);
-        totalTripText.setMaxWidth(800);
+        totalTripText.setMaxWidth(700);
         totalTripText.setSingleLine(false);
         totalTripText.setEllipsize(null);
         totalTripText.setText("Total Trips: "+numTrips);
 
         TextView pastTripText = findViewById(R.id.totalPastTrips);
         pastTripText.setText("Past Trips: "+numPastTrips);
-        pastTripText.setMaxWidth(800);
+        pastTripText.setMaxWidth(700);
         pastTripText.setSingleLine(false);
         pastTripText.setEllipsize(null);
 
         TextView favTripText = findViewById(R.id.totalFavTrips);
         favTripText.setText("Favorite Trips: "+numFavs);
-        favTripText.setMaxWidth(800);
+        favTripText.setMaxWidth(700);
         favTripText.setSingleLine(false);
         favTripText.setEllipsize(null);
 
         TextView upcomingTripText = findViewById(R.id.totalUpcomingTrips);
-        upcomingTripText.setMaxWidth(800);
+        upcomingTripText.setMaxWidth(700);
         upcomingTripText.setSingleLine(false);
         upcomingTripText.setEllipsize(null);
         upcomingTripText.setText("Upcoming Trips: "+numUpcomingTrips);
 
         TextView todayTripText = findViewById(R.id.totalTodayTrips);
-        todayTripText.setMaxWidth(800);
+        todayTripText.setMaxWidth(700);
         todayTripText.setSingleLine(false);
         todayTripText.setEllipsize(null);
         todayTripText.setText("Today's Trips: "+numTodaysTrips);
 
         TextView totalTransportationText = findViewById(R.id.totalTransportations);
-        totalTransportationText.setMaxWidth(800);
+        totalTransportationText.setMaxWidth(700);
         totalTransportationText.setSingleLine(false);
         totalTransportationText.setEllipsize(null);
         totalTransportationText.setText("Total Transportation Logged: "+numTransportations);
 
         TextView totalAccommodationText = findViewById(R.id.totalAccommodations);
-        totalAccommodationText.setMaxWidth(800);
+        totalAccommodationText.setMaxWidth(700);
         totalAccommodationText.setSingleLine(false);
         totalAccommodationText.setEllipsize(null);
         totalAccommodationText.setText("Total Accommodation Logged: "+numAccommodations);
 
         TextView totalActivitiesText = findViewById(R.id.totalActivities);
-        totalActivitiesText.setMaxWidth(800);
+        totalActivitiesText.setMaxWidth(700);
         totalActivitiesText.setSingleLine(false);
         totalActivitiesText.setEllipsize(null);
         totalActivitiesText.setText("Total Activities Logged: "+numActivities);
 
         TextView totalCostText = findViewById(R.id.totalMoneySpent);
-        totalCostText.setMaxWidth(800);
+        totalCostText.setMaxWidth(700);
         totalCostText.setSingleLine(false);
         totalCostText.setEllipsize(null);
         totalCostText.setText("Total Money Spent: €"+totalCost);
 
         TextView totalBudgetText = findViewById(R.id.totalMoneyBudgeted);
-        totalBudgetText.setMaxWidth(800);
+        totalBudgetText.setMaxWidth(700);
         totalBudgetText.setSingleLine(false);
         totalBudgetText.setEllipsize(null);
         totalBudgetText.setText("Total Money Budgeted: €"+totalBudget);
 
         TextView totalTransportationCostText = findViewById(R.id.transportationCost);
-        totalTransportationCostText.setMaxWidth(800);
+        totalTransportationCostText.setMaxWidth(700);
         totalTransportationCostText.setSingleLine(false);
         totalTransportationCostText.setEllipsize(null);
         totalTransportationCostText.setText("Total Transportation Cost: €"+totalTransportationCost);
 
         TextView totalAccommodationCostText = findViewById(R.id.accommodationCost);
-        totalAccommodationCostText.setMaxWidth(800);
+        totalAccommodationCostText.setMaxWidth(700);
         totalAccommodationCostText.setSingleLine(false);
         totalAccommodationCostText.setEllipsize(null);
         totalAccommodationCostText.setText("Total Accommodation Cost: €"+totalAccommodationCost);
 
         TextView totalActivitiesCostText = findViewById(R.id.activitiesCost);
-        totalActivitiesCostText.setMaxWidth(800);
+        totalActivitiesCostText.setMaxWidth(700);
         totalActivitiesCostText.setSingleLine(false);
         totalActivitiesCostText.setEllipsize(null);
         totalActivitiesCostText.setText("Total Activities Cost: €"+totalActivitiesCost);
 
         TextView totalBucketText = findViewById(R.id.totalBucketItems);
-        totalBucketText.setMaxWidth(800);
+        totalBucketText.setMaxWidth(700);
         totalBucketText.setSingleLine(false);
         totalBucketText.setEllipsize(null);
         totalBucketText.setText("Total Bucket List Items: "+numBucketItems);
 
         TextView doneBucketText = findViewById(R.id.bucketItemsCompleted);
-        doneBucketText.setMaxWidth(800);
+        doneBucketText.setMaxWidth(700);
         doneBucketText.setSingleLine(false);
         doneBucketText.setEllipsize(null);
         doneBucketText.setText("Total Bucket List Items Completed: "+numBucketItemsCompleted);

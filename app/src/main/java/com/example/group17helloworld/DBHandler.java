@@ -561,18 +561,19 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
     }
 
-    public void addItem(BucketListItem item) throws Exception {
+    public int addItem(BucketListItem item) throws Exception {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
         values.put(ITEM_NAME_COLUMN, item.getItem());
         values.put(STATUS_COLUMN, item.getStatus());
-        long num = db.insert(BUCKET_LIST_TABLE, null, values);
+        int num = (int) db.insert(BUCKET_LIST_TABLE, null, values);
         if (num == -1)
         {
             throw new Exception();
         }
         Log.d("DBHandler", "Num is = "+num);
         db.close();
+        return num;
     }
 
     public void deleteBucketListTable()
@@ -589,11 +590,21 @@ public class DBHandler extends SQLiteOpenHelper
         // Prepare the content values to update the status
         ContentValues values = new ContentValues();
         //values.put("item", item.getItem());
-        values.put("status", item.getStatus() ? 1 : 0);
+        if (item.getStatus())
+        {
+            Log.d("BucketListItem", "Set the status for item "+item.getItem()+" to 1 in the database, which has ID "+item.getID());
+            values.put("status",1);
+        }
+        else
+        {
+            values.put("status", 0);
+        }
+        //values.put("status", item.getStatus() ? 1 : 0);
 
         //Log.d("DB_UPDATE", "Updating status for " + item.getItem() + " to " + item.getStatus());
 
-        db.update("BucketList", values, "itemName = ?", new String[]{String.valueOf(item.getItem())});
+        db.update("BucketList", values, ITEM_ID_COLUMN + " = ?", new String[]{String.valueOf(item.getID())});
+        Log.d("BucketListItem", "Update Successful");
         db.close();
     }
 
@@ -610,7 +621,7 @@ public class DBHandler extends SQLiteOpenHelper
         {
             do
             {
-                items.add(new BucketListItem(cursor.getString(1), cursor.getInt(2))); //not sure if this works --> I ignore the ID
+                items.add(new BucketListItem(cursor.getInt(0), cursor.getString(1), cursor.getInt(2))); //not sure if this works --> I ignore the ID
             } while (cursor.moveToNext());
         }
         cursor.close();

@@ -100,12 +100,20 @@ public class ViewBucketListActivity extends AppCompatActivity {
             Log.d("CHECKBOX_CREATION", "Creating checkbox for item: " + item.getItem());
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 Log.d("CHECKBOX_STATUS", "Checkbox clicked: " + isChecked);
-                item.setStatus(isChecked ? 1 : 0); //how do i change isChecked to handle 1s or 0s?
+                //item.setStatus(isChecked ? 1 : 0); //how do i change isChecked to handle 1s or 0s?
+                if (isChecked)
+                {
+                    item.setStatus(1);
+                }
+                else
+                {
+                    item.setStatus(0);
+                }
                 database.changeStatus(item);
-                //checkBox.setChecked(item.getStatus());
+                checkBox.setChecked(item.getStatus());
                 //bucketListLayout.addView(checkBox);
             });
-            checkBox.setChecked(item.getStatus());
+            //checkBox.setChecked(item.getStatus());
             bucketListLayout.addView(checkBox);
         }
 
@@ -125,10 +133,13 @@ public class ViewBucketListActivity extends AppCompatActivity {
             if (!description.isEmpty()) {
                 BucketListItem newItem = new BucketListItem(description, 0); // Constructor must match
                 try {
-                    database.addItem(newItem);
+                   int id = database.addItem(newItem);
+                   newItem.setID(id);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+
+
 
                 CheckBox newCheckBox = new CheckBox(this);
                 newCheckBox.setText(description);
