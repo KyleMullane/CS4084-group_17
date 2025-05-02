@@ -40,7 +40,7 @@ public class ViewBucketListActivity extends AppCompatActivity {
         database = DBHandler.getInstance(context);
 
         // Menu At Top of the Screen
-        String[] menuItems = {"☰", "Create a Trip", "View Upcoming Trips", "View Past Trips", "View Bucket List", "View Favorites"};
+        String[] menuItems = {"☰", "Create a Trip", "View Upcoming Trips", "View Past Trips", "View Bucket List", "View Favorites", "Main Menu"};
         Spinner menuSpinner = findViewById(R.id.pastSpinner);
         ArrayAdapter<String> menuSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, menuItems);
         menuSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -70,6 +70,8 @@ public class ViewBucketListActivity extends AppCompatActivity {
                     case "View Favorites":
                         sendToFavoritesPage();
                         break;
+                    case "Main Menu":
+                        sendToMainMenu();
                     default:
                         //Nothing
                         break;
@@ -162,5 +164,11 @@ public class ViewBucketListActivity extends AppCompatActivity {
     private void sendToFavoritesPage() {
         Intent favoritesIntent = new Intent(this, ViewFavoritesActivity.class);
         startActivity(favoritesIntent);
+    }
+
+    public void sendToMainMenu()
+    {
+        Intent mainMenuIntent = new Intent(this, MainActivity.class);
+        startActivity(mainMenuIntent);
     }
 }

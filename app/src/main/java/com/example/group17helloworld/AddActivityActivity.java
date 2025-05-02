@@ -140,4 +140,10 @@ public class AddActivityActivity extends AppCompatActivity {
 
 
     }
+
+    public void sendToHomePage(View view)
+    {
+        Intent homePageIntent = new Intent(this, HomePageActivity.class);
+        startActivity(homePageIntent);
+    }
 }

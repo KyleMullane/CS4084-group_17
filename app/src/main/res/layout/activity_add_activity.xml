@@ -141,6 +141,13 @@
             android:layout_height="wrap_content"
             android:onClick="addActivity"
             android:text="Add Activity" />
+        <Button
+            android:id="@+id/sendToHomePageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="sendToHomePage"
+            android:text="Cancel" />
     </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

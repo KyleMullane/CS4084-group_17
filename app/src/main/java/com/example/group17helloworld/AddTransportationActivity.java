@@ -189,7 +189,10 @@ public class AddTransportationActivity extends AppCompatActivity {
             emptyFieldsMessage.setText("Error: some fields not filled in");
         }
 
-
-
+    }
+    public void sendToHomePage(View view)
+    {
+        Intent homePageIntent = new Intent(this, HomePageActivity.class);
+        startActivity(homePageIntent);
     }
 }

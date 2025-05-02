@@ -144,6 +144,13 @@
             android:layout_height="wrap_content"
             android:onClick="addAccommodation"
             android:text="Add Accommodation" />
+        <Button
+            android:id="@+id/sendToHomePageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="sendToHomePage"
+            android:text="Cancel" />
     </LinearLayout>
     </ScrollView>
 

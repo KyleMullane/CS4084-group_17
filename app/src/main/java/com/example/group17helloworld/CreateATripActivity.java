@@ -141,7 +141,11 @@ public class CreateATripActivity extends AppCompatActivity {
             errorMessage.setText("Error: not all required fields are filled in");
         }
 
+    }
 
-
+    public void sendToHomePage(View view)
+    {
+        Intent homePageIntent = new Intent(this, HomePageActivity.class);
+        startActivity(homePageIntent);
     }
 }
