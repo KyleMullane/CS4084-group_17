@@ -311,6 +311,13 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
     }
 
+    public void deleteTransportation(int ID)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TRANSPORTATION_TABLE + " WHERE "+TRANSPORTATION_ID_COLUMN+" = "+ID);
+        db.close();
+    }
+
     public void addTransportation(Transportation transportation) throws Exception
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -351,6 +358,23 @@ public class DBHandler extends SQLiteOpenHelper
         return transportations;
     }
 
+    public ArrayList<Transportation> selectTransportationByTripID(int ID)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<Transportation> transportations = new ArrayList<Transportation>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TRANSPORTATION_TABLE + " WHERE "+TRIP_ID_COLUMN+" = "+ID, null);
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                transportations.add(new Transportation(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getDouble(8), cursor.getInt(9)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return transportations;
+    }
+
 
     //**********ACCOMMODATION**********
     public void createAccommodationTable()
@@ -378,21 +402,11 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
     }
 
-    public ArrayList<Transportation> selectTransportationByTripID(int ID)
+    public void deleteAccommodation(int ID)
     {
-        SQLiteDatabase db = this.getReadableDatabase();
-        ArrayList<Transportation> transportations = new ArrayList<Transportation>();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TRANSPORTATION_TABLE + " WHERE "+TRIP_ID_COLUMN+" = "+ID, null);
-        if (cursor.moveToFirst())
-        {
-            do
-            {
-                transportations.add(new Transportation(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getDouble(8), cursor.getInt(9)));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + ACCOMMODATION_TABLE + " WHERE "+ACCOMMODATION_ID_COLUMN+" = "+ID);
         db.close();
-        return transportations;
     }
 
     public void addAccommodation(Accommodation accommodation) throws Exception
@@ -475,6 +489,12 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
     }
 
+    public void deleteActivity(int ID)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + ACTIVITIES_TABLE + " WHERE "+ACTIVITY_ID_COLUMN+" = "+ID);
+        db.close();
+    }
     public void addActivity(Activity activity) throws Exception
     {
         SQLiteDatabase db = this.getWritableDatabase();

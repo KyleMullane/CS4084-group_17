@@ -1,6 +1,7 @@
 package com.example.group17helloworld;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.os.Bundle;
 
@@ -26,7 +27,7 @@ import java.util.Collections;
 
 public class ViewTripDetails extends AppCompatActivity {
     private static DBHandler database;
-
+    Trip trip;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +43,7 @@ public class ViewTripDetails extends AppCompatActivity {
         database = DBHandler.getInstance(context);
         Intent intent = getIntent();
         int tripID = intent.getIntExtra("TripID",-1);
-        Trip trip = database.selectTripByID(tripID);
+        trip = database.selectTripByID(tripID);
 
         ArrayList<Transportation> tripTransportations = database.selectTransportationByTripID(tripID);
         ArrayList<Accommodation> tripAccommodations = database.selectAccommodationByTripID(tripID);
@@ -70,6 +71,8 @@ public class ViewTripDetails extends AppCompatActivity {
                     TableLayout.LayoutParams.WRAP_CONTENT));
             transportationRow.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
             transportationRow.setPadding(10,10,10,10);
+            LinearLayout transportationLayout = new LinearLayout(this);
+            transportationLayout.setOrientation(LinearLayout.VERTICAL);
 
             String departureTime = tripTransportations.get(index).getDepartureTime().substring(11,16);
             String arrivalTime =  tripTransportations.get(index).getArrivalTime().substring(11,16);
@@ -82,7 +85,23 @@ public class ViewTripDetails extends AppCompatActivity {
             transportationRowText.setText(tripTransportations.get(index).getType()+" from "+tripTransportations.get(index).getDepartureLocation()+" to "+tripTransportations.get(index).getDestination()+"\n Date: "+tripTransportations.get(index).getDate()+" \n Departure Time: "+departureTime+" \n Arrival Date: "+tripTransportations.get(index).getArrivalDate()+" \n Arrival Time: "+arrivalTime+" \n Price: €"+tripTransportations.get(index).getPrice());
             transportationRowText.setSingleLine(false);
             transportationRowText.setEllipsize(null);
-            transportationRow.addView(transportationRowText);
+
+            Button deleteTransportationButton = new Button(this);
+            deleteTransportationButton.setText("Delete");
+            deleteTransportationButton.setTextColor(Color.WHITE); // Change text color
+            deleteTransportationButton.setBackgroundResource(R.drawable.delete_button);
+            deleteTransportationButton.setPadding(0, 0, 0, 0); // Adjust padding
+            deleteTransportationButton.setScaleX(0.5f); // Scale width to 80%
+            deleteTransportationButton.setScaleY(0.5f);
+            deleteTransportationButton.setAllCaps(false);
+            LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(200, 100);
+            deleteTransportationButton.setLayoutParams(buttonParams);
+            deleteTransportationButton.setOnClickListener(v -> deleteTransportation(tripTransportations.get(index).getTransportationID()));
+
+            transportationLayout.addView(transportationRowText);
+            transportationLayout.addView(deleteTransportationButton);
+            transportationRow.addView(transportationLayout);
+            //transportationRow.addView(transportationRowText);
             transportationTable.addView(transportationRow);
         }
 
@@ -102,6 +121,8 @@ public class ViewTripDetails extends AppCompatActivity {
                     TableLayout.LayoutParams.WRAP_CONTENT));
             accommodationRow.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
             accommodationRow.setPadding(10,10,10,10);
+            LinearLayout accommodationLayout = new LinearLayout(this);
+            accommodationLayout.setOrientation(LinearLayout.VERTICAL);
 
             TextView accommodationRowText = new TextView(this);
             accommodationRowText.setLayoutParams(new TableRow.LayoutParams(
@@ -111,7 +132,23 @@ public class ViewTripDetails extends AppCompatActivity {
             accommodationRowText.setText(tripAccommodations.get(index).getName()+" located at "+tripAccommodations.get(index).getAddress()+" \n Type: "+tripAccommodations.get(index).getType()+" \n Check In Date: "+tripAccommodations.get(index).getCheckinDate()+" \n Check Out Date: "+tripAccommodations.get(index).getCheckoutDate()+" \n Price: €"+tripAccommodations.get(index).getPrice());
             accommodationRowText.setSingleLine(false);
             accommodationRowText.setEllipsize(null);
-            accommodationRow.addView(accommodationRowText);
+
+            Button deleteAccommodationButton = new Button(this);
+            deleteAccommodationButton.setText("Delete");
+            deleteAccommodationButton.setTextColor(Color.WHITE); // Change text color
+            deleteAccommodationButton.setBackgroundResource(R.drawable.delete_button);
+            deleteAccommodationButton.setPadding(0, 0, 0, 0); // Adjust padding
+            deleteAccommodationButton.setScaleX(0.5f); // Scale width to 80%
+            deleteAccommodationButton.setScaleY(0.5f);
+            deleteAccommodationButton.setAllCaps(false);
+            LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(200, 100);
+            deleteAccommodationButton.setLayoutParams(buttonParams);
+            deleteAccommodationButton.setOnClickListener(v -> deleteAccommodation(tripAccommodations.get(index).getAccommodationID()));
+
+            accommodationLayout.addView(accommodationRowText);
+            accommodationLayout.addView(deleteAccommodationButton);
+            accommodationRow.addView(accommodationLayout);
+            //accommodationRow.addView(accommodationRowText);
             accommodationTable.addView(accommodationRow);
         }
 
@@ -131,6 +168,8 @@ public class ViewTripDetails extends AppCompatActivity {
                     TableLayout.LayoutParams.WRAP_CONTENT));
             activityRow.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
             activityRow.setPadding(10,10,10,10);
+            LinearLayout activityLayout = new LinearLayout(this);
+            activityLayout.setOrientation(LinearLayout.VERTICAL);
 
             TextView activityRowText = new TextView(this);
             activityRowText.setLayoutParams(new TableRow.LayoutParams(
@@ -141,7 +180,23 @@ public class ViewTripDetails extends AppCompatActivity {
             activityRowText.setText(tripActivities.get(index).getName()+"\n Location: "+tripActivities.get(index).getLocation()+"\n Date: "+tripActivities.get(index).getDate()+"\n Time: "+activityTime+"\n Price: €"+tripActivities.get(index).getPrice()+"\n Description: "+tripActivities.get(index).getDescription());
             activityRowText.setSingleLine(false);
             activityRowText.setEllipsize(null);
-            activityRow.addView(activityRowText);
+
+            Button deleteActivityButton = new Button(this);
+            deleteActivityButton.setText("Delete");
+            deleteActivityButton.setTextColor(Color.WHITE); // Change text color
+            deleteActivityButton.setBackgroundResource(R.drawable.delete_button);
+            deleteActivityButton.setPadding(0, 0, 0, 0); // Adjust padding
+            deleteActivityButton.setScaleX(0.5f); // Scale width to 80%
+            deleteActivityButton.setScaleY(0.5f);
+            deleteActivityButton.setAllCaps(false);
+            LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(200, 100);
+            deleteActivityButton.setLayoutParams(buttonParams);
+            deleteActivityButton.setOnClickListener(v -> deleteActivity(tripActivities.get(index).getActivityID()));
+
+            activityLayout.addView(activityRowText);
+            activityLayout.addView(deleteActivityButton);
+            activityRow.addView(activityLayout);
+            //activityRow.addView(activityRowText);
             activityTable.addView(activityRow);
         }
 
@@ -152,4 +207,28 @@ public class ViewTripDetails extends AppCompatActivity {
         Intent homePageIntent = new Intent(this, HomePageActivity.class);
         startActivity(homePageIntent);
     }
+    public void viewTripDetails(Trip trip)
+    {
+        Intent intent = new Intent(this, ViewTripDetails.class);
+        intent.putExtra("TripID", trip.getTripID());
+        startActivity(intent);
+    }
+
+    public void deleteTransportation(int transportationID)
+    {
+        database.deleteTransportation(transportationID);
+        viewTripDetails(trip);
+    }
+    public void deleteAccommodation(int accommodationID)
+    {
+        database.deleteAccommodation(accommodationID);
+        viewTripDetails(trip);
+    }
+
+    public void deleteActivity(int activityID)
+    {
+        database.deleteActivity(activityID);
+        viewTripDetails(trip);
+    }
+
 }
