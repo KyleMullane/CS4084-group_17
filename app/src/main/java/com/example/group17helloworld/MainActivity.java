@@ -33,12 +33,14 @@ public class MainActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(getApplicationContext(), "onCreate Called", Toast.LENGTH_LONG);
         toast.show();
 
+
         //database.deleteTripTable();
         //database.createTripTable();
 
         Context context = getApplicationContext();
         Log.d("MainActivity", "Testing to see if printing to the terminal works for debugging purposes!");
         database = DBHandler.getInstance(context);
+
 
 
 //        database.deleteCommentsTable();

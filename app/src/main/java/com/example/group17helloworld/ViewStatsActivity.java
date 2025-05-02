@@ -93,6 +93,8 @@ public class ViewStatsActivity extends AppCompatActivity {
         ArrayList<Trip> upcomingTrips = new ArrayList<Trip>();
         ArrayList<Trip> todaysTrips = new ArrayList<Trip>();
         ArrayList<Trip> pastTrips = new ArrayList<Trip>();
+        ArrayList<Trip> favTrips = database.getFavoriteTrips();
+        ArrayList<BucketListItem> bucketItems = database.getBucketListItems();
         initializeTrips(trips,upcomingTrips,todaysTrips,pastTrips);
         ArrayList<Transportation> transportations = database.getTransportations();
         ArrayList<Accommodation> accommodations = database.getAccommodations();
@@ -102,14 +104,25 @@ public class ViewStatsActivity extends AppCompatActivity {
         int numUpcomingTrips = upcomingTrips.size();
         int numTodaysTrips = todaysTrips.size();
         int numPastTrips = pastTrips.size();
+        int numFavs = favTrips.size();
+        int numBucketItems = bucketItems.size();
         int numTransportations = transportations.size();
         int numAccommodations = accommodations.size();
         int numActivities = activities.size();
+
 
         double totalBudget = 0.0;
         double totalTransportationCost = 0.0;
         double totalAccommodationCost = 0.0;
         double totalActivitiesCost = 0.0;
+        int numBucketItemsCompleted = 0;
+        for (int i=0; i<numBucketItems; i++)
+        {
+            if (bucketItems.get(i).getStatus())
+            {
+                numBucketItemsCompleted++;
+            }
+        }
         for (int i=0; i<trips.size(); i++)
         {
             totalBudget += trips.get(i).getBudget();
@@ -124,7 +137,7 @@ public class ViewStatsActivity extends AppCompatActivity {
         }
         for (int i=0; i<activities.size(); i++)
         {
-            totalActivitiesCost += accommodations.get(i).getPrice();
+            totalActivitiesCost += activities.get(i).getPrice();
         }
         double totalCost = totalTransportationCost + totalAccommodationCost + totalActivitiesCost;
 
@@ -140,6 +153,11 @@ public class ViewStatsActivity extends AppCompatActivity {
         pastTripText.setSingleLine(false);
         pastTripText.setEllipsize(null);
 
+        TextView favTripText = findViewById(R.id.totalFavTrips);
+        favTripText.setText("Favorite Trips: "+numFavs);
+        favTripText.setMaxWidth(800);
+        favTripText.setSingleLine(false);
+        favTripText.setEllipsize(null);
 
         TextView upcomingTripText = findViewById(R.id.totalUpcomingTrips);
         upcomingTripText.setMaxWidth(800);
@@ -163,7 +181,7 @@ public class ViewStatsActivity extends AppCompatActivity {
         totalAccommodationText.setMaxWidth(800);
         totalAccommodationText.setSingleLine(false);
         totalAccommodationText.setEllipsize(null);
-        totalAccommodationText.setText("Total Accommodation Logged: "+numTransportations);
+        totalAccommodationText.setText("Total Accommodation Logged: "+numAccommodations);
 
         TextView totalActivitiesText = findViewById(R.id.totalActivities);
         totalActivitiesText.setMaxWidth(800);
@@ -199,8 +217,19 @@ public class ViewStatsActivity extends AppCompatActivity {
         totalActivitiesCostText.setMaxWidth(800);
         totalActivitiesCostText.setSingleLine(false);
         totalActivitiesCostText.setEllipsize(null);
-        totalActivitiesCostText.setText("Total Activities Cost: €"+numTodaysTrips);
+        totalActivitiesCostText.setText("Total Activities Cost: €"+totalActivitiesCost);
 
+        TextView totalBucketText = findViewById(R.id.totalBucketItems);
+        totalBucketText.setMaxWidth(800);
+        totalBucketText.setSingleLine(false);
+        totalBucketText.setEllipsize(null);
+        totalBucketText.setText("Total Bucket List Items: "+numBucketItems);
+
+        TextView doneBucketText = findViewById(R.id.bucketItemsCompleted);
+        doneBucketText.setMaxWidth(800);
+        doneBucketText.setSingleLine(false);
+        doneBucketText.setEllipsize(null);
+        doneBucketText.setText("Total Bucket List Items Completed: "+numBucketItemsCompleted);
     }
 
     public void initializeTrips(ArrayList<Trip> trips, ArrayList<Trip> upcomingTrips, ArrayList<Trip> todaysTrips, ArrayList<Trip> pastTrips)

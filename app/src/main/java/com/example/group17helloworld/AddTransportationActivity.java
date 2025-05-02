@@ -156,6 +156,7 @@ public class AddTransportationActivity extends AppCompatActivity {
             try {
                 costMessage.setText("");
                 price = Double.parseDouble(priceString);
+                price = Math.round(price * 100.0) / 100.0;
                 if (price < 0)
                 {
                     throw new Exception();
