@@ -608,9 +608,12 @@ public class DBHandler extends SQLiteOpenHelper
         db.close();
     }
 
-//    public void deleteItem(Integer){
-//
-//    }
+    public void deleteBucketListItem(int ID)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + BUCKET_LIST_TABLE + " WHERE "+ITEM_ID_COLUMN+" = "+ID);
+        db.close();
+    }
 
 
     public ArrayList<BucketListItem> getBucketListItems(){

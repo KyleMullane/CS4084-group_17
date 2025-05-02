@@ -2,6 +2,7 @@ package com.example.group17helloworld;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -114,7 +115,20 @@ public class ViewBucketListActivity extends AppCompatActivity {
                 //bucketListLayout.addView(checkBox);
             });
             //checkBox.setChecked(item.getStatus());
+            Button deletecheckBoxButton = new Button(this);
+            deletecheckBoxButton.setText("Delete");
+            deletecheckBoxButton.setTextColor(Color.WHITE); // Change text color
+            deletecheckBoxButton.setBackgroundResource(R.drawable.delete_button);
+            deletecheckBoxButton.setPadding(0, 0, 0, 0); // Adjust padding
+            deletecheckBoxButton.setScaleX(0.5f); // Scale width to 80%
+            deletecheckBoxButton.setScaleY(0.5f);
+            deletecheckBoxButton.setAllCaps(false);
+            LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(200, 100);
+            deletecheckBoxButton.setLayoutParams(buttonParams);
+            deletecheckBoxButton.setOnClickListener(v -> deleteItem(item.getID()));
+
             bucketListLayout.addView(checkBox);
+            bucketListLayout.addView(deletecheckBoxButton);
         }
 
         // Add new item input
@@ -128,6 +142,7 @@ public class ViewBucketListActivity extends AppCompatActivity {
         Button addButton = new Button(this);
         addButton.setText("Add");
 
+        boolean clicked = false;
         addButton.setOnClickListener(v -> {
             String description = newItemEditText.getText().toString().trim();
             if (!description.isEmpty()) {
@@ -138,7 +153,6 @@ public class ViewBucketListActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-
 
 
                 CheckBox newCheckBox = new CheckBox(this);
@@ -154,6 +168,8 @@ public class ViewBucketListActivity extends AppCompatActivity {
                 newItemEditText.setText("");
             }
         });
+
+
         newItemLayout.addView(newItemEditText);
         newItemLayout.addView(addButton);
         bucketListLayout.addView(newItemLayout);
@@ -190,5 +206,11 @@ public class ViewBucketListActivity extends AppCompatActivity {
     {
         Intent statsPageIntent = new Intent(this, ViewStatsActivity.class);
         startActivity(statsPageIntent);
+    }
+
+    public void deleteItem(int ID)
+    {
+        database.deleteBucketListItem(ID);
+        sendToBucketListPage();
     }
 }
