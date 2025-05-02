@@ -1,6 +1,6 @@
 package com.example.group17helloworld;
 
-public class Activity {
+public class Activity implements Comparable<Activity> {
     public int activityID;
     public String name;
     public String location;
@@ -107,7 +107,11 @@ public class Activity {
     public void setTripID(int tripID) {
         this.tripID = tripID;
     }
-
+    @Override
+    public int compareTo(Activity other)
+    {
+        return this.time.compareTo(other.getTime());
+    }
 
 
     /*public void setName(String name){

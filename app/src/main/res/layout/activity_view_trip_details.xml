@@ -22,8 +22,9 @@
             android:text="These Are Your Trip Details!"/>
         <TextView
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:textSize="9pt"
+            android:layout_width="350dp"
+            android:padding="5dp"
+            android:textSize="8pt"
             android:id="@+id/tripDetails"/>
         <TextView
             android:layout_width="wrap_content"

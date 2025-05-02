@@ -63,6 +63,7 @@ public class AddAccommodationActivity extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Date parsedDate = new Date();
             TextView checkInMessage = findViewById(R.id.checkInDateErrorMessage);
+            checkInMessage.setText("");
             try {
                 sdf.setLenient(false);
                 parsedDate = sdf.parse(checkInDate);
@@ -76,9 +77,10 @@ public class AddAccommodationActivity extends AppCompatActivity {
             EditText checkOutDateText = findViewById(R.id.checkOutInput);
             String checkOutDate = checkOutDateText.getText().toString();
             TextView checkOutMessage = findViewById(R.id.checkOutDateErrorMessage);
+            Date checkOutDateDate = new Date();
             try {
                 sdf.setLenient(false);
-                parsedDate = sdf.parse(checkOutDate);
+                checkOutDateDate = sdf.parse(checkOutDate);
                 checkOutMessage.setText("");
             }
             catch (Exception e)
@@ -102,6 +104,16 @@ public class AddAccommodationActivity extends AppCompatActivity {
             {
                 exceptionTriggered = true;
                 priceMessage.setText("Invalid price. Make sure to enter a numerical value that is positive");
+            }
+
+
+            if (!exceptionTriggered)
+            {
+                if (checkOutDateDate.before(parsedDate))
+                {
+                    exceptionTriggered = true;
+                    checkInMessage.setText("Check out date before check in date");
+                }
             }
 
             if (name.isEmpty() || type.isEmpty() || address.isEmpty())

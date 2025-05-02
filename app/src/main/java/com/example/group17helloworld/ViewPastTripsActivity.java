@@ -146,23 +146,30 @@ public class ViewPastTripsActivity extends AppCompatActivity {
         {
             int index = i;
             TableRow row = new TableRow(this);
-            row.setLayoutParams(new TableRow.LayoutParams(
-                    TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT));
+            row.setLayoutParams(new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT));
             row.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
             row.setPadding(10,10,10,10);
 
             LinearLayout verticalLayout = new LinearLayout(this);
             verticalLayout.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout verticalLayout2 = new LinearLayout(this);
+            verticalLayout2.setOrientation(LinearLayout.VERTICAL);
             /*verticalLayout.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));*/
 
 
             TextView rowText = new TextView(this);
+            rowText.setMaxWidth(400);
+            rowText.setLayoutParams(new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.WRAP_CONTENT));
             rowText.setText("Leaving From: "+pastTrips.get(i).getDeparture()+"\nGoing to: "+pastTrips.get(i).getDestination()+"\nDate: "+pastTrips.get(i).getDateDeparture());
-            rowText.setPadding(8, 8, 8, 8);
-
+            rowText.setPadding(5, 5, 5, 5);
+            rowText.setSingleLine(false);
+            rowText.setEllipsize(null);
 
             ImageButton favButton = new ImageButton(this);
             if (pastTrips.get(i).getIsFavorite()) {
@@ -246,11 +253,12 @@ public class ViewPastTripsActivity extends AppCompatActivity {
             verticalLayout.addView(rowText);
             //verticalLayout.addView(favButton);
             verticalLayout.addView(viewDetailsButton);
-
+            verticalLayout2.addView(favButton);
+            verticalLayout2.addView(spinner);
             row.addView(verticalLayout);
-            row.addView(spinner);
-            row.addView(favButton);
-
+            //row.addView(spinner);
+            //row.addView(favButton);
+            row.addView(verticalLayout2);
             tableLayout.addView(row);
 
         }
