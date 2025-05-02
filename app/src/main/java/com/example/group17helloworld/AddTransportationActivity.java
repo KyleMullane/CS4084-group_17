@@ -62,10 +62,10 @@ public class AddTransportationActivity extends AppCompatActivity {
             EditText dateText = findViewById(R.id.dateInput);
             String date = dateText.getText().toString();
             TextView dateErrorMessage = findViewById(R.id.dateErrorMessage);
-            Date parsedDate;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            sdf.setLenient(false);
+            Date parsedDate = new Date();
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                sdf.setLenient(false);
                 parsedDate = sdf.parse(date);
                 dateErrorMessage.setText("");
             }
@@ -100,7 +100,7 @@ public class AddTransportationActivity extends AppCompatActivity {
             EditText arrivalDateText = findViewById(R.id.arrivalDateInput);
             String arrivalDate = arrivalDateText.getText().toString();
             TextView arrivalDateMessage = findViewById(R.id.arrivalDateMessage);
-            Date parsedArrivalDate;
+            Date parsedArrivalDate = new Date();
             try {
                 SimpleDateFormat arrivalSdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 arrivalSdf.setLenient(false);
@@ -136,6 +136,8 @@ public class AddTransportationActivity extends AppCompatActivity {
             }
             TextView wrongDates = findViewById(R.id.wrongDatesMessage);
             wrongDates.setText("");
+            Date tripDepartureDate = new Date();
+            Date tripReturnDate = new Date();
             if (!exceptionTriggered)
             {
                 if (parsedArrivalTime.before(parsedDepartureTime))
@@ -143,6 +145,26 @@ public class AddTransportationActivity extends AppCompatActivity {
                     exceptionTriggered = true;
                     wrongDates.setText("Error: arrival date/time is before departure date/time");
                 }
+                try {
+                    tripDepartureDate = sdf.parse(trip.getDateDeparture());
+                    if (parsedDate.before(tripDepartureDate))
+                    {
+                        exceptionTriggered = true;
+                        wrongDates.setText("Error: transportation departure is not in the range of your trip's dates");
+                    }
+                    if (!trip.getDateReturn().isEmpty())
+                    {
+                        tripReturnDate = sdf.parse(trip.getDateReturn());
+                        if (tripReturnDate.before(parsedArrivalDate))
+                        {
+                            exceptionTriggered = true;
+                            wrongDates.setText("Error: transportation arrival date is not in the range of your trip's dates");
+                        }
+                    }
+                }
+                catch (Exception e) {}
+
+
             }
 
 
