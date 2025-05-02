@@ -179,7 +179,7 @@ public class HomePageActivity extends AppCompatActivity {
             rowText.setPadding(8, 8, 8, 8);
 
 
-            String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities", "View Budgeting"};
+            String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities", "View Budgeting", "Delete Trip"};
             Spinner spinner = new Spinner(this);
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dropdownItems);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -217,6 +217,10 @@ public class HomePageActivity extends AppCompatActivity {
                             Intent viewBudgetingIntent = new Intent(context, ViewBudgetingActivity.class);
                             viewBudgetingIntent.putExtra("TripID", todaysTrips.get(index).getTripID());
                             startActivity(viewBudgetingIntent);
+                            break;
+                        case "Delete Trip":
+                            database.deleteTrip(todaysTrips.get(index).getTripID());
+                            sendToHomePage();
                             break;
                         default:
                             //Nothing
@@ -281,7 +285,7 @@ public class HomePageActivity extends AppCompatActivity {
            rowText.setEllipsize(null);
 
 
-           String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities", "View Budgeting"};
+           String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities", "View Budgeting", "Delete Trip"};
            Spinner spinner = new Spinner(this);
            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dropdownItems);
            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -319,6 +323,10 @@ public class HomePageActivity extends AppCompatActivity {
                            Intent viewBudgetingIntent = new Intent(context, ViewBudgetingActivity.class);
                            viewBudgetingIntent.putExtra("TripID", upcomingTrips.get(index).getTripID());
                            startActivity(viewBudgetingIntent);
+                           break;
+                       case "Delete Trip":
+                           database.deleteTrip(upcomingTrips.get(index).getTripID());
+                           sendToHomePage();
                            break;
                        default:
                            //Nothing

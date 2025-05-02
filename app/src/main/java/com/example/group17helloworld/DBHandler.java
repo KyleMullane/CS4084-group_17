@@ -258,13 +258,13 @@ public class DBHandler extends SQLiteOpenHelper
         db.execSQL(query);
         db.close();
     }
-    public void deleteTrip(Integer tripID)
+    public void deleteTrip(int ID)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM Trips WHERE tripID = ?";
-        SQLiteStatement statement = db.compileStatement(query);
-        statement.bindLong(1, tripID);
-        statement.executeUpdateDelete();
+        db.execSQL("DELETE FROM " + TRANSPORTATION_TABLE + " WHERE "+TRANSPORTATION_TRIPID_COLUMN+" = "+ID);
+        db.execSQL("DELETE FROM " + ACCOMMODATION_TABLE + " WHERE "+ACCOMMODATION_TRIPID_COLUMN+" = "+ID);
+        db.execSQL("DELETE FROM " + ACTIVITIES_TABLE + " WHERE "+ACTIVITY_TRIPID_COLUMN+" = "+ID);
+        db.execSQL("DELETE FROM " + TRIP_TABLE + " WHERE "+TRIP_ID_COLUMN+" = "+ID);
         db.close();
     }
 

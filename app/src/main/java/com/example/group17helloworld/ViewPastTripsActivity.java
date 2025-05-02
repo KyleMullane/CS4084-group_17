@@ -196,7 +196,7 @@ public class ViewPastTripsActivity extends AppCompatActivity {
 
 
 
-            String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities"};
+            String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities", "Delete Trip"};
             Spinner spinner = new Spinner(this);
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dropdownItems);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -228,6 +228,10 @@ public class ViewPastTripsActivity extends AppCompatActivity {
                             Intent addActivityIntent = new Intent(context, AddActivityActivity.class); //lol
                             addActivityIntent.putExtra("TripID", pastTrips.get(index).getTripID());
                             startActivity(addActivityIntent);
+                            break;
+                        case "Delete Trip":
+                            database.deleteTrip(pastTrips.get(index).getTripID());
+                            sendToPastTripsPage();
                             break;
                         default:
                             //Nothing
