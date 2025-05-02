@@ -1,113 +1,164 @@
 package com.example.group17helloworld;
 
-public class Trip {
-    /*public String name;
-    //public enum type{upcoming, current, past;};
-    public String type;
-    public String date;
+import java.util.ArrayList;
+
+public class Trip implements Comparable<Trip> {
+    public String departure;
+    public String destination;
+    public String dateDeparture;
+    public String dateReturn;
+    public double budget;
+    public Integer tripID;
     public ArrayList<Accommodation> accommodations;
-    public ArrayList<Activity> activities;  //i'm wondering if these 3 are unecessary if we use the array list of these lists
-    public ArrayList<Flight> flights;
-    public Double cost;
-    public ArrayList<Object> tripInfo; //array list with each of the sub lists inside
+    public ArrayList<Activity> activities;
+    public ArrayList<Transportation> transportation;
+    private DBHandler dbHandler;
+
+    public Integer isFavorite;
+
 
     public Trip(){
-        name = "";
-        type = "upcoming";
-        date = "";
-        accommodations = new ArrayList<Accommodation>();
-        activities = new ArrayList<Activity>();
-        flights = new ArrayList<Flight>();
-        cost = 0.0;
-        tripInfo = new ArrayList<>();
+        departure = "";
+        destination = "";
+        dateDeparture = "";
+        dateReturn = "";
+        budget = 0.0;
+        tripID = 0;
+        isFavorite = 0;
     }
 
-    public Trip(String name, String type, String date, ArrayList<Accommodation> accommodations, ArrayList<Activity> activities, ArrayList<Flight> flights, Double cost){
-        this.name = name;
-        this.type = type;
-        this.date = date;
-        this.accommodations = accommodations;
-        this.activities = activities;
-        this.flights = flights;
-        this.cost = cost;
-        this.tripInfo = new ArrayList<Object>();
-        tripInfo.add(accommodations);
-        tripInfo.add(activities);
-        tripInfo.add(flights);
+    public Trip(int tripID, String departure, String destination, String dateDeparture, String dateReturn, Double budget, Integer isFavorite){
+        this.tripID = tripID; //get rid of because this is auto-increment
+        this.departure = departure;
+        this.destination = destination;
+        this.dateDeparture = dateDeparture;
+        this.dateReturn = dateReturn;
+        this.budget = budget;
+        this.isFavorite = isFavorite;
     }
 
-    public void setName(String name){
-        this.name = name;
+    public Trip(String departure, String destination, String dateDeparture, String dateReturn, Double budget, Integer isFavorite){
+        tripID = 0;
+        this.departure = departure;
+        this.destination = destination;
+        this.dateDeparture = dateDeparture;
+        this.dateReturn = dateReturn;
+        this.budget = budget;
+        this.isFavorite = isFavorite;
     }
-    public String getName(){
-        return name;
+
+    // Getters ..
+
+    public String getDeparture() { return departure; }
+    public String getDestination() {
+        return destination;
     }
-    public void setType(String type){
-        this.type = type;
+
+    public String getDateDeparture() {
+        return dateDeparture;
     }
-    public String getType(){
-        return type;
+
+    public String getDateReturn() {
+        return dateReturn;
     }
-    public void setDate(String date){
-        this.date = date;
+
+
+    public double getBudget() {
+        return budget;
     }
-    public String getDate(){
-        return date;
+
+    public int getTripID() {
+        return tripID;
     }
-    public void addAccommodation(Accommodation accommodation){
+
+    public boolean getIsFavorite(){
+        if (isFavorite == 1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    // Setters
+
+    /*public void setTripID(){
+        tripID = dbHandler.getTripID(getDateDeparture(), getDateReturn());
+    }*/
+    public void setDeparture(String departure) { this.departure = departure; }
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public void setDateDeparture(String dateDeparture) {
+        this.dateDeparture = dateDeparture;
+    }
+
+    public void setDateReturn(String dateReturn) {
+        this.dateReturn = dateReturn;
+    }
+
+    public void setBudget(double budget) {
+        this.budget = budget;
+    }
+
+    public void setTripID(int tripID) {
+        this.tripID = tripID;
+    }
+
+    public void setFavoriteStatus(int isFavorite){
+        this.isFavorite = isFavorite;
+    }
+
+    @Override
+    public int compareTo(Trip other)
+    {
+        return this.dateDeparture.compareTo(other.dateDeparture);
+    }
+
+    /*public void addAccommodation(Accommodation accommodation){
         accommodations.add(accommodation);
     }
-    public ArrayList<Accommodation> getAccommodations(){
-        return accommodations;
-    }
-    public Accommodation getAccommodation(int index){
-        return accommodations.get(index); //check!!
-    }
+
     public void addActivity(Activity activity){
         activities.add(activity);
+    }
+
+    public void addTransportation(Transportation transportation){
+        this.transportation.add(transportation);
+    }
+
+    public ArrayList<Accommodation> getAccommodations(){
+        return accommodations;
     }
     public ArrayList<Activity> getActivities(){
         return activities;
     }
-    public Activity getActivity(int index){
-        return activities.get(index);
+    public ArrayList<Transportation> getTransportation(){
+        return transportation;
     }
-    public void addFlight(Flight flight){
-        flights.add(flight);
+    public Accommodation getAccommodation(Integer accommodationIndex){
+        return getAccommodations().get(accommodationIndex);
     }
-    public ArrayList<Flight> getFlights(){
-        return flights;
+    public Activity getActivity(Integer activityIndex){
+        return getActivities().get(activityIndex);
     }
-    public Flight getFlight(int index){
-        return flights.get(index);
+    public Transportation getTransport(Integer transportIndex){
+        return getTransportation().get(transportIndex);
     }
-    public void setCost(Double cost){
-        this.cost = cost;
-    } //can set by getting cost from activity, accommodation, & flight objects??
-    public Double getCost(){
-        return cost;
+    public void cancelAccommodation(Integer accommodationIndex){
+        accommodations.remove(accommodationIndex); //also has to call DBHandler to delete from database
+        Integer accommodationID = accommodations.get(accommodationIndex).getAccommodationID();
+        dbHandler.deleteAccommodation(accommodationID);
     }
-    public void calculateCost(){
-        Double total = 0.0;
-        for (Accommodation accommodation : accommodations){
-            total += accommodation.getPrice();
-        }
-        for (Activity activity : activities){
-            total += activity.getPrice();
-        }
-        for (Flight flight : flights){
-            total += flight.getPrice();
-        }
-        this.cost = total;
+    public void cancelActivity(Integer activityIndex){
+        accommodations.remove(activityIndex);
+        Integer activityID = activities.get(activityIndex).getActivityID();
+        dbHandler.deleteActivity(activityID);
     }
-
-    public void addTripInfo(ArrayList<Object> info){
-        tripInfo.add(info);
-    }
-    public ArrayList<Object> getTripInfo(){
-        return tripInfo;
+    public void cancelTransport(Integer transportIndex){
+        transportation.remove(transportIndex);
+        Integer transportID = transportation.get(transportIndex).getTransportationID();
+        dbHandler.deleteTransport(transportID);
     }*/
-
-
-    //add a save trip method??
 }

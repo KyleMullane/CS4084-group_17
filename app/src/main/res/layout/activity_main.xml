@@ -6,32 +6,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-
-
-
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/connemara_national_park" />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:text="Welcome to TravelPlanner! Click below to sign up or log in " />
-        <Button
-            android:id="@+id/signupbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:textSize="10pt"
+            android:layout_gravity="center"
+            android:textStyle="bold"
             android:gravity="center"
-            android:onClick="signUp"
-            android:text="Sign Up"/>
-        <Button
-            android:id="@+id/loginbutton"
+            android:background="@drawable/text_border"
+            android:text="Welcome to the Hello World Travel Planner!"/>
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="8pt"
             android:gravity="center"
-            android:onClick="logIn"
-            android:text="Log In"/>
+            android:layout_marginTop="20dp"
+            android:background="@drawable/text_border"
+            android:text="Are you ready to say hello to the world beyond?"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="7pt"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/text_border"
+            android:text="Choose an option below to begin planning your next adventure!"/>
+        <Button
+            android:id="@+id/createTripPageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="sendToCreateTripPage"
+            android:text="Create a Trip" />
+        <Button
+            android:id="@+id/sendToHomePageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="sendToHomePage"
+            android:text="View Upcoming Trips" />
+        <Button
+            android:id="@+id/viewPastTripsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="sendToPastTripsPage"
+            android:text="View Past Trips" />
+        <Button
+            android:id="@+id/bucketListLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="sendToBucketListPage"
+            android:text="View Bucket List" />
+        <Button
+            android:id="@+id/favoritesLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="sendToFavoritesPage"
+            android:text="View Favorites" />
     </LinearLayout>
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

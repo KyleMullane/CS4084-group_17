@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -31,23 +30,24 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
-public class HomePageActivity extends AppCompatActivity {
+public class ViewPastTripsActivity extends AppCompatActivity {
     private static DBHandler database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.activity_view_past_trips);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         Context context = getApplicationContext();
         database = DBHandler.getInstance(context);
         // Menu At Top of the Screen
         String[] menuItems = {"☰", "Create a Trip", "View Upcoming Trips", "View Past Trips", "View Bucket List", "View Favorites", "Main Menu"};
-        Spinner menuSpinner = findViewById(R.id.menuSpinner);
+        Spinner menuSpinner = findViewById(R.id.pastSpinner);
         ArrayAdapter<String> menuSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, menuItems);
         menuSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         menuSpinner.setAdapter(menuSpinnerAdapter);
@@ -77,7 +77,7 @@ public class HomePageActivity extends AppCompatActivity {
                     case "View Favorites":
                         sendToFavoritesPage();
                         break;
-                    case  "Main Menu":
+                    case "Main Menu":
                         sendToMainMenu();
                     default:
                         //Nothing
@@ -95,8 +95,7 @@ public class HomePageActivity extends AppCompatActivity {
 
 
         ArrayList<Trip> trips = database.getTrips();
-        ArrayList<Trip> upcomingTrips = new ArrayList<Trip>();
-        ArrayList<Trip> todaysTrips = new ArrayList<Trip>();
+        ArrayList<Trip> pastTrips = new ArrayList<Trip>();
 
         Log.d("MainActivity", "Num trips in table is "+trips.size());
         for (int i=0; i<trips.size();i++)
@@ -122,40 +121,34 @@ public class HomePageActivity extends AppCompatActivity {
 
             if (currentDate.before(parsedDate)) {
                 Log.d("HomePageActivity","The trip with TripID "+trips.get(index).getTripID()+" is upcoming");
-                upcomingTrips.add(trips.get(index));
             } else if (currentDate.after(parsedDate)) {
                 Log.d("HomePageActivity","The trip with TripID "+trips.get(index).getTripID()+" is past");
+                pastTrips.add(trips.get(index));
             } else {
                 Log.d("HomePageActivity","The trip with TripID "+trips.get(index).getTripID()+" is today");
-                todaysTrips.add(trips.get(index));
             }
         }
 
-        Collections.sort(todaysTrips);
-        Collections.sort(upcomingTrips);
+        Collections.sort(pastTrips);
+        Collections.reverse(pastTrips);
+        if (!pastTrips.isEmpty())
+        {
+            displayPastTrips(pastTrips, context);
+        }
 
-        if (!todaysTrips.isEmpty())
-        {
-            displayTodaysTrips(todaysTrips, context);
-        }
-        if (!upcomingTrips.isEmpty())
-        {
-            displayUpcomingTrips(upcomingTrips, context);
-        }
 
     }
 
-    public void displayTodaysTrips(ArrayList<Trip> todaysTrips, Context context)
-    {
-        TextView todayTripTitle = findViewById(R.id.todaysTrips);
-        todayTripTitle.setText("Today's Trips: ");
-        TableLayout todayTripTable = findViewById(R.id.todayTripTable);
 
-        for (int i=0; i<todaysTrips.size(); i++)
+    public void displayPastTrips(ArrayList<Trip> pastTrips, Context context)
+    {
+        TableLayout tableLayout = findViewById(R.id.pastTripTable);
+
+        for (int i=0; i<pastTrips.size(); i++)
         {
             int index = i;
             TableRow row = new TableRow(this);
-            row.setLayoutParams(new TableRow.LayoutParams(
+            row.setLayoutParams(new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
                     TableLayout.LayoutParams.WRAP_CONTENT));
             row.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
@@ -163,23 +156,47 @@ public class HomePageActivity extends AppCompatActivity {
 
             LinearLayout verticalLayout = new LinearLayout(this);
             verticalLayout.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout verticalLayout2 = new LinearLayout(this);
+            verticalLayout2.setOrientation(LinearLayout.VERTICAL);
             /*verticalLayout.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));*/
 
 
             TextView rowText = new TextView(this);
-            rowText.setMaxWidth(480);
+            rowText.setMaxWidth(400);
             rowText.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
-            rowText.setText("Leaving From: "+todaysTrips.get(i).getDeparture()+"\nGoing to: "+todaysTrips.get(i).getDestination()+"\nDate: "+todaysTrips.get(i).getDateDeparture());
+            rowText.setText("Leaving From: "+pastTrips.get(i).getDeparture()+"\nGoing to: "+pastTrips.get(i).getDestination()+"\nDate: "+pastTrips.get(i).getDateDeparture());
+            rowText.setPadding(5, 5, 5, 5);
             rowText.setSingleLine(false);
             rowText.setEllipsize(null);
-            rowText.setPadding(8, 8, 8, 8);
+
+            ImageButton favButton = new ImageButton(this);
+            if (pastTrips.get(i).getIsFavorite()) {
+                favButton.setImageResource(R.drawable.ic_star_filled); 
+            } else {
+                favButton.setImageResource(R.drawable.ic_star_border);
+            }
+            favButton.setContentDescription("Favorite Trip");
+            favButton.setOnClickListener(v -> {
+
+                int newStatus = !pastTrips.get(index).getIsFavorite() ? 1 : 0;
+                pastTrips.get(index).setFavoriteStatus(newStatus);
+                database.favoriteTrip(pastTrips.get(index));
 
 
-            String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities", "View Budgeting", "Delete Trip"};
+                if (newStatus == 1) {
+                    favButton.setImageResource(R.drawable.ic_star_filled);
+                } else {
+                    favButton.setImageResource(R.drawable.ic_star_border);
+                }
+            });
+
+
+
+            String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities", "Delete Trip"};
             Spinner spinner = new Spinner(this);
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dropdownItems);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -197,30 +214,24 @@ public class HomePageActivity extends AppCompatActivity {
                         case "Add Transportation":
                             Log.d("HomePageActivity", "Add transportation selected");
                             Intent addTransportationIntent = new Intent(context, AddTransportationActivity.class);
-                            addTransportationIntent.putExtra("TripID", todaysTrips.get(index).getTripID());
+                            addTransportationIntent.putExtra("TripID", pastTrips.get(index).getTripID());
                             startActivity(addTransportationIntent);
                             break;
                         case "Add Accommodation":
                             Log.d("HomePageActivity", "Add accommodation selected");
                             Intent addAccommodationIntent = new Intent(context, AddAccommodationActivity.class);
-                            addAccommodationIntent.putExtra("TripID", todaysTrips.get(index).getTripID());
+                            addAccommodationIntent.putExtra("TripID", pastTrips.get(index).getTripID());
                             startActivity(addAccommodationIntent);
                             break;
                         case "Add Activities":
                             Log.d("HomePageActivity", "Add activities selected");
                             Intent addActivityIntent = new Intent(context, AddActivityActivity.class); //lol
-                            addActivityIntent.putExtra("TripID", todaysTrips.get(index).getTripID());
+                            addActivityIntent.putExtra("TripID", pastTrips.get(index).getTripID());
                             startActivity(addActivityIntent);
                             break;
-                        case "View Budgeting":
-                            Log.d("HomePageActivity", "View budgeting selected");
-                            Intent viewBudgetingIntent = new Intent(context, ViewBudgetingActivity.class);
-                            viewBudgetingIntent.putExtra("TripID", todaysTrips.get(index).getTripID());
-                            startActivity(viewBudgetingIntent);
-                            break;
                         case "Delete Trip":
-                            database.deleteTrip(todaysTrips.get(index).getTripID());
-                            sendToHomePage();
+                            database.deleteTrip(pastTrips.get(index).getTripID());
+                            sendToPastTripsPage();
                             break;
                         default:
                             //Nothing
@@ -243,125 +254,21 @@ public class HomePageActivity extends AppCompatActivity {
             viewDetailsButton.setScaleX(0.5f); // Scale width to 80%
             viewDetailsButton.setScaleY(0.5f);
             viewDetailsButton.setAllCaps(false);
-            viewDetailsButton.setOnClickListener(v -> viewTripDetails(todaysTrips.get(index)));
+            viewDetailsButton.setOnClickListener(v -> viewTripDetails(pastTrips.get(index)));
 
             verticalLayout.addView(rowText);
+            //verticalLayout.addView(favButton);
             verticalLayout.addView(viewDetailsButton);
-
+            verticalLayout2.addView(favButton);
+            verticalLayout2.addView(spinner);
             row.addView(verticalLayout);
-            row.addView(spinner);
-
-            todayTripTable.addView(row);
+            //row.addView(spinner);
+            //row.addView(favButton);
+            row.addView(verticalLayout2);
+            tableLayout.addView(row);
 
         }
     }
-
-   public void displayUpcomingTrips(ArrayList<Trip> upcomingTrips, Context context)
-   {
-       TableLayout tableLayout = findViewById(R.id.tripTable);
-
-       for (int i=0; i<upcomingTrips.size(); i++)
-       {
-           int index = i;
-           TableRow row = new TableRow(this);
-           row.setLayoutParams(new TableLayout.LayoutParams(
-                   TableLayout.LayoutParams.MATCH_PARENT,
-                   TableLayout.LayoutParams.WRAP_CONTENT));
-           row.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
-           row.setPadding(10,10,10,10);
-
-           LinearLayout verticalLayout = new LinearLayout(this);
-           verticalLayout.setOrientation(LinearLayout.VERTICAL);
-            /*verticalLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));*/
-
-
-           TextView rowText = new TextView(this);
-           rowText.setMaxWidth(480);
-           rowText.setText("Leaving From: "+upcomingTrips.get(i).getDeparture()+"\nGoing to: "+upcomingTrips.get(i).getDestination()+"\nDate: "+upcomingTrips.get(i).getDateDeparture());
-           rowText.setPadding(8, 8, 8, 8);
-           rowText.setSingleLine(false);
-           rowText.setEllipsize(null);
-
-
-           String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities", "View Budgeting", "Delete Trip"};
-           Spinner spinner = new Spinner(this);
-           ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dropdownItems);
-           spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-           spinner.setAdapter(spinnerAdapter);
-           spinner.setScaleX(0.7f);
-           spinner.setScaleY(0.7f);
-
-           spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-           {
-               @Override
-               public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                   String selectedItem = parent.getItemAtPosition(position).toString();
-
-                   switch (selectedItem) {
-                       case "Add Transportation":
-                           Log.d("HomePageActivity", "Add transportation selected");
-                           Intent addTransportationIntent = new Intent(context, AddTransportationActivity.class);
-                           addTransportationIntent.putExtra("TripID", upcomingTrips.get(index).getTripID());
-                           startActivity(addTransportationIntent);
-                           break;
-                       case "Add Accommodation":
-                           Log.d("HomePageActivity", "Add accommodation selected");
-                           Intent addAccommodationIntent = new Intent(context, AddAccommodationActivity.class);
-                           addAccommodationIntent.putExtra("TripID", upcomingTrips.get(index).getTripID());
-                           startActivity(addAccommodationIntent);
-                           break;
-                       case "Add Activities":
-                           Log.d("HomePageActivity", "Add activities selected");
-                           Intent addActivityIntent = new Intent(context, AddActivityActivity.class); //lol
-                           addActivityIntent.putExtra("TripID", upcomingTrips.get(index).getTripID());
-                           startActivity(addActivityIntent);
-                           break;
-                       case "View Budgeting":
-                           Log.d("HomePageActivity", "View budgeting selected");
-                           Intent viewBudgetingIntent = new Intent(context, ViewBudgetingActivity.class);
-                           viewBudgetingIntent.putExtra("TripID", upcomingTrips.get(index).getTripID());
-                           startActivity(viewBudgetingIntent);
-                           break;
-                       case "Delete Trip":
-                           database.deleteTrip(upcomingTrips.get(index).getTripID());
-                           sendToHomePage();
-                           break;
-                       default:
-                           //Nothing
-                           break;
-                   }
-               }
-               @Override
-               public void onNothingSelected (AdapterView<?> parent)
-               {
-                   // Do nothing
-               }
-           });
-
-
-           Button viewDetailsButton = new Button(this);
-           viewDetailsButton.setText("View Details");
-           viewDetailsButton.setTextColor(Color.WHITE); // Change text color
-           viewDetailsButton.setBackgroundResource(R.drawable.custom_button);
-           viewDetailsButton.setPadding(0, 0, 0, 0); // Adjust padding
-           viewDetailsButton.setScaleX(0.5f); // Scale width to 80%
-           viewDetailsButton.setScaleY(0.5f);
-           viewDetailsButton.setAllCaps(false);
-           viewDetailsButton.setOnClickListener(v -> viewTripDetails(upcomingTrips.get(index)));
-
-           verticalLayout.addView(rowText);
-           verticalLayout.addView(viewDetailsButton);
-
-           row.addView(verticalLayout);
-           row.addView(spinner);
-
-           tableLayout.addView(row);
-
-       }
-   }
-
     public void viewTripDetails(Trip trip)
     {
         Intent intent = new Intent(this, ViewTripDetails.class);

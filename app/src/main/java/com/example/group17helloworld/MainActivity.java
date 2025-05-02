@@ -9,13 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
 import android.content.Context;
 import android.view.View;
 import android.widget.*;
-
-import com.example.group17helloworld.DBHandler;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //database.deleteTripTable();
+        //database.createTripTable();
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -34,38 +33,55 @@ public class MainActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(getApplicationContext(), "onCreate Called", Toast.LENGTH_LONG);
         toast.show();
 
+        //database.deleteTripTable();
+        //database.createTripTable();
+
         Context context = getApplicationContext();
         Log.d("MainActivity", "Testing to see if printing to the terminal works for debugging purposes!");
-        database = new DBHandler(context);
-        User jason = new User("jmcgettrick","1234");
-
-        try
-        {
-            database.addUser(jason);
-        }
-        catch (Exception e)
-        {
-            Log.e("MainActivity","Username or password already taken!");
-        }
+        database = DBHandler.getInstance(context);
 
 
-        ArrayList<User> users = new ArrayList<User>();
-        users = database.getUsers();
-        for (int i=0; i<users.size(); i++)
-        {
-            Log.d("MainActivity", "Names in user database are: "+users.get(i).getUsername());
-        }
+//        database.deleteCommentsTable();
+//        database.deleteBucketListTable();
+//        database.deleteActivityTable();
+//        database.deleteAccommodationTable();
+//        database.deleteTransportationTable();
+//        database.deleteTripTable();
+
+//        database.createTripTable();
+//        database.createTransportationTable();
+//        database.createActivitiesTable();
+//        database.createAccommodationTable();
+//        database.createBucketListTable();
+//        database.createCommentsTable();
+
+    }
+    public void sendToHomePage(View view)
+    {
+        Intent homePageIntent = new Intent(this, HomePageActivity.class);
+        startActivity(homePageIntent);
     }
 
-    public void logIn(View view)
+    public void sendToCreateTripPage(View view)
     {
-        Intent intent = new Intent(this, LogInActivity.class);
-        startActivity(intent);
+        Intent createTripIntent = new Intent(this, CreateATripActivity.class);
+        startActivity(createTripIntent);
     }
 
-    public void signUp(View view)
+    public void sendToPastTripsPage(View view)
     {
-        Intent intent = new Intent(this, SignUpActivity.class);
-        startActivity(intent);
+        Intent pastTripsIntent = new Intent(this, ViewPastTripsActivity.class);
+        startActivity(pastTripsIntent);
+    }
+
+    public void sendToBucketListPage(View view)
+    {
+        Intent bucketListIntent = new Intent(this, ViewBucketListActivity.class);
+        startActivity(bucketListIntent);
+    }
+
+    public void sendToFavoritesPage(View view){
+        Intent favoritesIntent = new Intent(this, ViewFavoritesActivity.class);
+        startActivity(favoritesIntent);
     }
 }

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddAccommodationActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        tools:ignore="MissingConstraints">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/addAccommodationTitleText"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="Add Accommodation Below!"/>
+        <TextView
+            android:id="@+id/checkInDateErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/checkOutDateErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/priceErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/createTripErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="30dp">
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name of Accommodation: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/nameInput"
+                    android:hint="name"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Type of Accommodation (Hotel/Airbnb/Hostel): "/>
+            </TableRow>
+            <TableRow>
+                <EditText
+                    android:id="@+id/accommodationTypeInput"
+                    android:hint="type"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Address: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/addressInput"
+                    android:hint="address"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Check In date: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/checkInInput"
+                    android:hint="YYYY-MM-DD"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Check Out Date: "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/checkOutInput"
+                    android:hint="YYYY-MM-DD"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Price of Accommodation (€): "/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/priceInput"
+                    android:hint="price"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+        </TableLayout>
+        <Button
+            android:id="@+id/createTripButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addAccommodation"
+            android:text="Add Accommodation" />
+        <Button
+            android:id="@+id/sendToHomePageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="sendToHomePage"
+            android:text="Cancel" />
+    </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

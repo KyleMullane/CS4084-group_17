@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomePageActivity">
+    tools:context=".ViewFavoritesActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,16 +20,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:id="@+id/topOfHomePageLayout">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12pt"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:text="Welcome to the Hello World Travel Planner!"/>
+                android:gravity="center"
+                android:id="@+id/topOfFavoriteTripsLayout">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12pt"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:text="Wish You Could Go Back?"/>
                 <Spinner
-                    android:id="@+id/menuSpinner"
+                    android:id="@+id/pastSpinner"
                     android:layout_width="30dp"
                     android:gravity="right"
                     android:layout_gravity="right"
@@ -42,28 +43,13 @@
                 android:layout_gravity="left"
                 android:paddingLeft="10dp"
                 android:textSize="10pt"
-                android:id="@+id/todaysTrips"/>
+                android:text="Favorite Trips:"/>
             <TableLayout
                 android:orientation="vertical"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:id="@+id/todayTripTable">
-            </TableLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:paddingLeft="10dp"
-                android:textSize="10pt"
-                android:text="Upcoming trips:"/>
-
-            <TableLayout
-                android:orientation="vertical"
-                android:layout_width="350dp"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:id="@+id/tripTable">
+                android:id="@+id/favoriteTripTable">
             </TableLayout>
 
         </LinearLayout>

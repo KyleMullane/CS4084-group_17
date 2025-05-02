@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateATripActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/createTripPageTitleText"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="Create Your Trip Below!"/>
+        <TextView
+            android:id="@+id/emptyFieldsErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/dateErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/budgetErrorMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/incorrectOrderMessage"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:textSize="8pt"
+            android:gravity="center" />
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="30dp">
+            <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Where are you going?*"/>
+            </TableRow>
+            <TableRow>
+                <EditText
+                    android:id="@+id/destinationInput"
+                    android:hint="destination"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Where are you leaving from?*"/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/departureInput"
+                    android:hint="departure"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="What date are you leaving?*"/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/dateDepartureInput"
+                    android:hint="YYYY-MM-DD"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="If applicable, what date will you be returning?"/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/dateReturnInput"
+                    android:hint="YYYY-MM-DD"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="What is your intended budget for the trip?*"/>
+            </TableRow>
+            <TableRow>
+                <EditText android:id="@+id/budgetInput"
+                    android:hint="number"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:background="@android:drawable/editbox_background"/>
+            </TableRow>
+        </TableLayout>
+        <Button
+            android:id="@+id/createTripButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="createTrip"
+            android:text="Create Trip" />
+        <Button
+            android:id="@+id/sendToHomePageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="sendToHomePage"
+            android:text="Cancel" />
+    </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
