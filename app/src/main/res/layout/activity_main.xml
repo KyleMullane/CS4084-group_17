@@ -81,6 +81,14 @@
             android:layout_gravity="center"
             android:onClick="sendToFavoritesPage"
             android:text="View Favorites" />
+        <Button
+            android:id="@+id/statisticsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="sendToStatsPage"
+            android:text="View Statistics" />
+
     </LinearLayout>
     </FrameLayout>
 

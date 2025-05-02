@@ -34,6 +34,11 @@ public class CreateATripActivity extends AppCompatActivity {
 
         Context context = getApplicationContext();
         database = DBHandler.getInstance(context);
+        TextView budgetCaption = findViewById(R.id.budgetInputCaption);
+        budgetCaption.setMaxWidth(800);
+        budgetCaption.setSingleLine(false);
+        budgetCaption.setEllipsize(null);
+        budgetCaption.setText("What is your intended budget for the trip? (answer will be rounded to 2 decimal places)*");
     }
 
     public void createTrip(View view)
@@ -85,13 +90,16 @@ public class CreateATripActivity extends AppCompatActivity {
 
             }
 
+
             EditText budgetText = findViewById(R.id.budgetInput);
             String budgetString = budgetText.getText().toString();
+
             TextView budgetErrorMessage = findViewById(R.id.budgetErrorMessage);
             budgetErrorMessage.setText("");
             double budget = 0.0;
             try {
                 budget = Double.parseDouble(budgetString);
+                budget = Math.round(budget * 100.0) / 100.0;
                 if (budget < 0)
                 {
                     throw new Exception();

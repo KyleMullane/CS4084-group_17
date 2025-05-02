@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10pt"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:text="Write Your Travel Dreams Here!"/>
+
+
 
     <!-- Spinner for Menu Navigation -->
     <Spinner
@@ -29,4 +38,11 @@
             android:orientation="vertical"
             android:padding="8dp" />
     </ScrollView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="8pt"
+        android:textStyle="italic"
+        android:gravity="center"
+        android:text="(Reload the page to be able to delete a newly added item. To reload, go to the menu and hit View Bucket List)"/>
 </LinearLayout>

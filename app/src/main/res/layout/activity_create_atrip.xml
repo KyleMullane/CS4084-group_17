@@ -112,7 +112,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="What is your intended budget for the trip?*"/>
+                    android:id="@+id/budgetInputCaption" />
             </TableRow>
             <TableRow>
                 <EditText android:id="@+id/budgetInput"

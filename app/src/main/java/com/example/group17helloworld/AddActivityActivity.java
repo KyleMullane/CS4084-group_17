@@ -60,8 +60,8 @@ public class AddActivityActivity extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Date parsedDate = new Date();
             TextView dateMessage = findViewById(R.id.addDateErrorMessage);
+            dateMessage.setText("");
             try {
-                dateMessage.setText("");
                 sdf.setLenient(false);
                 parsedDate = sdf.parse(date);
             }
@@ -100,6 +100,7 @@ public class AddActivityActivity extends AppCompatActivity {
             try {
                 priceMessage.setText("");
                 price = Double.parseDouble(priceString);
+                price = Math.round(price * 100.0) / 100.0;
                 if (price < 0)
                 {
                     throw new Exception();
@@ -113,7 +114,29 @@ public class AddActivityActivity extends AppCompatActivity {
 
             EditText descriptionText = findViewById(R.id.descriptionInput);
             String description = descriptionText.getText().toString();
-
+            Date tripDepartureDate = new Date();
+            Date tripReturnDate = new Date();
+            if (!exceptionTriggered)
+            {
+                try {
+                    tripDepartureDate = sdf.parse(trip.getDateDeparture());
+                    if (parsedDate.before(tripDepartureDate))
+                    {
+                        exceptionTriggered = true;
+                        dateMessage.setText("Error: activity date is not in the range of your trip's dates");
+                    }
+                    if (!trip.getDateReturn().isEmpty())
+                    {
+                        tripReturnDate = sdf.parse(trip.getDateReturn());
+                        if (tripReturnDate.before(parsedDate))
+                        {
+                            exceptionTriggered = true;
+                            dateMessage.setText("Error: activity date is not in the range of your trip's dates");
+                        }
+                    }
+                }
+                catch (Exception e) {}
+            }
             if (name.isEmpty() || location.isEmpty() || description.isEmpty())
             {
                 throw new Exception();

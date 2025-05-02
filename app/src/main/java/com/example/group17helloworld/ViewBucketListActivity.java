@@ -2,6 +2,7 @@ package com.example.group17helloworld;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -40,7 +41,7 @@ public class ViewBucketListActivity extends AppCompatActivity {
         database = DBHandler.getInstance(context);
 
         // Menu At Top of the Screen
-        String[] menuItems = {"☰", "Create a Trip", "View Upcoming Trips", "View Past Trips", "View Bucket List", "View Favorites", "Main Menu"};
+        String[] menuItems = {"☰", "Create a Trip", "View Upcoming Trips", "View Past Trips", "View Bucket List", "View Favorites", "View Statistics", "Main Menu"};
         Spinner menuSpinner = findViewById(R.id.pastSpinner);
         ArrayAdapter<String> menuSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, menuItems);
         menuSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -70,6 +71,9 @@ public class ViewBucketListActivity extends AppCompatActivity {
                     case "View Favorites":
                         sendToFavoritesPage();
                         break;
+                    case "View Statistics":
+                        sendToStatsPage();
+                        break;
                     case "Main Menu":
                         sendToMainMenu();
                     default:
@@ -97,13 +101,34 @@ public class ViewBucketListActivity extends AppCompatActivity {
             Log.d("CHECKBOX_CREATION", "Creating checkbox for item: " + item.getItem());
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 Log.d("CHECKBOX_STATUS", "Checkbox clicked: " + isChecked);
-                item.setStatus(isChecked ? 1 : 0); //how do i change isChecked to handle 1s or 0s?
+                //item.setStatus(isChecked ? 1 : 0); //how do i change isChecked to handle 1s or 0s?
+                if (isChecked)
+                {
+                    item.setStatus(1);
+                }
+                else
+                {
+                    item.setStatus(0);
+                }
                 database.changeStatus(item);
-                //checkBox.setChecked(item.getStatus());
+                checkBox.setChecked(item.getStatus());
                 //bucketListLayout.addView(checkBox);
             });
-            checkBox.setChecked(item.getStatus());
+            //checkBox.setChecked(item.getStatus());
+            Button deletecheckBoxButton = new Button(this);
+            deletecheckBoxButton.setText("Delete");
+            deletecheckBoxButton.setTextColor(Color.WHITE); // Change text color
+            deletecheckBoxButton.setBackgroundResource(R.drawable.delete_button);
+            deletecheckBoxButton.setPadding(0, 0, 0, 0); // Adjust padding
+            deletecheckBoxButton.setScaleX(0.5f); // Scale width to 80%
+            deletecheckBoxButton.setScaleY(0.5f);
+            deletecheckBoxButton.setAllCaps(false);
+            LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(200, 100);
+            deletecheckBoxButton.setLayoutParams(buttonParams);
+            deletecheckBoxButton.setOnClickListener(v -> deleteItem(item.getID()));
+
             bucketListLayout.addView(checkBox);
+            bucketListLayout.addView(deletecheckBoxButton);
         }
 
         // Add new item input
@@ -117,15 +142,18 @@ public class ViewBucketListActivity extends AppCompatActivity {
         Button addButton = new Button(this);
         addButton.setText("Add");
 
+        boolean clicked = false;
         addButton.setOnClickListener(v -> {
             String description = newItemEditText.getText().toString().trim();
             if (!description.isEmpty()) {
                 BucketListItem newItem = new BucketListItem(description, 0); // Constructor must match
                 try {
-                    database.addItem(newItem);
+                   int id = database.addItem(newItem);
+                   newItem.setID(id);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+
 
                 CheckBox newCheckBox = new CheckBox(this);
                 newCheckBox.setText(description);
@@ -140,6 +168,8 @@ public class ViewBucketListActivity extends AppCompatActivity {
                 newItemEditText.setText("");
             }
         });
+
+
         newItemLayout.addView(newItemEditText);
         newItemLayout.addView(addButton);
         bucketListLayout.addView(newItemLayout);
@@ -170,5 +200,17 @@ public class ViewBucketListActivity extends AppCompatActivity {
     {
         Intent mainMenuIntent = new Intent(this, MainActivity.class);
         startActivity(mainMenuIntent);
+    }
+
+    public void sendToStatsPage()
+    {
+        Intent statsPageIntent = new Intent(this, ViewStatsActivity.class);
+        startActivity(statsPageIntent);
+    }
+
+    public void deleteItem(int ID)
+    {
+        database.deleteBucketListItem(ID);
+        sendToBucketListPage();
     }
 }

@@ -95,6 +95,7 @@ public class AddAccommodationActivity extends AppCompatActivity {
             try {
                 priceMessage.setText("");
                 price = Double.parseDouble(priceString);
+                price = Math.round(price * 100.0) / 100.0;
                 if (price < 0)
                 {
                     throw new Exception();
@@ -106,14 +107,41 @@ public class AddAccommodationActivity extends AppCompatActivity {
                 priceMessage.setText("Invalid price. Make sure to enter a numerical value that is positive");
             }
 
+            Date tripDepartureDate = new Date();
+            Date tripReturnDate = new Date();
 
             if (!exceptionTriggered)
             {
                 if (checkOutDateDate.before(parsedDate))
                 {
                     exceptionTriggered = true;
-                    checkInMessage.setText("Check out date before check in date");
+                    checkInMessage.setText("Error: Check out date before check in date");
                 }
+                else if (parsedDate.before(checkOutDateDate))
+                {}
+                else
+                {
+                    exceptionTriggered = true;
+                    checkInMessage.setText("Error: Check out date and check in date are the same");
+                }
+                try {
+                    tripDepartureDate = sdf.parse(trip.getDateDeparture());
+                    if (parsedDate.before(tripDepartureDate))
+                    {
+                        exceptionTriggered = true;
+                        checkInMessage.setText("Error: check in date is not in the range of your trip's dates");
+                    }
+                    if (!trip.getDateReturn().isEmpty())
+                    {
+                        tripReturnDate = sdf.parse(trip.getDateReturn());
+                        if (tripReturnDate.before(checkOutDateDate))
+                        {
+                            exceptionTriggered = true;
+                            checkInMessage.setText("Error: check out date is not in the range of your trip's dates");
+                        }
+                    }
+                }
+                catch (Exception e) {}
             }
 
             if (name.isEmpty() || type.isEmpty() || address.isEmpty())
