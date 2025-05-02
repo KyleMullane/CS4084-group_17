@@ -169,7 +169,7 @@ public class HomePageActivity extends AppCompatActivity {
 
 
             TextView rowText = new TextView(this);
-            rowText.setMaxWidth(500);
+            rowText.setMaxWidth(480);
             rowText.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
@@ -278,7 +278,7 @@ public class HomePageActivity extends AppCompatActivity {
 
 
            TextView rowText = new TextView(this);
-           rowText.setMaxWidth(500);
+           rowText.setMaxWidth(480);
            rowText.setText("Leaving From: "+upcomingTrips.get(i).getDeparture()+"\nGoing to: "+upcomingTrips.get(i).getDestination()+"\nDate: "+upcomingTrips.get(i).getDateDeparture());
            rowText.setPadding(8, 8, 8, 8);
            rowText.setSingleLine(false);

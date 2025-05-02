@@ -51,7 +51,7 @@ public class ViewTripDetails extends AppCompatActivity {
 
         TextView tripDetails = findViewById(R.id.tripDetails);
         tripDetails.setBackground(ContextCompat.getDrawable(this, R.drawable.border));
-        tripDetails.setText("Departure: " + trip.getDeparture() + "\nDestination: " + trip.getDestination() + "\nDate Departure: " + trip.getDateDeparture() + "\nDate Return: " + trip.getDateReturn() + "\nBudget: " + trip.getBudget());
+        tripDetails.setText("Departure: " + trip.getDeparture() + "\nDestination: " + trip.getDestination() + "\nDate Departure: " + trip.getDateDeparture() + "\nDate Return: " + trip.getDateReturn() + "\nBudget: €" + trip.getBudget());
 
 
 

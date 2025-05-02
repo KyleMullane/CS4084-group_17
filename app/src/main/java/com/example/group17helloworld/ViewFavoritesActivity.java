@@ -108,7 +108,7 @@ public class ViewFavoritesActivity extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             Date parsedDate = null;
             try {
-                parsedDate = sdf.parse(inputDate);  // Convert string to Date
+                parsedDate = sdf.parse(inputDate);
             } catch (ParseException e) {
                 e.printStackTrace();
                 Log.d("HomePageActivity", "Date was incorrectly input");
@@ -165,13 +165,54 @@ public class ViewFavoritesActivity extends AppCompatActivity {
             rowText.setText("Leaving From: " + favoriteTrips.get(i).getDeparture() + "\nGoing to: " + favoriteTrips.get(i).getDestination() + "\nDate: " + favoriteTrips.get(i).getDateDeparture());
             rowText.setPadding(8, 8, 8, 8);
 
-            String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities"};
+            String[] dropdownItems = {"Options", "Add Transportation", "Add Accommodation", "Add Activities", "Delete Trip"};
             Spinner spinner = new Spinner(this);
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dropdownItems);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(spinnerAdapter);
             spinner.setScaleX(0.7f);
             spinner.setScaleY(0.7f);
+
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+            {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedItem = parent.getItemAtPosition(position).toString();
+
+                    switch (selectedItem) {
+                        case "Add Transportation":
+                            Log.d("HomePageActivity", "Add transportation selected");
+                            Intent addTransportationIntent = new Intent(context, AddTransportationActivity.class);
+                            addTransportationIntent.putExtra("TripID", favoriteTrips.get(index).getTripID());
+                            startActivity(addTransportationIntent);
+                            break;
+                        case "Add Accommodation":
+                            Log.d("HomePageActivity", "Add accommodation selected");
+                            Intent addAccommodationIntent = new Intent(context, AddAccommodationActivity.class);
+                            addAccommodationIntent.putExtra("TripID", favoriteTrips.get(index).getTripID());
+                            startActivity(addAccommodationIntent);
+                            break;
+                        case "Add Activities":
+                            Log.d("HomePageActivity", "Add activities selected");
+                            Intent addActivityIntent = new Intent(context, AddActivityActivity.class); //lol
+                            addActivityIntent.putExtra("TripID", favoriteTrips.get(index).getTripID());
+                            startActivity(addActivityIntent);
+                            break;
+                        case "Delete Trip":
+                            database.deleteTrip(favoriteTrips.get(index).getTripID());
+                            sendToPastTripsPage();
+                            break;
+                        default:
+                            //Nothing
+                            break;
+                    }
+                }
+                @Override
+                public void onNothingSelected (AdapterView<?> parent)
+                {
+                    // Do nothing
+                }
+            });
 
             Button viewDetailsButton = new Button(this);
             viewDetailsButton.setText("View Details");
@@ -181,6 +222,8 @@ public class ViewFavoritesActivity extends AppCompatActivity {
             viewDetailsButton.setScaleX(0.5f);
             viewDetailsButton.setScaleY(0.5f);
             viewDetailsButton.setAllCaps(false);
+            LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(270, 100);
+            viewDetailsButton.setLayoutParams(buttonParams);
             viewDetailsButton.setOnClickListener(v -> viewTripDetails(favoriteTrips.get(index)));
 
             // Retrieve the saved comment and locked status from the database
@@ -188,9 +231,14 @@ public class ViewFavoritesActivity extends AppCompatActivity {
             boolean isCommentLocked = database.isCommentLocked(favoriteTrips.get(i).getTripID());
 
             EditText commentEditText = new EditText(this);
-            commentEditText.setHint("Add a comment...");
+            commentEditText.setHint("Why was it your favorite?");
             commentEditText.setText(savedComment);
-            commentEditText.setPadding(8, 8, 8, 8);
+            commentEditText.setScaleX(0.7f);
+            commentEditText.setScaleY(0.7f);
+            commentEditText.setBackgroundResource(android.R.drawable.edit_text);
+
+
+
 
             if (isCommentLocked) {
                 // Disable the EditText if the comment is locked
@@ -204,9 +252,10 @@ public class ViewFavoritesActivity extends AppCompatActivity {
             saveCommentButton.setTextSize(12);
             saveCommentButton.setBackgroundResource(R.drawable.custom_button);
             saveCommentButton.setTextColor(Color.WHITE);
-            saveCommentButton.setScaleX(0.7f);
-            saveCommentButton.setScaleY(0.7f);
+            saveCommentButton.setScaleX(0.5f);
+            saveCommentButton.setScaleY(0.5f);
             saveCommentButton.setAllCaps(false);
+            saveCommentButton.setLayoutParams(buttonParams);
 
             // Hide the save button if the comment is already saved and locked
             if (!savedComment.isEmpty() && isCommentLocked) {
@@ -240,17 +289,17 @@ public class ViewFavoritesActivity extends AppCompatActivity {
                 }
             });
 
-            // Add everything to the vertical layout
+
             verticalLayout.addView(rowText);
             verticalLayout.addView(viewDetailsButton);
             verticalLayout.addView(commentEditText);
             verticalLayout.addView(saveCommentButton);
 
-            // Add the vertical layout to the row
+
             row.addView(verticalLayout);
             row.addView(spinner);
 
-            // Finally, add the row to the table layout
+
             tableLayout.addView(row);
         }
     }
