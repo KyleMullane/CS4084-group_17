@@ -1,8 +1,14 @@
 package com.example.group17helloworld;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +37,53 @@ public class ViewStatsActivity extends AppCompatActivity {
 
         Context context = getApplicationContext();
         database = DBHandler.getInstance(context);
+        String[] menuItems = {"☰", "Create a Trip", "View Upcoming Trips", "View Past Trips", "View Bucket List", "View Favorites", "View Statistics", "Main Menu"};
+        Spinner menuSpinner = findViewById(R.id.menuSpinner);
+        ArrayAdapter<String> menuSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, menuItems);
+        menuSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        menuSpinner.setAdapter(menuSpinnerAdapter);
+
+
+        menuSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+
+                switch (selectedItem) {
+                    case "Create a Trip":
+                        Log.d("HomePageActivity", "Create a Trip selected");
+                        sendToCreateTripPage();
+                        break;
+                    case "View Upcoming Trips":
+                        Log.d("HomePageActivity", "View Upcoming Trips selected");
+                        sendToHomePage();
+                        break;
+                    case "View Past Trips":
+                        sendToPastTripsPage();
+                        break;
+                    case "View Bucket List":
+                        sendToBucketListPage();
+                        break;
+                    case "View Favorites":
+                        sendToFavoritesPage();
+                        break;
+                    case "View Statistics":
+                        sendToStatsPage();
+                        break;
+                    case  "Main Menu":
+                        sendToMainMenu();
+                    default:
+                        //Nothing
+                        break;
+                }
+            }
+            @Override
+            public void onNothingSelected (AdapterView<?> parent)
+            {
+                // Do nothing
+            }
+        });
         displayStats();
     }
 
@@ -57,11 +110,96 @@ public class ViewStatsActivity extends AppCompatActivity {
         double totalTransportationCost = 0.0;
         double totalAccommodationCost = 0.0;
         double totalActivitiesCost = 0.0;
-        double totalCost = totalTransportationCost + totalAccommodationCost + totalActivitiesCost;
         for (int i=0; i<trips.size(); i++)
         {
             totalBudget += trips.get(i).getBudget();
         }
+        for (int i=0; i<transportations.size(); i++)
+        {
+            totalTransportationCost += transportations.get(i).getPrice();
+        }
+        for (int i=0; i<accommodations.size(); i++)
+        {
+            totalAccommodationCost += accommodations.get(i).getPrice();
+        }
+        for (int i=0; i<activities.size(); i++)
+        {
+            totalActivitiesCost += accommodations.get(i).getPrice();
+        }
+        double totalCost = totalTransportationCost + totalAccommodationCost + totalActivitiesCost;
+
+        TextView totalTripText = findViewById(R.id.totalTrips);
+        totalTripText.setMaxWidth(800);
+        totalTripText.setSingleLine(false);
+        totalTripText.setEllipsize(null);
+        totalTripText.setText("Total Trips: "+numTrips);
+
+        TextView pastTripText = findViewById(R.id.totalPastTrips);
+        pastTripText.setText("Past Trips: "+numPastTrips);
+        pastTripText.setMaxWidth(800);
+        pastTripText.setSingleLine(false);
+        pastTripText.setEllipsize(null);
+
+
+        TextView upcomingTripText = findViewById(R.id.totalUpcomingTrips);
+        upcomingTripText.setMaxWidth(800);
+        upcomingTripText.setSingleLine(false);
+        upcomingTripText.setEllipsize(null);
+        upcomingTripText.setText("Upcoming Trips: "+numUpcomingTrips);
+
+        TextView todayTripText = findViewById(R.id.totalTodayTrips);
+        todayTripText.setMaxWidth(800);
+        todayTripText.setSingleLine(false);
+        todayTripText.setEllipsize(null);
+        todayTripText.setText("Today's Trips: "+numTodaysTrips);
+
+        TextView totalTransportationText = findViewById(R.id.totalTransportations);
+        totalTransportationText.setMaxWidth(800);
+        totalTransportationText.setSingleLine(false);
+        totalTransportationText.setEllipsize(null);
+        totalTransportationText.setText("Total Transportation Logged: "+numTransportations);
+
+        TextView totalAccommodationText = findViewById(R.id.totalAccommodations);
+        totalAccommodationText.setMaxWidth(800);
+        totalAccommodationText.setSingleLine(false);
+        totalAccommodationText.setEllipsize(null);
+        totalAccommodationText.setText("Total Accommodation Logged: "+numTransportations);
+
+        TextView totalActivitiesText = findViewById(R.id.totalActivities);
+        totalActivitiesText.setMaxWidth(800);
+        totalActivitiesText.setSingleLine(false);
+        totalActivitiesText.setEllipsize(null);
+        totalActivitiesText.setText("Total Activities Logged: "+numActivities);
+
+        TextView totalCostText = findViewById(R.id.totalMoneySpent);
+        totalCostText.setMaxWidth(800);
+        totalCostText.setSingleLine(false);
+        totalCostText.setEllipsize(null);
+        totalCostText.setText("Total Money Spent: €"+totalCost);
+
+        TextView totalBudgetText = findViewById(R.id.totalMoneyBudgeted);
+        totalBudgetText.setMaxWidth(800);
+        totalBudgetText.setSingleLine(false);
+        totalBudgetText.setEllipsize(null);
+        totalBudgetText.setText("Total Money Budgeted: €"+totalBudget);
+
+        TextView totalTransportationCostText = findViewById(R.id.transportationCost);
+        totalTransportationCostText.setMaxWidth(800);
+        totalTransportationCostText.setSingleLine(false);
+        totalTransportationCostText.setEllipsize(null);
+        totalTransportationCostText.setText("Total Transportation Cost: €"+totalTransportationCost);
+
+        TextView totalAccommodationCostText = findViewById(R.id.accommodationCost);
+        totalAccommodationCostText.setMaxWidth(800);
+        totalAccommodationCostText.setSingleLine(false);
+        totalAccommodationCostText.setEllipsize(null);
+        totalAccommodationCostText.setText("Total Accommodation Cost: €"+totalAccommodationCost);
+
+        TextView totalActivitiesCostText = findViewById(R.id.activitiesCost);
+        totalActivitiesCostText.setMaxWidth(800);
+        totalActivitiesCostText.setSingleLine(false);
+        totalActivitiesCostText.setEllipsize(null);
+        totalActivitiesCostText.setText("Total Activities Cost: €"+numTodaysTrips);
 
     }
 
@@ -99,5 +237,52 @@ public class ViewStatsActivity extends AppCompatActivity {
                 todaysTrips.add(trips.get(index));
             }
         }
+    }
+
+    public void viewTripDetails(Trip trip)
+    {
+        Intent intent = new Intent(this, ViewTripDetails.class);
+        intent.putExtra("TripID", trip.getTripID());
+        startActivity(intent);
+    }
+
+    public void sendToHomePage()
+    {
+        Intent homePageIntent = new Intent(this, HomePageActivity.class);
+        startActivity(homePageIntent);
+    }
+
+    public void sendToCreateTripPage()
+    {
+        Intent createTripIntent = new Intent(this, CreateATripActivity.class);
+        startActivity(createTripIntent);
+    }
+
+    public void sendToPastTripsPage()
+    {
+        Intent pastTripsIntent = new Intent(this, ViewPastTripsActivity.class);
+        startActivity(pastTripsIntent);
+    }
+
+    public void sendToBucketListPage()
+    {
+        Intent bucketListIntent = new Intent(this, ViewBucketListActivity.class);
+        startActivity(bucketListIntent);
+    }
+
+    public void sendToFavoritesPage()
+    {
+        Intent favoritesIntent = new Intent(this, ViewFavoritesActivity.class);
+        startActivity(favoritesIntent);
+    }
+    public void sendToMainMenu()
+    {
+        Intent mainMenuIntent = new Intent(this, MainActivity.class);
+        startActivity(mainMenuIntent);
+    }
+    public void sendToStatsPage()
+    {
+        Intent statsPageIntent = new Intent(this, ViewStatsActivity.class);
+        startActivity(statsPageIntent);
     }
 }

@@ -84,4 +84,10 @@ public class MainActivity extends AppCompatActivity {
         Intent favoritesIntent = new Intent(this, ViewFavoritesActivity.class);
         startActivity(favoritesIntent);
     }
+    public void sendToStatsPage(View view)
+    {
+        Log.d("MainActivity", "SendToStatsPage Method activated");
+        Intent statsPageIntent = new Intent(this, ViewStatsActivity.class);
+        startActivity(statsPageIntent);
+    }
 }
